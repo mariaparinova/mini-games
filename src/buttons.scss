@@ -1,0 +1,51 @@
+@use './variables';
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: variables.$font-family-inter;
+  transition: color, background-color, border-color, 0.3s;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.button.primary {
+  padding: 16px 24px;
+  width: fit-content;
+  color: variables.$on-primary;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  background-color: variables.$primary;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+}
+
+.button.auth.primary {
+  color: variables.$on-primary;
+  background-color: variables.$primary;
+}
+
+@media screen and (max-width: 1439px) {
+  .button.primary {
+    padding: 10px 20px;
+    font-size: variables.$body-small;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .button.primary {
+    padding: 8px 16px;
+    font-size: variables.$body-xsmall;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button.primary:hover {
+    background-color: variables.$primary-high;
+  }
+}
