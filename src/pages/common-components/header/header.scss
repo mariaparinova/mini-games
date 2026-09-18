@@ -1,0 +1,72 @@
+@use '../../../variables';
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 80px;
+  height: 85px;
+  border-bottom: 2px solid variables.$on-primary;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-text {
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+}
+
+.nav {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.navigation-list {
+  display: flex;
+  gap: 40px;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 16px;
+}
+
+a.active {
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+  cursor: default;
+}
+
+@media screen and (max-width: 1439px) {
+  .header {
+    padding: 0 40px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .buttons-container {
+    flex-grow: 1;
+    justify-content: flex-end;
+  }
+
+  .button.login {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .button.signup {
+    display: none;
+  }
+}
