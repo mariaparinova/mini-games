@@ -42,6 +42,68 @@ a.active {
   cursor: default;
 }
 
+.burger-icon {
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: variables.$on-primary;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+  transition: background-color, border-color, 0.3s;
+  cursor: pointer;
+  display: none;
+}
+
+.burger-line {
+  width: 16px;
+  height: 2px;
+  background-color: variables.$on-primary;
+  transition: background-color 0.3s;
+
+  &::before,
+  &::after {
+    position: relative;
+    content: '';
+    display: block;
+    width: 16px;
+    height: 2px;
+    background-color: variables.$on-primary;
+    transition:
+      background-color,
+      rotate 0.3s;
+  }
+
+  &::before {
+    top: -4px;
+  }
+
+  &::after {
+    bottom: -2px;
+  }
+}
+
+.burger-icon.opened {
+  border-color: variables.$bg-footer-low;
+  background-color: variables.$bg-footer-low;
+
+  .burger-line {
+    background-color: transparent;
+
+    &::before {
+      top: 1px;
+      background-color: variables.$white;
+      rotate: 45deg;
+    }
+
+    &::after {
+      bottom: 0;
+      background-color: variables.$white;
+      rotate: -45deg;
+    }
+  }
+}
+
 @media screen and (max-width: 1439px) {
   .header {
     padding: 0 40px;
@@ -59,6 +121,10 @@ a.active {
   .button.login {
     display: none;
   }
+
+  .burger-icon {
+    display: flex;
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -68,5 +134,16 @@ a.active {
 
   .button.signup {
     display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .burger-icon:hover {
+    background-color: variables.$surface;
+  }
+
+  .burger-icon.opened:hover {
+    background-color: variables.$bg-footer-lowest;
+    border-color: variables.$primary;
   }
 }

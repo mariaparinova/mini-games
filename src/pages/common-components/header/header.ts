@@ -99,6 +99,23 @@ function getHeaderButtons() {
 
   return createDivElement({
     classList: ['buttons-container'],
-    children: [loginButton, signupButton],
+    children: [loginButton, signupButton, getBurgerIconElement()],
   });
+}
+
+function getBurgerIconElement() {
+  const line = createDivElement({
+    classList: ['burger-line'],
+  });
+
+  const icon = createDivElement({
+    classList: ['burger-icon'],
+    children: [line],
+  });
+
+  icon.onclick = () => {
+    icon.classList.toggle('opened');
+  };
+
+  return icon;
 }
