@@ -1,0 +1,24 @@
+@use './variables';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 1920px;
+  font-family: variables.$font-family-inter;
+  color: variables.$on-bg;
+  background-color: variables.$bg;
+}
+
+a {
+  text-decoration: none;
+  color: variables.$on-bg;
+}
+
+li {
+  list-style: none;
+}

@@ -1,5 +1,5 @@
-import './style.sass';
+import './styles.scss';
+import { getHomePageElement } from './pages/home-page/home-page.ts';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<div>hello</div>
-`;
+const app = document.querySelector<HTMLDivElement>('#app')!;
+app.appendChild(getHomePageElement());
