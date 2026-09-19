@@ -35,6 +35,35 @@ h1 {
   line-height: 110%;
 }
 
+h2 {
+  color: variables.$on-primary;
+  font-size: variables.$headline-large;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+}
+
+h3 {
+  color: variables.$on-primary;
+  font-size: variables.$headline-medium;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+}
+
+h4 {
+  font-family: variables.$font-family-roboto;
+  color: variables.$white;
+  font-size: variables.$body-medium;
+  font-weight: variables.$font-weight-extra-bold;
+  text-transform: uppercase;
+}
+
+h5 {
+  color: variables.$white;
+  font-size: variables.$body-medium;
+  font-weight: variables.$font-weight-bold;
+  text-transform: uppercase;
+}
+
 @media screen and (max-width: 1439px) {
   body {
     font-size: variables.$body-small;
@@ -44,6 +73,18 @@ h1 {
   h1 {
     font-size: variables.$display-medium;
     line-height: 115%;
+  }
+
+  h2 {
+    font-size: variables.$headline-medium;
+  }
+
+  h3 {
+    font-size: variables.$headline-small;
+  }
+
+  h4 {
+    font-size: variables.$body-small;
   }
 }
 
@@ -55,5 +96,9 @@ h1 {
   h1 {
     font-size: variables.$display-small;
     line-height: 120%;
+  }
+
+  h2 {
+    font-size: variables.$headline-small;
   }
 }
