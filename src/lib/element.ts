@@ -86,6 +86,16 @@ export function createLiElement(params: CreateLiElementParams) {
   return listItemElement;
 }
 
+export function createHeadingElement(params: CreateHeadingElementParams) {
+  const { type, classList = [], textContent } = params;
+
+  const headingElement = document.createElement(type);
+  headingElement.classList.add(...classList);
+  headingElement.textContent = textContent;
+
+  return headingElement;
+}
+
 interface CreateDivElementParams {
   classList?: string[];
   textContent?: string;
@@ -123,5 +133,11 @@ interface CreateListElementParams {
 
 interface CreateLiElementParams {
   child: string | HTMLElement | HTMLAnchorElement;
+  classList?: string[];
+}
+
+interface CreateHeadingElementParams {
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  textContent: string;
   classList?: string[];
 }

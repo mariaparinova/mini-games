@@ -1,3 +1,5 @@
+@use './buttons.scss';
+
 @use './variables';
 
 * {
@@ -11,6 +13,9 @@ body {
   max-width: 1920px;
   font-family: variables.$font-family-inter;
   color: variables.$on-bg;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-medium;
+  line-height: 150%;
   background-color: variables.$bg;
 }
 
@@ -21,4 +26,34 @@ a {
 
 li {
   list-style: none;
+}
+
+h1 {
+  color: variables.$on-primary;
+  font-size: variables.$display-large;
+  font-weight: variables.$font-weight-bold;
+  line-height: 110%;
+}
+
+@media screen and (max-width: 1439px) {
+  body {
+    font-size: variables.$body-small;
+    line-height: 140%;
+  }
+
+  h1 {
+    font-size: variables.$display-medium;
+    line-height: 115%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    font-size: variables.$body-xsmall;
+  }
+
+  h1 {
+    font-size: variables.$display-small;
+    line-height: 120%;
+  }
 }
