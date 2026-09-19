@@ -1,0 +1,10 @@
+@use '../../../variables';
+
+.game-likes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: variables.$white;
+  font-size: variables.$body-medium;
+  font-weight: variables.$font-weight-bold;
+}
