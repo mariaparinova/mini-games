@@ -1,0 +1,23 @@
+@use '../../../variables';
+
+.footer {
+  display: flex;
+  gap: 64px;
+  padding: 40px 120px;
+  color: variables.$on-bg-footer;
+  font-size: variables.$body-small;
+  background-color: variables.$bg-footer;
+}
+
+.sub-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.rss,
+.student-data {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

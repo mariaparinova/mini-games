@@ -54,12 +54,19 @@ export function createSpanElement(params: CreateSpanElementParams) {
 }
 
 export function createLinkElement(params: CreateLinkElementParams): HTMLAnchorElement {
-  const { classList = [], href, textContent } = params;
+  const { classList = [], href, textContent, children } = params;
 
   const linkElement = document.createElement('a');
   linkElement.classList.add(...classList);
   linkElement.href = href;
-  linkElement.textContent = textContent;
+
+  if (textContent) {
+    linkElement.textContent = textContent;
+  }
+
+  if (children) {
+    linkElement.append(...children);
+  }
 
   return linkElement;
 }
@@ -96,6 +103,16 @@ export function createHeadingElement(params: CreateHeadingElementParams) {
   return headingElement;
 }
 
+export function createMainElement(params: CreateMainElementParams) {
+  const { classList = [], children = [] } = params;
+
+  const mainElement = document.createElement('main');
+  mainElement.classList.add('main', ...classList);
+  mainElement.append(...children);
+
+  return mainElement;
+}
+
 interface CreateDivElementParams {
   classList?: string[];
   textContent?: string;
@@ -120,9 +137,10 @@ interface CreateSpanElementParams {
 }
 
 interface CreateLinkElementParams {
-  classList?: string[];
   href: string;
-  textContent: string;
+  classList?: string[];
+  textContent?: string;
+  children?: HTMLElement[];
 }
 
 interface CreateListElementParams {
@@ -140,4 +158,9 @@ interface CreateHeadingElementParams {
   type: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   textContent: string;
   classList?: string[];
+}
+
+interface CreateMainElementParams {
+  classList?: string[];
+  children?: HTMLElement[];
 }
