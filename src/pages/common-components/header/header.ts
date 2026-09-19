@@ -1,13 +1,12 @@
 import './header.scss';
 import {
   createDivElement,
-  createImgElement,
   createLinkElement,
   createListElement,
   createLiElement,
-  createSpanElement,
   createButtonElement,
 } from '../../../lib/element.ts';
+import { getLogoElement } from '../logo/logo.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -29,23 +28,6 @@ export function getHeaderElement(params: { activeItem: NavItem }): HTMLElement {
   headerElement.append(logoElement, navigationElement, buttonsElement);
 
   return headerElement;
-}
-
-function getLogoElement() {
-  const logoImg = createImgElement({
-    src: 'logo.svg',
-    alt: 'Logo',
-  });
-
-  const logoText = createSpanElement({
-    classList: ['logo-text'],
-    textContent: 'MiniGames',
-  });
-
-  return createDivElement({
-    classList: ['logo-container'],
-    children: [logoImg, logoText],
-  });
 }
 
 function getNavigationElement(params: { activeItem: NavItem }) {

@@ -1,0 +1,17 @@
+@use '../../../variables';
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+}
+
+.footer .logo-text {
+  color: variables.$white;
+}
