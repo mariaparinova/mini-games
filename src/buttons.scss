@@ -7,6 +7,7 @@
   font-family: variables.$font-family-inter;
   transition: color, background-color, border-color, 0.3s;
   cursor: pointer;
+  outline: none;
 
   &:disabled {
     cursor: default;
@@ -27,6 +28,19 @@
 
 .button.auth.primary {
   color: variables.$on-primary;
+  background-color: variables.$primary;
+}
+
+.button-carousel {
+  width: 48px;
+  height: 48px;
+  line-height: 40px;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  background-color: variables.$white;
+}
+
+.button-carousel.button-next {
   background-color: variables.$primary;
 }
 

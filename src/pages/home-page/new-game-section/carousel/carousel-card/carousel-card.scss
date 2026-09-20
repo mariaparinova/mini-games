@@ -1,34 +1,43 @@
-@use '../../../../variables';
+@use '../../../../../variables';
 
-.card {
+.carousel-card {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  width: 816px;
   height: 384px;
   background-size: cover;
   border: solid 2.5px variables.$on-primary;
-  border-radius: variables.$corner-extra-small;
+  border-radius: variables.$corner-extra-large;
   box-shadow: variables.$shadow-level-1;
+  overflow: hidden;
 }
 
-.card-content {
-  position: relative;
-  bottom: 0;
+.new-games-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carousel-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.carousel-card-content {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 16px;
-  box-shadow: inset 8px -100px 39px -32px rgba(0, 0, 0, 0.74);
+  box-shadow: inset 8px -100px 39px -32px rgba(0, 0, 0, 0.8);
 }
 
-.card-content .name {
+.carousel-card-content .name {
   color: variables.$white;
   font-size: variables.$body-large;
   font-weight: variables.$font-weight-bold;
 }
 
-.card-content .additional-info {
+.carousel-card-content .additional-info {
   display: flex;
   justify-content: space-between;
 }

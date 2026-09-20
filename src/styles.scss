@@ -64,6 +64,22 @@ h5 {
   text-transform: uppercase;
 }
 
+.heading.decorated {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 32px;
+    background-color: variables.$primary;
+    border: 1.5px solid variables.$on-primary;
+    border-radius: variables.$corner-extra-small;
+  }
+}
+
 @media screen and (max-width: 1439px) {
   body {
     font-size: variables.$body-small;

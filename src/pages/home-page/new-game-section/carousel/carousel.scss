@@ -1,0 +1,12 @@
+.carousel {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  overflow-x: hidden;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 120px 288px 816px 288px 120px;
+  gap: 8px;
+}

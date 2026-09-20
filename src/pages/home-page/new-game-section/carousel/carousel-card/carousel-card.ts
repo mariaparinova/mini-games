@@ -1,13 +1,13 @@
-import './card.scss';
-import { createDivElement, createSpanElement } from '../../../../lib/element.ts';
-import { getGameRating } from '../../../common-components/game-rating/game-rating.ts';
-import { getGameLikes } from '../../../common-components/game-likes/game-likes.ts';
+import './carousel-card.scss';
+import { createDivElement, createSpanElement } from '../../../../../lib/element.ts';
+import { getGameRating } from '../../../../common-components/game-rating/game-rating.ts';
+import { getGameLikes } from '../../../../common-components/game-likes/game-likes.ts';
 
-export function createCardElement(params: CreateCardElementParams) {
+export function createCardElement(params: CardElementParams) {
   const { cardImage } = params;
 
   const cardElement = createDivElement({
-    classList: ['card'],
+    classList: ['carousel-card'],
     children: [createCardContentElement(params)],
   });
   cardElement.style.backgroundImage = `url(${cardImage})`;
@@ -29,12 +29,12 @@ function createCardContentElement(params: CreateCardContentElementParams) {
   });
 
   return createDivElement({
-    classList: ['card-content'],
+    classList: ['carousel-card-content'],
     children: [nameElement, additionalInfoElement],
   });
 }
 
-interface CreateCardElementParams {
+export interface CardElementParams {
   cardImage: string;
   name: string;
   rating: number;
