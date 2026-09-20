@@ -4,12 +4,18 @@ import { createDivElement, createMainElement } from '../../lib/element.ts';
 import { getFooterElement } from '../common-components/footer/footer.ts';
 import { createNewGamesSection } from './new-game-section/new-game-section.ts';
 import { createCtaSection } from './cta-section/cta-section.ts';
+import { leaderboardSection } from './leaderboard-section/leaderboard-section.ts';
 
 export function getHomePageElement(): HTMLElement {
   const headerElement = getHeaderElement({ activeItem: NavItem.Home });
   const footerElement = getFooterElement();
   const mainElement = createMainElement({
-    children: [createHeroSection(), createNewGamesSection(), createCtaSection()],
+    children: [
+      createHeroSection(),
+      createNewGamesSection(),
+      leaderboardSection(),
+      createCtaSection(),
+    ],
   });
 
   return createDivElement({
