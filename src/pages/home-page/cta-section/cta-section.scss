@@ -1,0 +1,54 @@
+@use '../../../variables';
+
+.cta-section {
+  padding: 40px 120px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.cta-section-image-container {
+  flex-shrink: 0;
+  width: 680px;
+  height: 480px;
+  background-image: url('images/cta-img-l.jpg');
+  background-size: cover;
+  border-radius: variables.$corner-extra-large;
+}
+
+.cta-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 40px;
+  color: variables.$on-bg-low;
+  background-color: variables.$white;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+}
+
+@media screen and (max-width: 1439px) {
+  .cta-section {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 40px;
+  }
+
+  .cta-section-content {
+    gap: 16px;
+    width: 100%;
+  }
+
+  .cta-section-image-container {
+    width: 100%;
+    height: 300px;
+    background-image: url('images/cta-img-m.jpg');
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cta-section-image-container {
+    height: 200px;
+    background-image: url('images/cta-img-s.jpg');
+  }
+}
