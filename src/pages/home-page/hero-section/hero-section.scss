@@ -14,9 +14,13 @@
   padding: 48px;
   max-width: 640px;
   background-color: variables.$bg;
-  border: 1px solid variables.$on-primary;
+  border: 3px solid variables.$on-primary;
   border-radius: variables.$corner-extra-large;
-  box-shadow: variables.$shadow-level-1;
+  box-shadow: variables.$shadow-level-3;
+}
+
+.hero-text {
+  width: 500px;
 }
 
 @media screen and (max-width: 1439px) {
@@ -29,6 +33,10 @@
     gap: 16px;
     padding: 24px;
     box-shadow: variables.$shadow-level-2;
+  }
+
+  .hero-text {
+    width: 100%;
   }
 }
 

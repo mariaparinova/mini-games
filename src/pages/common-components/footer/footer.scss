@@ -3,7 +3,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 88px;
   padding: 40px 120px;
   color: variables.$on-bg-footer;
   font-size: variables.$body-small;
@@ -34,11 +34,17 @@
 .company-section,
 .community-section {
   gap: 16px;
+  line-height: 17px;
 }
 
 .icons-container {
   display: flex;
   gap: 16px;
+}
+
+.icons-container img {
+  width: 40px;
+  height: 40px;
 }
 
 .sub-footer {

@@ -4,7 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   font-family: variables.$font-family-inter;
+  color: variables.$on-primary;
   transition: color, background-color, border-color, 0.3s;
   cursor: pointer;
   outline: none;
@@ -12,6 +14,27 @@
   &:disabled {
     cursor: default;
   }
+}
+
+.header-button {
+  padding: 10px 20px;
+  font-size: variables.$body-small;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+  background-color: variables.$bg;
+}
+
+.header-button.signup {
+  background-color: variables.$primary;
+}
+
+.button.primary.cta-section-content-button {
+  padding: 0 24px;
+  height: 56px;
+  line-height: 21px;
+  font-family: variables.$font-family-roboto;
 }
 
 .button.primary {

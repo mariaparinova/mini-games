@@ -18,6 +18,8 @@
 .navigation-list {
   display: flex;
   gap: 40px;
+  font-size: variables.$body-medium;
+  font-weight: variables.$font-weight-medium;
 }
 
 .buttons-container {

@@ -4,6 +4,7 @@ import {
   createDivElement,
   createHeadingElement,
   createSpanElement,
+  createImgElement,
 } from '../../../lib/element.ts';
 
 export function createCtaSection() {
@@ -25,9 +26,15 @@ export function createCtaSection() {
       'and reach thousands of players!',
   });
 
+  const iconElement = createImgElement({
+    src: '/icons/upload.svg',
+    alt: 'Upload icon',
+  });
+
   const contentButtonElement = createButtonElement({
-    classList: ['button', 'cta-section-content-button'],
+    classList: ['button', 'primary', 'cta-section-content-button'],
     textContent: 'Submit form',
+    icon: iconElement,
   });
 
   const contentFooterElement = createSpanElement({

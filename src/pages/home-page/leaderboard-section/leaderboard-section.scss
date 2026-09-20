@@ -11,6 +11,7 @@
   border: 2.5px solid variables.$on-primary;
   border-radius: variables.$corner-large;
   overflow: hidden;
+  box-shadow: variables.$shadow-level-3;
 }
 
 .leaderboard-table {
@@ -20,38 +21,41 @@
   border-collapse: collapse;
 }
 
-.leaderboard-table .leaderboard-table-head {
+.leaderboard-table .leaderboard-table-head tr {
   background-color: variables.$tertiary;
   border-collapse: collapse;
+  border-bottom: 1.5px solid variables.$on-primary;
 }
 
 .leaderboard-table-head th {
-  padding: 24px;
+  padding: 24px 0;
+  text-align: center;
 }
 
 .leaderboard-table tbody {
   overflow-x: scroll;
 
-  tr:nth-child(odd) {
+  tr:nth-child(even) {
     background-color: variables.$white;
   }
 
   td {
+    padding: 0 8px;
     color: variables.$on-primary;
     font-family: variables.$font-family-roboto;
     font-size: variables.$body-medium;
     font-weight: variables.$font-weight-bold;
   }
 
-  td:not(.name) {
+  td:not(.player) {
     text-align: center;
   }
 
-  .rank {
-    width: 80px;
+  tr {
+    border-bottom: 1px solid variables.$outline;
   }
 
-  .rank.first {
+  .first {
     color: variables.$primary;
   }
 
@@ -89,6 +93,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
+  }
+
+  .favorite-game .text {
+    padding: 4px 12px;
+    font-size: variables.$body-xsmall;
+    border: 1.5px solid variables.$on-primary;
+    border-radius: variables.$corner-large;
   }
 }
 

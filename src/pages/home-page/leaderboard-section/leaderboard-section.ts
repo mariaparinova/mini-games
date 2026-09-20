@@ -75,7 +75,6 @@ export function leaderboardSection() {
 }
 
 function createLeaderboardSectionTable() {
-  const tableHead = document.createElement('thead');
   const tableHeadElements = tHeadItems.map((item) => {
     const th = document.createElement('th');
     th.append(
@@ -86,8 +85,13 @@ function createLeaderboardSectionTable() {
     );
     return th;
   });
+
+  const tableRow = document.createElement('tr');
+  tableRow.append(...tableHeadElements);
+
+  const tableHead = document.createElement('thead');
   tableHead.classList.add('leaderboard-table-head');
-  tableHead.append(...tableHeadElements);
+  tableHead.append(tableRow);
 
   const tableRows = players.data.map((player, i) => {
     const row = document.createElement('tr');
@@ -97,16 +101,26 @@ function createLeaderboardSectionTable() {
       player.playerName,
       player.gamesPlayed,
       player.totalScore,
-      `${player.streakDays} days`,
+      `🔥 ${player.streakDays} days`,
       player.favoriteGameName,
     ];
 
-    const cells = values.map((val) => {
+    const cells = values.map((val, index) => {
       const td = document.createElement('td');
-      td.classList.add(tHeadItems[i].replace(' ', '-'));
+      td.classList.add(tHeadItems[index].replace(' ', '-'));
 
       if (val === player.playerName) {
-        td.append(addNameToCell(player.playerName, i));
+        td.append(createNameElement(player.playerName, i));
+        return td;
+      }
+
+      if (val === player.favoriteGameName) {
+        td.append(createFavoriteGameName(player.favoriteGameName));
+        return td;
+      }
+
+      if (val === player.totalScore) {
+        td.textContent = val.toLocaleString('en-US');
         return td;
       }
 
@@ -129,7 +143,7 @@ function createLeaderboardSectionTable() {
   return table;
 }
 
-function addNameToCell(playerName: string, index: number) {
+function createNameElement(playerName: string, index: number) {
   const initials = playerName.match(/[A-Z]/g) || [];
   const initialIcon = createSpanElement({
     classList: ['initials', `initials-${index + 1}`],
@@ -142,5 +156,12 @@ function addNameToCell(playerName: string, index: number) {
   return createDivElement({
     classList: ['player-name'],
     children: [initialIcon, nameElement],
+  });
+}
+
+function createFavoriteGameName(name: string) {
+  return createSpanElement({
+    classList: ['text'],
+    textContent: name,
   });
 }
