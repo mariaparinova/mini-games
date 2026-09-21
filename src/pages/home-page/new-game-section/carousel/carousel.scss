@@ -1,12 +1,25 @@
 .carousel {
   display: flex;
   gap: 8px;
-  padding: 16px;
-  overflow-x: hidden;
+  padding: 0 8px;
 }
 
 .cards-container {
   display: grid;
   grid-template-columns: 120px 288px 816px 288px 120px;
+  grid-template-rows: repeat(1, 1fr);
   gap: 8px;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 1439px) {
+  .cards-container {
+    grid-template-columns: 0 105px 448px 105px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cards-container {
+    grid-template-columns: 0 56px 218px 56px 0;
+  }
 }

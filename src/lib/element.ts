@@ -16,13 +16,17 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick } = params;
+  const { classList = [], textContent, onClick, icon } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
 
+  if (icon) {
+    buttonElement.append(icon);
+  }
+
   if (textContent) {
-    buttonElement.textContent = textContent;
+    buttonElement.append(textContent);
   }
 
   if (onClick) {
@@ -123,6 +127,7 @@ interface CreateButtonElementParams {
   classList?: string[];
   textContent?: string;
   onClick?: () => void;
+  icon?: HTMLImageElement;
 }
 
 interface CreateImgElementParams {

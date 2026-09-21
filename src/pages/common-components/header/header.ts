@@ -70,12 +70,12 @@ function getNavigationElement(params: { activeItem: NavItem }) {
 
 function getHeaderButtons() {
   const loginButton = createButtonElement({
-    classList: ['button', 'secondary', 'login'],
+    classList: ['button', 'header-button', 'login'],
     textContent: 'Log In',
   });
 
   const signupButton = createButtonElement({
-    classList: ['button', 'primary', 'signup'],
+    classList: ['button', 'header-button', 'signup'],
     textContent: 'Sign Up',
   });
 

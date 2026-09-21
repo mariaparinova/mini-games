@@ -1,6 +1,30 @@
+@use '../../../variables';
+
 .new-games-section {
   display: flex;
   flex-direction: column;
   gap: 40px;
   padding: 40px 120px;
+}
+
+@media screen and (max-width: 1439px) {
+  .new-games-section {
+    padding: 24px 40px;
+    gap: 24px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .new-games-section {
+    padding: 16px;
+    gap: 16px;
+
+    .carousel-buttons {
+      display: none;
+    }
+
+    h2 {
+      font-size: variables.$headline-medium;
+    }
+  }
 }

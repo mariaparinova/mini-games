@@ -3,7 +3,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 88px;
   padding: 40px 120px;
   color: variables.$on-bg-footer;
   font-size: variables.$body-small;
@@ -34,11 +34,17 @@
 .company-section,
 .community-section {
   gap: 16px;
+  line-height: 17px;
 }
 
 .icons-container {
   display: flex;
   gap: 16px;
+}
+
+.icons-container img {
+  width: 40px;
+  height: 40px;
 }
 
 .sub-footer {
@@ -55,7 +61,18 @@
 }
 
 @media screen and (max-width: 1439px) {
+  .footer {
+    gap: 56px;
+    padding: 40px;
+
+    .icons-container img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
   .footer-content {
+    gap: 24px;
     flex-wrap: wrap;
   }
 
@@ -69,4 +86,23 @@
 }
 
 @media screen and (max-width: 767px) {
+  .footer {
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  .sub-footer {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .all-rights {
+    flex-shrink: 0;
+    min-width: 100%;
+  }
+
+  .design {
+    display: none;
+  }
 }

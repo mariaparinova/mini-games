@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
-  height: 384px;
+  height: 388px;
   background-size: cover;
   border: solid 2.5px variables.$on-primary;
   border-radius: variables.$corner-extra-large;
@@ -28,6 +28,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 16px;
+  line-height: 20px;
   box-shadow: inset 8px -100px 39px -32px rgba(0, 0, 0, 0.8);
 }
 
@@ -40,4 +41,16 @@
 .carousel-card-content .additional-info {
   display: flex;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 1439px) {
+  .carousel-card {
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .carousel-card {
+    height: 200px;
+  }
 }

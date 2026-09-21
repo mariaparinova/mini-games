@@ -1,0 +1,189 @@
+@use '../../../variables';
+
+.leaderboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px 120px;
+}
+
+.leaderboard-table-container {
+  border: 2.5px solid variables.$on-primary;
+  border-radius: variables.$corner-large;
+  overflow: hidden;
+  box-shadow: variables.$shadow-level-3;
+}
+
+.leaderboard-table {
+  width: 100%;
+  height: 428px;
+  box-shadow: variables.$shadow-level-2;
+  border-collapse: collapse;
+}
+
+.leaderboard-table .leaderboard-table-head tr {
+  background-color: variables.$tertiary;
+  border-collapse: collapse;
+  border-bottom: 1.5px solid variables.$on-primary;
+}
+
+.leaderboard-table-head th {
+  padding: 24px 0;
+  text-align: center;
+}
+
+.leaderboard-table tbody {
+  overflow-x: scroll;
+
+  tr:nth-child(even) {
+    background-color: variables.$white;
+  }
+
+  td {
+    padding: 0 8px;
+    color: variables.$on-primary;
+    font-family: variables.$font-family-roboto;
+    font-size: variables.$body-medium;
+    font-weight: variables.$font-weight-bold;
+  }
+
+  td:not(.player) {
+    text-align: center;
+  }
+
+  tr {
+    border-bottom: 1px solid variables.$outline;
+  }
+
+  .first {
+    color: variables.$primary;
+  }
+
+  .initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid variables.$on-primary;
+    border-radius: variables.$corner-extra-large;
+  }
+
+  .initials-1 {
+    background-color: variables.$avatar-random-1;
+  }
+
+  .initials-2 {
+    background-color: variables.$avatar-random-2;
+  }
+
+  .initials-3 {
+    background-color: variables.$avatar-random-3;
+  }
+
+  .initials-4 {
+    background-color: variables.$avatar-random-4;
+  }
+
+  .initials-5 {
+    background-color: variables.$avatar-random-5;
+  }
+
+  .player-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .favorite-game .text {
+    padding: 4px 12px;
+    font-size: variables.$body-xsmall;
+    border: 1.5px solid variables.$on-primary;
+    border-radius: variables.$corner-large;
+  }
+}
+
+@media screen and (max-width: 1439px) {
+  .leaderboard-section {
+    padding: 24px 40px;
+    gap: 24px;
+  }
+
+  .leaderboard-table-container {
+    box-shadow: variables.$shadow-level-2;
+  }
+
+  .leaderboard-table {
+    height: 228px;
+  }
+
+  .leaderboard-table tbody tr:nth-child(n + 4) {
+    display: none;
+  }
+
+  .leaderboard-table tbody .initials {
+    width: 28px;
+    height: 28px;
+    font-size: variables.$label-small;
+  }
+
+  .favorite-game {
+    display: none;
+  }
+
+  .leaderboard-table tbody td {
+    font-size: variables.$body-small;
+  }
+
+  .leaderboard-table-head th {
+    padding: 16px 0;
+
+    h4 {
+      font-size: variables.$body-medium;
+    }
+  }
+
+  .favorite-game {
+    display: none;
+  }
+
+  td.player {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .leaderboard-section {
+    padding: 16px;
+    gap: 16px;
+
+    h2 {
+      font-size: variables.$headline-medium;
+    }
+  }
+
+  .leaderboard-table-container {
+    box-shadow: variables.$shadow-level-1;
+  }
+
+  .leaderboard-table {
+    height: 216px;
+  }
+
+  .leaderboard-table tbody .initials {
+    width: 24px;
+    height: 24px;
+  }
+
+  .games-played {
+    display: none;
+  }
+
+  .leaderboard-table-head th {
+    padding: 8px;
+
+    h4 {
+      font-size: variables.$body-small;
+    }
+  }
+}

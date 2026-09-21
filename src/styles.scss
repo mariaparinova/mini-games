@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+#app {
+  background-color: variables.$bg;
+}
+
 body {
   margin: 0 auto;
   max-width: 1920px;
@@ -16,7 +20,6 @@ body {
   font-size: variables.$body-large;
   font-weight: variables.$font-weight-medium;
   line-height: 150%;
-  background-color: variables.$bg;
 }
 
 a {
@@ -40,6 +43,7 @@ h2 {
   font-size: variables.$headline-large;
   font-weight: variables.$font-weight-bold;
   text-transform: capitalize;
+  line-height: 39px;
 }
 
 h3 {
@@ -55,13 +59,14 @@ h4 {
   font-size: variables.$body-medium;
   font-weight: variables.$font-weight-extra-bold;
   text-transform: uppercase;
+  line-height: 16px;
 }
 
 h5 {
   color: variables.$white;
   font-size: variables.$body-medium;
   font-weight: variables.$font-weight-bold;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .heading.decorated {
@@ -70,6 +75,7 @@ h5 {
   gap: 8px;
 
   &::before {
+    box-sizing: border-box;
     content: '';
     display: block;
     width: 8px;
@@ -102,6 +108,12 @@ h5 {
   h4 {
     font-size: variables.$body-small;
   }
+
+  .heading.decorated {
+    &::before {
+      height: 24px;
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -116,5 +128,9 @@ h5 {
 
   h2 {
     font-size: variables.$headline-small;
+  }
+
+  h4 {
+    font-size: variables.$headline-medium;
   }
 }
