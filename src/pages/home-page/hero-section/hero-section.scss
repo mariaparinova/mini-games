@@ -3,7 +3,7 @@
 .hero-section {
   padding: 112px 120px;
   height: 627px;
-  background-image: url('images/hero-bg-l.jpg');
+  background-image: url('./images/hero-bg-l.jpg');
   background-size: cover;
 }
 
@@ -27,7 +27,7 @@
   .hero-section {
     padding: 72px 40px;
     height: 384px;
-    background-image: url('images/hero-bg-m.jpg');
+    background-image: url('./images/hero-bg-m.jpg');
   }
 
   .hero-content {

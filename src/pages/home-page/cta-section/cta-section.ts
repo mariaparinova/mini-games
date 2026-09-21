@@ -27,7 +27,7 @@ export function createCtaSection() {
   });
 
   const iconElement = createImgElement({
-    src: '/icons/upload.svg',
+    src: './icons/upload.svg',
     alt: 'Upload icon',
   });
 
