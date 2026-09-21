@@ -66,9 +66,23 @@
 }
 
 @media screen and (max-width: 767px) {
+  .cta-section {
+    padding: 16px;
+    gap: 16px;
+
+    h2 {
+      font-size: variables.$headline-medium;
+    }
+  }
+
   .cta-section-image-container {
-    height: 200px;
+    height: 227px;
     background-image: url('images/cta-img-s.jpg');
+  }
+
+  .cta-section-content {
+    gap: 16px;
+    padding: 24px;
   }
 
   .cta-section-content-text {

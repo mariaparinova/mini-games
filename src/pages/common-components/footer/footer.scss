@@ -86,4 +86,23 @@
 }
 
 @media screen and (max-width: 767px) {
+  .footer {
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  .sub-footer {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .all-rights {
+    flex-shrink: 0;
+    min-width: 100%;
+  }
+
+  .design {
+    display: none;
+  }
 }

@@ -46,9 +46,15 @@
 @media screen and (max-width: 767px) {
   .hero-section {
     padding: 64px 16px;
+    height: fit-content;
   }
 
   .hero-content {
-    box-shadow: variables.$shadow-level-3;
+    border-radius: variables.$corner-medium;
+    box-shadow: variables.$shadow-level-2;
+  }
+
+  .hero-text {
+    width: 100%;
   }
 }

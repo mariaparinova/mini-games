@@ -99,6 +99,11 @@
     padding: 8px 16px;
     font-size: variables.$body-xsmall;
   }
+
+  .button.primary.cta-section-content-button {
+    height: 32px;
+    font-size: variables.$body-xsmall;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {

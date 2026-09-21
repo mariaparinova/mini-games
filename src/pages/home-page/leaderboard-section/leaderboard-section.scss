@@ -116,6 +116,7 @@
   .leaderboard-table {
     height: 228px;
   }
+
   .leaderboard-table tbody tr:nth-child(n + 4) {
     display: none;
   }
@@ -136,6 +137,10 @@
 
   .leaderboard-table-head th {
     padding: 16px 0;
+
+    h4 {
+      font-size: variables.$body-medium;
+    }
   }
 
   .favorite-game {
@@ -144,5 +149,41 @@
 
   td.player {
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .leaderboard-section {
+    padding: 16px;
+    gap: 16px;
+
+    h2 {
+      font-size: variables.$headline-medium;
+    }
+  }
+
+  .leaderboard-table-container {
+    box-shadow: variables.$shadow-level-1;
+  }
+
+  .leaderboard-table {
+    height: 216px;
+  }
+
+  .leaderboard-table tbody .initials {
+    width: 24px;
+    height: 24px;
+  }
+
+  .games-played {
+    display: none;
+  }
+
+  .leaderboard-table-head th {
+    padding: 8px;
+
+    h4 {
+      font-size: variables.$body-small;
+    }
   }
 }
