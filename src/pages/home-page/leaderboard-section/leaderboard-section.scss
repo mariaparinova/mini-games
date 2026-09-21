@@ -104,7 +104,45 @@
 }
 
 @media screen and (max-width: 1439px) {
+  .leaderboard-section {
+    padding: 24px 40px;
+    gap: 24px;
+  }
+
+  .leaderboard-table-container {
+    box-shadow: variables.$shadow-level-2;
+  }
+
+  .leaderboard-table {
+    height: 228px;
+  }
+  .leaderboard-table tbody tr:nth-child(n + 4) {
+    display: none;
+  }
+
+  .leaderboard-table tbody .initials {
+    width: 28px;
+    height: 28px;
+    font-size: variables.$label-small;
+  }
+
   .favorite-game {
     display: none;
+  }
+
+  .leaderboard-table tbody td {
+    font-size: variables.$body-small;
+  }
+
+  .leaderboard-table-head th {
+    padding: 16px 0;
+  }
+
+  .favorite-game {
+    display: none;
+  }
+
+  td.player {
+    text-align: center;
   }
 }

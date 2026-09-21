@@ -61,7 +61,18 @@
 }
 
 @media screen and (max-width: 1439px) {
+  .footer {
+    gap: 56px;
+    padding: 40px;
+
+    .icons-container img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
   .footer-content {
+    gap: 24px;
     flex-wrap: wrap;
   }
 

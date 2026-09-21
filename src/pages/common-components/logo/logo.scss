@@ -16,3 +16,9 @@
 .footer .logo-text {
   color: variables.$white;
 }
+
+@media screen and (max-width: 1439px) {
+  .logo-text {
+    font-size: variables.$headline-small;
+  }
+}

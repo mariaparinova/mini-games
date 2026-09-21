@@ -36,8 +36,8 @@ a.active {
 .burger-icon {
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   color: variables.$on-primary;
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-small;
@@ -98,6 +98,7 @@ a.active {
 @media screen and (max-width: 1439px) {
   .header {
     padding: 0 40px;
+    height: 72px;
   }
 
   .nav {

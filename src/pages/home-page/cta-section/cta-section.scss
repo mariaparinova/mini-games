@@ -46,7 +46,12 @@
 
   .cta-section-content {
     gap: 16px;
+    padding: 32px;
     width: 100%;
+
+    h2 {
+      line-height: 120%;
+    }
   }
 
   .cta-section-image-container {

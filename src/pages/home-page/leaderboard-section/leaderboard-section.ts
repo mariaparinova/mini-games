@@ -81,6 +81,7 @@ function createLeaderboardSectionTable() {
       createHeadingElement({
         type: 'h4',
         textContent: item,
+        classList: [item.replace(' ', '-')],
       }),
     );
     return th;

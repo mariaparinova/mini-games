@@ -72,6 +72,26 @@
     padding: 10px 20px;
     font-size: variables.$body-small;
   }
+
+  .button.header-button {
+    padding: 8px 16px;
+  }
+
+  .button-carousel {
+    width: 40px;
+    height: 40px;
+  }
+
+  .button.primary.cta-section-content-button {
+    padding: 0 20px;
+    height: 37px;
+    font-size: variables.$body-small;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {

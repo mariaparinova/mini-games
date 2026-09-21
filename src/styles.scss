@@ -108,6 +108,12 @@ h5 {
   h4 {
     font-size: variables.$body-small;
   }
+
+  .heading.decorated {
+    &::before {
+      height: 24px;
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
