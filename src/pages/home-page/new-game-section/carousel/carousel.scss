@@ -1,25 +1,99 @@
+@use '../../../../styles/variables';
+@use '../../../../styles/breakpoints';
+
 .carousel {
-  display: flex;
-  gap: 8px;
   padding: 0 8px;
 }
 
 .cards-container {
   display: grid;
-  grid-template-columns: 120px 288px 816px 288px 120px;
+  grid-template-columns: minmax(0px, 120px) minmax(56px, 288px) minmax(218px, 816px) minmax(
+      56px,
+      288px
+    ) minmax(0px, 120px);
   grid-template-rows: repeat(1, 1fr);
   gap: 8px;
   overflow-x: hidden;
 }
 
-@media screen and (max-width: 1439px) {
+.carousel-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  height: 388px;
+  background-size: cover;
+  border: solid 2.5px variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  box-shadow: variables.$shadow-level-1;
+  overflow: hidden;
+}
+
+.new-games-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carousel-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.carousel-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  line-height: 20px;
+  box-shadow: inset 8px -100px 39px -32px rgba(0, 0, 0, 0.8);
+}
+
+.carousel-card-content .name {
+  color: variables.$white;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-bold;
+}
+
+.carousel-card-content .additional-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .carousel {
+    padding: 0;
+  }
+
   .cards-container {
-    grid-template-columns: 0 105px 448px 105px 0;
+    grid-template-columns: 0 minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px) 0;
+  }
+
+  .carousel-card {
+    height: 280px;
+  }
+
+  .carousel-card-1,
+  .carousel-card-5 {
+    border: none;
+  }
+
+  .carousel-card-2,
+  .carousel-card-4 {
+    .name,
+    .additional-info {
+      display: none;
+    }
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: breakpoints.$mobile) {
   .cards-container {
-    grid-template-columns: 0 56px 218px 56px 0;
+    grid-template-columns: 0 minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px) 0;
+    grid-template-rows: repeat(1, 1fr);
+    overflow: hidden;
+  }
+
+  .carousel-card {
+    height: 200px;
   }
 }

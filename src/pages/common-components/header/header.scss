@@ -1,4 +1,5 @@
-@use '../../../variables';
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
 
 .header {
   display: flex;
@@ -95,7 +96,7 @@ a.active {
   }
 }
 
-@media screen and (max-width: 1439px) {
+@media screen and (max-width: breakpoints.$tablet) {
   .header {
     padding: 0 40px;
     height: 72px;
@@ -119,7 +120,7 @@ a.active {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: breakpoints.$mobile) {
   .header {
     padding: 0 16px;
     height: 64px;
