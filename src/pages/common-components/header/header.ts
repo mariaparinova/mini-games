@@ -17,21 +17,31 @@ export const NavItem = {
 
 type NavItem = keyof typeof NavItem;
 
-export function getHeaderElement(params: { activeItem: NavItem }): HTMLElement {
-  const { activeItem } = params;
-  const logoElement = getLogoElement();
-  const navigationElement = getNavigationElement({ activeItem });
-  const buttonsElement = getHeaderButtons();
-
+export function getHeaderElement(
+  params: { activeItem: NavItem },
+  withBurgerMenuButton: boolean = true,
+): HTMLElement {
   const headerElement = document.createElement('header');
   headerElement.className = 'header';
-  headerElement.append(logoElement, navigationElement, buttonsElement);
 
+  const burgerMenuClickHandler = () => headerElement.classList.toggle('burger-menu-opened');
+  const { activeItem } = params;
+  const logoElement = getLogoElement();
+  const desktopNavigationElement = getNavigationElement({ activeItem, classList: ['desktop-nav'] });
+  const buttonsElement = getHeaderButtons({
+    withBurgerMenuButton: withBurgerMenuButton,
+    classList: ['desktop-header-buttons'],
+    burgerMenuClickHandler,
+  });
+
+  const burgerMenuElement = getBurgerMenuElement({ activeItem });
+
+  headerElement.append(logoElement, desktopNavigationElement, buttonsElement, burgerMenuElement);
   return headerElement;
 }
 
-function getNavigationElement(params: { activeItem: NavItem }) {
-  const { activeItem } = params;
+function getNavigationElement(params: GetNavigationElementParams) {
+  const { activeItem, classList = [] } = params;
   const navigationItems: NavItem[] = [
     NavItem.Home,
     NavItem.Library,
@@ -62,13 +72,15 @@ function getNavigationElement(params: { activeItem: NavItem }) {
   });
 
   const navElement = document.createElement('nav');
-  navElement.className = 'nav';
+  navElement.classList.add('nav', ...classList);
   navElement.append(navList);
 
   return navElement;
 }
 
-function getHeaderButtons() {
+function getHeaderButtons(params: GetHeaderButtonsParams) {
+  const { withBurgerMenuButton, classList = [], burgerMenuClickHandler } = params;
+
   const loginButton = createButtonElement({
     classList: ['button', 'header-button', 'login'],
     textContent: 'Log In',
@@ -79,13 +91,20 @@ function getHeaderButtons() {
     textContent: 'Sign Up',
   });
 
+  const buttons: HTMLElement[] = [loginButton, signupButton];
+
+  if (withBurgerMenuButton) {
+    buttons.push(getBurgerIconElement({ onClick: burgerMenuClickHandler }));
+  }
+
   return createDivElement({
-    classList: ['buttons-container'],
-    children: [loginButton, signupButton, getBurgerIconElement()],
+    classList: ['buttons-container', ...classList],
+    children: buttons,
   });
 }
 
-function getBurgerIconElement() {
+function getBurgerIconElement(params: GetBurgerIconElementParams) {
+  const { onClick } = params;
   const line = createDivElement({
     classList: ['burger-line'],
   });
@@ -95,9 +114,35 @@ function getBurgerIconElement() {
     children: [line],
   });
 
-  icon.onclick = () => {
-    icon.classList.toggle('opened');
-  };
+  if (onClick) {
+    icon.addEventListener('click', onClick);
+  }
 
   return icon;
+}
+
+function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) {
+  const navigationElement = getNavigationElement({
+    activeItem: NavItem,
+  });
+
+  return createDivElement({
+    classList: ['burger-menu'],
+    children: [navigationElement, getHeaderButtons({ withBurgerMenuButton: false })],
+  });
+}
+
+interface GetNavigationElementParams {
+  activeItem: NavItem;
+  classList?: string[];
+}
+
+interface GetHeaderButtonsParams {
+  withBurgerMenuButton: boolean;
+  classList?: string[];
+  burgerMenuClickHandler?: () => void;
+}
+
+interface GetBurgerIconElementParams {
+  onClick?: () => void;
 }

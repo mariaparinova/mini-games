@@ -22,9 +22,6 @@ export function createHeroSection() {
   const buttonElement = createButtonElement({
     classList: ['button', 'primary'],
     textContent: 'Browse Library',
-    onClick: () => {
-      console.log('Button clicked!');
-    },
   });
 
   const heroContent = createDivElement({
