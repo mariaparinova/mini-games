@@ -1,6 +1,6 @@
-@use './buttons.scss';
-
-@use './variables';
+@use 'styles/buttons';
+@use 'styles/breakpoints';
+@use 'styles/variables';
 
 * {
   margin: 0;
@@ -86,7 +86,7 @@ h5 {
   }
 }
 
-@media screen and (max-width: 1439px) {
+@media screen and (max-width: breakpoints.$tablet) {
   body {
     font-size: variables.$body-small;
     line-height: 140%;
@@ -116,7 +116,7 @@ h5 {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: breakpoints.$mobile) {
   body {
     font-size: variables.$body-xsmall;
   }

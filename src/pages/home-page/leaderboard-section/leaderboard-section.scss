@@ -1,4 +1,5 @@
-@use '../../../variables';
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
 
 .leaderboard-section {
   display: flex;
@@ -103,7 +104,7 @@
   }
 }
 
-@media screen and (max-width: 1439px) {
+@media screen and (max-width: breakpoints.$tablet) {
   .leaderboard-section {
     padding: 24px 40px;
     gap: 24px;
@@ -152,7 +153,7 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: breakpoints.$mobile) {
   .leaderboard-section {
     padding: 16px;
     gap: 16px;

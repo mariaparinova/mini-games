@@ -1,4 +1,5 @@
-@use '../../../variables';
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
 
 .hero-section {
   padding: 112px 120px;
@@ -23,7 +24,7 @@
   width: 500px;
 }
 
-@media screen and (max-width: 1439px) {
+@media screen and (max-width: breakpoints.$tablet) {
   .hero-section {
     padding: 72px 40px;
     height: 384px;
@@ -43,7 +44,7 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: breakpoints.$mobile) {
   .hero-section {
     padding: 64px 16px;
     height: fit-content;
