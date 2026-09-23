@@ -12,6 +12,16 @@
   font-size: variables.$headline-medium;
   font-weight: variables.$font-weight-bold;
   color: variables.$on-primary;
+  transition: color 0.3s;
+}
+
+.burger-menu-opened .logo-text {
+  color: variables.$white;
+}
+
+.header .logo-container {
+  position: relative;
+  z-index: 2;
 }
 
 .footer .logo-text {
