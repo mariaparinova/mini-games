@@ -17,6 +17,18 @@
   }
 }
 
+.button.secondary {
+  padding: 16px 24px;
+  width: fit-content;
+  color: variables.$on-primary;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  background-color: variables.$white;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+}
+
 .header-button {
   padding: 10px 20px;
   font-size: variables.$body-small;

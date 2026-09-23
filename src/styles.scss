@@ -3,6 +3,7 @@
 @use 'styles/variables';
 @import 'styles/mixins';
 @import 'styles/reset';
+@import 'styles/keyframes';
 
 #app {
   background-color: variables.$bg;
@@ -93,11 +94,16 @@ dialog {
   gap: 24px;
   margin: 0 auto;
   padding: 32px;
+  min-height: fit-content;
   color: variables.$on-bg;
   border: 3px solid variables.$on-primary;
   max-width: 420px;
   border-radius: variables.$corner-large;
   box-shadow: variables.$shadow-level-1;
+}
+
+dialog[open] {
+  animation: fadeIn 0.2s ease-out;
 }
 
 dialog::backdrop {
