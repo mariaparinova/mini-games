@@ -2,8 +2,6 @@
 @use '../../../styles/breakpoints';
 
 .logo-container {
-  position: relative;
-  z-index: 2;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -19,6 +17,11 @@
 
 .burger-menu-opened .logo-text {
   color: variables.$white;
+}
+
+.header .logo-container {
+  position: relative;
+  z-index: 2;
 }
 
 .footer .logo-text {
