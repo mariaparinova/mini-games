@@ -67,9 +67,9 @@
 }
 
 .burger-icon {
+  display: none;
   position: relative;
   z-index: 2;
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
@@ -152,6 +152,10 @@
     .login {
       display: none;
     }
+  }
+
+  .burger-icon {
+    display: flex;
   }
 
   .burger-menu {
