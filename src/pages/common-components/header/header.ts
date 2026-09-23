@@ -7,6 +7,7 @@ import {
   createButtonElement,
 } from '../../../lib/element.ts';
 import { getLogoElement } from '../logo/logo.ts';
+import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -84,11 +85,13 @@ function getHeaderButtons(params: GetHeaderButtonsParams) {
   const loginButton = createButtonElement({
     classList: ['button', 'header-button', 'login'],
     textContent: 'Log In',
+    onClick: () => openAuthDialog({ mode: 'login' }),
   });
 
   const signupButton = createButtonElement({
     classList: ['button', 'header-button', 'signup'],
     textContent: 'Sign Up',
+    onClick: () => openAuthDialog({ mode: 'register' }),
   });
 
   const buttons: HTMLElement[] = [loginButton, signupButton];

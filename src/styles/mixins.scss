@@ -1,0 +1,9 @@
+@use '../styles/variables';
+
+@mixin dialog-backdrop {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: variables.$black-65;
+  backdrop-filter: blur(4px);
+}
