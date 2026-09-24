@@ -33,6 +33,12 @@
     width: 40px;
     height: 40px;
   }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$surface;
+    }
+  }
 }
 
 .button {
@@ -58,21 +64,31 @@
 
 .button.primary {
   @include primary-secondary-button;
+
   background-color: variables.$primary;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$primary-high;
+    }
+  }
 }
 
 .button.secondary {
   @include primary-secondary-button;
+
   background-color: variables.$white;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$surface;
+    }
+  }
 }
 
 .button.header-button {
   padding: 10px 20px;
   font-size: variables.$body-small;
-
-  &.secondary {
-    background-color: variables.$bg;
-  }
 }
 
 .button-carousel {
@@ -87,15 +103,5 @@
   .button img {
     width: 16px;
     height: 16px;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .button.primary:hover {
-    background-color: variables.$primary-high;
-  }
-
-  .button.secondary:hover {
-    background-color: variables.$secondary;
   }
 }
