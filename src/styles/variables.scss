@@ -1,7 +1,6 @@
 // Base colors
 $white: #ffffff;
 $black: #000000;
-$black-65: rgba($black, 0.65);
 
 // General colors
 $bg: #f9f8f3;
@@ -99,3 +98,7 @@ $btn-icon-padding: 8px;
 $shadow-level-1: 4px 4px $on-primary;
 $shadow-level-2: 6px 6px $on-primary;
 $shadow-level-3: 8px 8px $on-primary;
+
+// Darkener
+$darkener-65: rgba($black, 0.65);
+$gradient-darkener-80: inset 8px -100px 39px -32px rgba($black, 0.8);

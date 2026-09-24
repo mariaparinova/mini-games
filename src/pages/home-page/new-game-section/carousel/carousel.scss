@@ -5,12 +5,22 @@
   padding: 0 8px;
 }
 
+.new-games-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carousel-buttons {
+  display: flex;
+  gap: 16px;
+}
+
 .cards-container {
   display: grid;
-  grid-template-columns: minmax(0px, 120px) minmax(56px, 288px) minmax(218px, 816px) minmax(
-      56px,
-      288px
-    ) minmax(0px, 120px);
+  grid-template-columns:
+    minmax(0px, 120px) minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px)
+    minmax(0px, 120px);
   grid-template-rows: repeat(1, 1fr);
   gap: 8px;
   overflow-x: hidden;
@@ -28,24 +38,13 @@
   overflow: hidden;
 }
 
-.new-games-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.carousel-buttons {
-  display: flex;
-  gap: 16px;
-}
-
 .carousel-card-content {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 16px;
   line-height: 20px;
-  box-shadow: inset 8px -100px 39px -32px rgba(0, 0, 0, 0.8);
+  box-shadow: variables.$gradient-darkener-80;
 }
 
 .carousel-card-content .name {

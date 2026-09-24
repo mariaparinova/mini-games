@@ -1,9 +1,22 @@
 @use '../styles/variables';
+@use '../styles/breakpoints';
 
 @mixin dialog-backdrop {
   display: block;
   width: 100vw;
   height: 100vh;
-  background: variables.$black-65;
+  background: variables.$darkener-65;
   backdrop-filter: blur(4px);
+}
+
+@mixin page-section {
+  padding: 40px 120px;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    padding: 24px 40px;
+  }
+
+  @media screen and (max-width: breakpoints.$mobile) {
+    padding: 16px;
+  }
 }

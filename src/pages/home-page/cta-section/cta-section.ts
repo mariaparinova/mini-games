@@ -32,7 +32,7 @@ export function createCtaSection() {
   });
 
   const contentButtonElement = createButtonElement({
-    classList: ['button', 'primary', 'cta-section-content-button'],
+    classList: ['button', 'primary'],
     textContent: 'Submit form',
     icon: iconElement,
   });

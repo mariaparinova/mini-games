@@ -1,6 +1,11 @@
 @use '../../../styles/variables';
 
-.dialog {
+.auth-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 356px;
+
   .auth-dialog-header {
     display: flex;
     flex-direction: column;

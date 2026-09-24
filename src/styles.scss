@@ -84,32 +84,6 @@ h5 {
   }
 }
 
-dialog {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: variables.$bg;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin: 0 auto;
-  padding: 32px;
-  min-height: fit-content;
-  color: variables.$on-bg;
-  border: 3px solid variables.$on-primary;
-  max-width: 420px;
-  border-radius: variables.$corner-large;
-  box-shadow: variables.$shadow-level-1;
-}
-
-dialog[open] {
-  animation: fadeIn 0.2s ease-out;
-}
-
-dialog::backdrop {
-  @include dialog-backdrop;
-}
-
 .form {
   display: flex;
   flex-direction: column;

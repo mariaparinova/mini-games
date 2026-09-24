@@ -1,0 +1,23 @@
+@use '../../../styles/variables';
+@import '../../../styles/mixins';
+
+dialog {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 auto;
+  padding: 32px;
+  color: variables.$on-bg;
+  background-color: variables.$bg;
+  border: 3px solid variables.$on-primary;
+  border-radius: variables.$corner-large;
+  box-shadow: variables.$shadow-level-1;
+}
+
+dialog[open] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+dialog::backdrop {
+  @include dialog-backdrop;
+}

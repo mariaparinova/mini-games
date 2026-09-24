@@ -18,4 +18,9 @@ export default defineConfig([
   tseslint.configs.recommended,
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
+  },
 ]);

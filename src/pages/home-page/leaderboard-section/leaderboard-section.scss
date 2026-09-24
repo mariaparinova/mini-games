@@ -1,11 +1,13 @@
 @use '../../../styles/variables';
 @use '../../../styles/breakpoints';
+@import '../../../styles/mixins';
 
 .leaderboard-section {
+  @include page-section;
+
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 40px 120px;
 }
 
 .leaderboard-table-container {
@@ -106,7 +108,6 @@
 
 @media screen and (max-width: breakpoints.$tablet) {
   .leaderboard-section {
-    padding: 24px 40px;
     gap: 24px;
   }
 
@@ -155,7 +156,6 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .leaderboard-section {
-    padding: 16px;
     gap: 16px;
 
     h2 {

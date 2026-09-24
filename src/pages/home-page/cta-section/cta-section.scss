@@ -1,8 +1,10 @@
 @use '../../../styles/variables';
 @use '../../../styles/breakpoints';
+@import '../../../styles/mixins';
 
 .cta-section {
-  padding: 40px 120px;
+  @include page-section;
+
   display: flex;
   align-items: center;
   gap: 40px;
@@ -42,7 +44,6 @@
   .cta-section {
     flex-direction: column;
     gap: 24px;
-    padding: 24px 40px;
   }
 
   .cta-section-content {
@@ -68,7 +69,6 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .cta-section {
-    padding: 16px;
     gap: 16px;
 
     h2 {
