@@ -1,6 +1,40 @@
 @use 'variables';
 @use 'breakpoints';
 
+@mixin primary-secondary-button {
+  padding: 16px 24px;
+  width: fit-content;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    padding: 10px 20px;
+    font-size: variables.$body-small;
+  }
+
+  @media screen and (max-width: breakpoints.$mobile) {
+    padding: 8px 16px;
+    font-size: variables.$body-xsmall;
+  }
+}
+
+@mixin icon-button {
+  width: 48px;
+  height: 48px;
+  line-height: 40px;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  background-color: variables.$white;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -15,112 +49,53 @@
   &:disabled {
     cursor: default;
   }
-}
 
-.button.secondary {
-  padding: 16px 24px;
-  width: fit-content;
-  color: variables.$on-primary;
-  font-size: variables.$body-large;
-  font-weight: variables.$font-weight-bold;
-  text-transform: capitalize;
-  background-color: variables.$white;
-  border: 2px solid variables.$on-primary;
-  border-radius: variables.$corner-small;
-}
-
-.header-button {
-  padding: 10px 20px;
-  font-size: variables.$body-small;
-  font-weight: variables.$font-weight-bold;
-  text-transform: capitalize;
-  border: 2px solid variables.$on-primary;
-  border-radius: variables.$corner-small;
-  background-color: variables.$bg;
-}
-
-.header-button.signup {
-  background-color: variables.$primary;
-}
-
-.button.primary.cta-section-content-button {
-  padding: 0 24px;
-  height: 56px;
-  line-height: 21px;
-  font-family: variables.$font-family-roboto;
+  img {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .button.primary {
-  padding: 16px 24px;
-  width: fit-content;
-  color: variables.$on-primary;
-  font-size: variables.$body-large;
-  font-weight: variables.$font-weight-bold;
-  text-transform: capitalize;
-  background-color: variables.$primary;
-  border: 2px solid variables.$on-primary;
-  border-radius: variables.$corner-small;
-}
-
-.button.auth.primary {
-  color: variables.$on-primary;
+  @include primary-secondary-button;
   background-color: variables.$primary;
 }
 
-.button-carousel {
-  width: 48px;
-  height: 48px;
-  line-height: 40px;
-  border: 2px solid variables.$on-primary;
-  border-radius: variables.$corner-extra-large;
+.button.secondary {
+  @include primary-secondary-button;
   background-color: variables.$white;
 }
 
-.button-carousel.button-next {
-  background-color: variables.$primary;
+.button.header-button {
+  padding: 10px 20px;
+  font-size: variables.$body-small;
+
+  &.secondary {
+    background-color: variables.$bg;
+  }
+}
+
+.button-carousel {
+  @include icon-button;
 }
 
 @media screen and (max-width: breakpoints.$tablet) {
-  .button.primary {
-    padding: 10px 20px;
-    font-size: variables.$body-small;
-  }
-
   .button.header-button {
     padding: 8px 16px;
   }
 
-  .button-carousel {
-    width: 40px;
-    height: 40px;
-  }
-
-  .button.primary.cta-section-content-button {
-    padding: 0 20px;
-    height: 37px;
-    font-size: variables.$body-small;
-
-    img {
-      width: 16px;
-      height: 16px;
-    }
-  }
-}
-
-@media screen and (max-width: breakpoints.$mobile) {
-  .button.primary {
-    padding: 8px 16px;
-    font-size: variables.$body-xsmall;
-  }
-
-  .button.primary.cta-section-content-button {
-    height: 32px;
-    font-size: variables.$body-xsmall;
+  .button img {
+    width: 16px;
+    height: 16px;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button.primary:hover {
     background-color: variables.$primary-high;
+  }
+
+  .button.secondary:hover {
+    background-color: variables.$secondary;
   }
 }
