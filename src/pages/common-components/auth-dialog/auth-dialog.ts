@@ -6,18 +6,21 @@ import {
   createImgElement,
   createSpanElement,
 } from '../../../lib/element.ts';
+import { createDialogElement } from '../dialog/dialog.ts';
 
 function createAuthDialogElement({ mode }: { mode: AuthDialogMode }) {
   const authDialogHeaderElement = createAuthDialogHeader({ mode });
   const formElement =
     mode === 'login' ? createAuthDialogLoginForm() : createAuthDialogRegisterForm();
+  const dialogContentElement = createDivElement({
+    classList: ['auth-dialog-content'],
+    children: [authDialogHeaderElement, formElement],
+  });
 
-  const dialogElement = document.createElement('dialog');
-  dialogElement.classList.add('dialog', 'auth-dialog', `${mode}`);
-  dialogElement.append(authDialogHeaderElement, formElement);
-  dialogElement.addEventListener('click', closeAuthDialog);
-
-  return dialogElement;
+  return createDialogElement({
+    classList: [`${mode}`],
+    children: [dialogContentElement],
+  });
 }
 
 export function openAuthDialog({ mode }: { mode: AuthDialogMode }) {
@@ -29,27 +32,6 @@ export function openAuthDialog({ mode }: { mode: AuthDialogMode }) {
   }
 
   authDialogElement.showModal();
-}
-
-export function closeAuthDialog(event: MouseEvent) {
-  const authDialogElement: HTMLDialogElement | null = document.querySelector(
-    '.dialog.auth-dialog[open]',
-  );
-
-  if (!authDialogElement) {
-    return;
-  }
-
-  const dialogBounds = authDialogElement.getBoundingClientRect();
-
-  if (
-    event.clientX < dialogBounds.left ||
-    event.clientX > dialogBounds.right ||
-    event.clientY < dialogBounds.top ||
-    event.clientY > dialogBounds.bottom
-  ) {
-    authDialogElement.close();
-  }
 }
 
 function createAuthDialogHeader({ mode }: { mode: AuthDialogMode }) {
