@@ -1,12 +1,9 @@
 @use 'styles/buttons';
 @use 'styles/breakpoints';
 @use 'styles/variables';
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import 'styles/mixins';
+@import 'styles/reset';
+@import 'styles/keyframes';
 
 #app {
   background-color: variables.$bg;
@@ -85,6 +82,68 @@ h5 {
     border: 1.5px solid variables.$on-primary;
     border-radius: variables.$corner-extra-small;
   }
+}
+
+dialog {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: variables.$bg;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 32px;
+  min-height: fit-content;
+  color: variables.$on-bg;
+  border: 3px solid variables.$on-primary;
+  max-width: 420px;
+  border-radius: variables.$corner-large;
+  box-shadow: variables.$shadow-level-1;
+}
+
+dialog[open] {
+  animation: fadeIn 0.2s ease-out;
+}
+
+dialog::backdrop {
+  @include dialog-backdrop;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-container {
+  padding: 12px 16px;
+  background-color: variables.$white;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+}
+
+input {
+  width: 100%;
+  color: variables.$on-primary;
+  font-size: variables.$body-small;
+  background-color: variables.$white;
+
+  &::placeholder {
+    color: variables.$on-bg;
+  }
+}
+
+.form-field .label {
+  color: variables.$on-primary;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
 }
 
 @media screen and (max-width: breakpoints.$tablet) {

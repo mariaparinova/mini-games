@@ -117,6 +117,41 @@ export function createMainElement(params: CreateMainElementParams) {
   return mainElement;
 }
 
+export function createFormFieldElement(params: CreateFormFieldElementParams) {
+  const { type, id, placeholder = '', classList = [], label = '' } = params;
+
+  const labelElement = document.createElement('label');
+  labelElement.classList.add('label');
+  labelElement.htmlFor = id;
+  labelElement.textContent = label;
+
+  const inputElement = document.createElement('input');
+  inputElement.type = type;
+  inputElement.id = id;
+  inputElement.placeholder = placeholder;
+  inputElement.classList.add('input');
+  if (type === 'email') {
+    inputElement.autocomplete = 'off';
+  }
+
+  if (type === 'email') {
+    inputElement.autocomplete = 'username';
+  }
+  if (type === 'password') {
+    inputElement.autocomplete = 'current-password';
+  }
+
+  const inputElementContainer = createDivElement({
+    classList: ['input-container'],
+    children: [inputElement],
+  });
+
+  return createDivElement({
+    classList: ['form-field', ...classList],
+    children: [labelElement, inputElementContainer],
+  });
+}
+
 interface CreateDivElementParams {
   classList?: string[];
   textContent?: string;
@@ -168,4 +203,13 @@ interface CreateHeadingElementParams {
 interface CreateMainElementParams {
   classList?: string[];
   children?: HTMLElement[];
+}
+
+interface CreateFormFieldElementParams {
+  type: HTMLInputElement['type'];
+  id: string;
+  name: string;
+  placeholder?: string;
+  classList?: string[];
+  label?: string;
 }
