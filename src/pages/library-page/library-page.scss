@@ -1,0 +1,17 @@
+@use '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.library-page-content {
+  @include page-section;
+}
+
+.library-page-content .heading-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.library-page-content .subheading {
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-medium;
+}
