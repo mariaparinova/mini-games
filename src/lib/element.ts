@@ -58,7 +58,7 @@ export function createSpanElement(params: CreateSpanElementParams) {
 }
 
 export function createLinkElement(params: CreateLinkElementParams): HTMLAnchorElement {
-  const { classList = [], href, textContent, children } = params;
+  const { classList = [], href, textContent, children, onClick } = params;
 
   const linkElement = document.createElement('a');
   linkElement.classList.add(...classList);
@@ -70,6 +70,10 @@ export function createLinkElement(params: CreateLinkElementParams): HTMLAnchorEl
 
   if (children) {
     linkElement.append(...children);
+  }
+
+  if (onClick) {
+    linkElement.addEventListener('click', onClick);
   }
 
   return linkElement;
@@ -181,6 +185,7 @@ interface CreateLinkElementParams {
   classList?: string[];
   textContent?: string;
   children?: HTMLElement[];
+  onClick?: () => void;
 }
 
 interface CreateListElementParams {
