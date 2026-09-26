@@ -9,9 +9,14 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-top: variables.$size-5;
 }
 
 .library-page-content .subheading {
   font-size: variables.$body-large;
   font-weight: variables.$font-weight-medium;
+}
+
+.library-page-content .controls {
+  padding-top: variables.$size-7a;
 }
