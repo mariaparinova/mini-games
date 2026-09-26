@@ -1,5 +1,5 @@
 export function createDivElement(params: CreateDivElementParams): HTMLDivElement {
-  const { classList = [], textContent, children } = params;
+  const { classList = [], textContent, children, onClick } = params;
 
   const divElement = document.createElement('div');
   divElement.classList.add(...classList);
@@ -10,6 +10,10 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
 
   if (children) {
     divElement.append(...children);
+  }
+
+  if (onClick) {
+    divElement.addEventListener('click', onClick);
   }
 
   return divElement;
@@ -160,6 +164,7 @@ interface CreateDivElementParams {
   classList?: string[];
   textContent?: string;
   children?: HTMLElement[];
+  onClick?: (event: MouseEvent) => void;
 }
 
 interface CreateButtonElementParams {
