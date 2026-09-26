@@ -1,0 +1,61 @@
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
+
+.hero-section {
+  padding: 112px 120px;
+  height: 627px;
+  background-image: url('/images/hero-bg-l.jpg');
+  background-size: cover;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 48px;
+  max-width: 640px;
+  background-color: variables.$bg;
+  border: 3px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  box-shadow: variables.$shadow-level-3;
+}
+
+.hero-text {
+  width: 500px;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .hero-section {
+    padding: 72px 40px;
+    height: 384px;
+    background-image: url('/images/hero-bg-m.jpg');
+  }
+
+  .hero-content {
+    gap: 16px;
+    padding: 24px;
+    max-width: 480px;
+    border: 2.5px solid variables.$on-primary;
+    box-shadow: variables.$shadow-level-2;
+  }
+
+  .hero-text {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile) {
+  .hero-section {
+    padding: 64px 16px;
+    height: fit-content;
+  }
+
+  .hero-content {
+    border-radius: variables.$corner-medium;
+    box-shadow: variables.$shadow-level-2;
+  }
+
+  .hero-text {
+    width: 100%;
+  }
+}

@@ -1,0 +1,109 @@
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 88px;
+  padding: 40px 120px;
+  color: variables.$on-bg-footer;
+  font-size: variables.$body-small;
+  line-height: 150%;
+  background-color: variables.$bg-footer;
+}
+
+.footer-content {
+  display: flex;
+  gap: 80px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-section {
+  flex-grow: 2;
+  gap: 24px;
+}
+
+.logo-section-text {
+  max-width: 400px;
+}
+
+.explore-section,
+.company-section,
+.community-section {
+  gap: 16px;
+  line-height: 17px;
+}
+
+.icons-container {
+  display: flex;
+  gap: 16px;
+}
+
+.icons-container img {
+  width: 40px;
+  height: 40px;
+}
+
+.sub-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.rss,
+.student-data {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .footer {
+    gap: 56px;
+    padding: 40px;
+
+    .icons-container img {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .footer-content {
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .logo-section {
+    width: 100%;
+  }
+
+  .logo-section-text {
+    min-width: 100%;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile) {
+  .footer {
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  .sub-footer {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .all-rights {
+    flex-shrink: 0;
+    min-width: 100%;
+  }
+
+  .design {
+    display: none;
+  }
+}

@@ -1,0 +1,35 @@
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: variables.$headline-medium;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+  transition: color 0.3s;
+}
+
+.burger-menu-opened .logo-text {
+  color: variables.$white;
+}
+
+.header .logo-container {
+  position: relative;
+  z-index: 2;
+}
+
+.footer .logo-text {
+  color: variables.$white;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .logo-text {
+    font-size: variables.$headline-small;
+  }
+}

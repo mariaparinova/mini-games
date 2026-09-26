@@ -1,0 +1,107 @@
+@use 'variables';
+@use 'breakpoints';
+
+@mixin primary-secondary-button {
+  padding: 16px 24px;
+  width: fit-content;
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    padding: 10px 20px;
+    font-size: variables.$body-small;
+  }
+
+  @media screen and (max-width: breakpoints.$mobile) {
+    padding: 8px 16px;
+    font-size: variables.$body-xsmall;
+  }
+}
+
+@mixin icon-button {
+  width: 48px;
+  height: 48px;
+  line-height: 40px;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  background-color: variables.$white;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$surface;
+    }
+  }
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: variables.$font-family-inter;
+  color: variables.$on-primary;
+  transition: color, background-color, border-color, 0.3s;
+  cursor: pointer;
+  outline: none;
+
+  &:disabled {
+    cursor: default;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.button.primary {
+  @include primary-secondary-button;
+
+  background-color: variables.$primary;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$primary-high;
+    }
+  }
+}
+
+.button.secondary {
+  @include primary-secondary-button;
+
+  background-color: variables.$white;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: variables.$surface;
+    }
+  }
+}
+
+.button.header-button {
+  padding: 10px 20px;
+  font-size: variables.$body-small;
+}
+
+.button-carousel {
+  @include icon-button;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .button.header-button {
+    padding: 8px 16px;
+  }
+
+  .button img {
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -1,0 +1,199 @@
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 0 80px;
+  height: 85px;
+  border-bottom: 2px solid variables.$on-primary;
+}
+
+.header a.active {
+  font-weight: variables.$font-weight-bold;
+  cursor: default;
+}
+
+.desktop-nav {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+
+  .navigation-list {
+    display: flex;
+    gap: 40px;
+    font-size: variables.$body-medium;
+    font-weight: variables.$font-weight-medium;
+  }
+
+  .active {
+    color: variables.$on-primary;
+  }
+}
+
+.burger-menu {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: -100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 88px 24px 24px;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: variables.$bg-footer;
+  transition: right 0.3s;
+
+  .navigation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: variables.$on-bg-footer;
+    font-size: variables.$body-large;
+  }
+
+  .active {
+    color: variables.$primary;
+  }
+}
+
+.desktop-header-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.burger-icon {
+  display: none;
+  position: relative;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: variables.$on-primary;
+  border: 2px solid variables.$on-primary;
+  border-radius: variables.$corner-small;
+  transition:
+    background-color,
+    border-color,
+    color 0.3s;
+  cursor: pointer;
+
+  .burger-line {
+    width: 16px;
+    height: 2px;
+    background-color: variables.$on-primary;
+    transition: background-color 0.3s;
+
+    &::before,
+    &::after {
+      position: relative;
+      content: '';
+      display: block;
+      width: 16px;
+      height: 2px;
+      background-color: variables.$on-primary;
+      transition:
+        background-color,
+        rotate 0.3s;
+    }
+
+    &::before {
+      top: -4px;
+    }
+
+    &::after {
+      bottom: -2px;
+    }
+  }
+}
+
+.header.burger-menu-opened {
+  .burger-icon {
+    color: variables.$bg-footer-low;
+    background-color: variables.$bg-footer-low;
+  }
+
+  .burger-line {
+    background-color: transparent;
+
+    &::before {
+      top: 1px;
+      background-color: variables.$white;
+      rotate: 45deg;
+    }
+
+    &::after {
+      bottom: 0;
+      background-color: variables.$white;
+      rotate: -45deg;
+    }
+  }
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .header {
+    padding: 0 40px;
+    height: 72px;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-header-buttons {
+    flex-grow: 1;
+    justify-content: flex-end;
+
+    .login {
+      display: none;
+    }
+  }
+
+  .burger-icon {
+    display: flex;
+  }
+
+  .burger-menu {
+    display: flex;
+
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  .header.burger-menu-opened .burger-menu {
+    right: 0;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile) {
+  .header {
+    padding: 0 16px;
+    height: 64px;
+  }
+
+  .desktop-header-buttons {
+    .signup,
+    .login {
+      display: none;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .burger-icon:hover {
+    background-color: variables.$surface;
+  }
+
+  .burger-icon.opened:hover {
+    background-color: variables.$bg-footer-lowest;
+    border-color: variables.$primary;
+  }
+}
