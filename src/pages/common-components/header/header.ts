@@ -8,6 +8,9 @@ import {
 } from '../../../lib/element.ts';
 import { getLogoElement } from '../logo/logo.ts';
 import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
+import { getLibraryPageElement } from '../../library-page/library-page.ts';
+import { updatePage } from '../../../main.ts';
+import { getHomePageElement } from '../../home-page/home-page.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -16,7 +19,7 @@ export const NavItem = {
   Community: 'Community',
 } as const;
 
-type NavItem = keyof typeof NavItem;
+export type NavItem = keyof typeof NavItem;
 
 export function getHeaderElement(
   params: { activeItem: NavItem },
@@ -58,9 +61,25 @@ function getNavigationElement(params: GetNavigationElementParams) {
 
     const link = createLinkElement({
       classList: linkClasses,
-      href: `#${item}`,
+      href: `${item.toLowerCase()}`,
       textContent: item,
     });
+
+    if (item === NavItem.Library) {
+      link.addEventListener('click', () => {
+        updatePage({
+          activeNavItem: item,
+          pageContent: getLibraryPageElement(),
+        });
+      });
+    } else {
+      link.addEventListener('click', () => {
+        updatePage({
+          activeNavItem: NavItem.Home,
+          pageContent: getHomePageElement(),
+        });
+      });
+    }
 
     return createLiElement({
       child: link,
@@ -133,6 +152,26 @@ function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) 
     classList: ['burger-menu'],
     children: [navigationElement, getHeaderButtons({ withBurgerMenuButton: false })],
   });
+}
+
+export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
+  const currentActiveItems = document.body.querySelectorAll('header .active');
+  if (!currentActiveItems.length) {
+    console.warn('No active items found');
+    return;
+  }
+
+  currentActiveItems.forEach((item) => item.classList.remove('active'));
+
+  const desktopNavItems = document.body.querySelectorAll('header .desktop-nav a');
+  Array.from(desktopNavItems)
+    .find((element) => element.textContent === activeNavItem)
+    ?.classList.add('active');
+
+  const burgerMenuNavItems = document.body.querySelectorAll('header .burger-menu a');
+  Array.from(burgerMenuNavItems)
+    .find((element) => element.textContent === activeNavItem)
+    ?.classList.add('active');
 }
 
 interface GetNavigationElementParams {
