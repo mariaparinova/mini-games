@@ -102,13 +102,13 @@ function getHeaderButtons(params: GetHeaderButtonsParams) {
   const { withBurgerMenuButton, classList = [], burgerMenuClickHandler } = params;
 
   const loginButton = createButtonElement({
-    classList: ['button', 'header-button', 'login', 'secondary'],
+    classList: ['button', 'small', 'login', 'secondary'],
     textContent: 'Log In',
     onClick: () => openAuthDialog({ mode: 'login' }),
   });
 
   const signupButton = createButtonElement({
-    classList: ['button', 'header-button', 'signup', 'primary'],
+    classList: ['button', 'small', 'signup', 'primary'],
     textContent: 'Sign Up',
     onClick: () => openAuthDialog({ mode: 'register' }),
   });
