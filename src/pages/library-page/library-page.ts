@@ -334,46 +334,26 @@ function getLibraryHeadingElement() {
 }
 
 function getLibraryControlsElement() {
-  let selected = ['all games'];
   const chips = ['all games', 'puzzle', 'card', 'match', 'farm', 'strategy'];
+  let selectedChip = chips[0];
 
   const chipClickHandler = (event: MouseEvent) => {
     const chip = event.target as HTMLElement;
 
-    if (
-      selected.length === 1 &&
-      chip.classList.contains('all-games') &&
-      selected[0] === 'all games'
-    ) {
+    if (chip.classList.contains(selectedChip)) {
       return;
     }
 
-    if (selected.length === 1 && !chip.classList.contains('all-games')) {
-      const allGamesElement = document.querySelector('.chip.all-games');
-
-      if (!allGamesElement) {
-        console.warn('all games element not found');
-        return;
-      }
-
-      allGamesElement.classList.add('selected');
-      selected.push('all games');
-    }
-
-    if (chip.classList.contains('selected')) {
-      selected = selected.filter((s) => s !== chip.innerHTML);
-      chip.classList.remove('selected');
-    } else {
-      selected.push(chip.innerHTML);
-      chip.classList.add('selected');
-    }
+    document.body.querySelector('.chip.selected')?.classList.remove('selected');
+    chip.classList.add('selected');
+    selectedChip = chip.innerHTML;
   };
 
-  const chipsData: Chip[] = chips.map((chip) => {
+  const chipsData: Chip[] = chips.map((chip, i) => {
     return {
       textContent: chip,
       onClick: chipClickHandler,
-      isSelected: selected.includes(chip),
+      isSelected: i === 0,
     };
   });
 

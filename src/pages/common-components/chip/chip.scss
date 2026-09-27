@@ -9,10 +9,11 @@
 
 .chip {
   display: flex;
-  padding: variables.$size-1 variables.$size-2;
+  padding: variables.$size-05 variables.$size-2;
   font-size: variables.$label-large;
   font-weight: variables.$font-weight-bold;
   text-transform: capitalize;
+  white-space: nowrap;
   color: variables.$on-primary;
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-extra-large;
@@ -21,10 +22,11 @@
 
 .chip.selected {
   background-color: variables.$primary;
+  cursor: default;
 }
 
-@media screen and (max-width: breakpoints.$mobile) {
-  .chip-container {
+@media screen and (max-width: breakpoints.$tablet) {
+  .chips-container {
     gap: variables.$size-1;
   }
 }
@@ -41,6 +43,6 @@
   }
 
   .chip.selected:hover {
-    background-color: variables.$primary-high;
+    background-color: variables.$primary;
   }
 }

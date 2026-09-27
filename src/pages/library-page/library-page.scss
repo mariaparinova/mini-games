@@ -15,6 +15,11 @@
   @include page-section;
 }
 
+.library-page-content .chips-container {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
 .library-page-content .heading-container {
   display: flex;
   flex-direction: column;
