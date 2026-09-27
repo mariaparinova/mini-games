@@ -86,8 +86,9 @@
   }
 }
 
-.button.header-button {
+.button.small {
   padding: 10px 20px;
+  height: 37px;
   font-size: variables.$body-small;
 }
 
@@ -96,8 +97,9 @@
 }
 
 @media screen and (max-width: breakpoints.$tablet) {
-  .button.header-button {
+  .button.small {
     padding: 8px 16px;
+    height: 33px;
   }
 
   .button img {
