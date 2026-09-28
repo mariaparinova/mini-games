@@ -10,6 +10,7 @@ import { type Chip, getChips } from '../common-components/chip/chip.ts';
 import { getGameRating } from '../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../common-components/game-likes/game-likes.ts';
 import { getSelectControl } from '../common-components/select-control/select-control.ts';
+import { getPagination } from '../common-components/pagination/pagination.ts';
 
 const libraryCards = {
   data: [
@@ -311,10 +312,11 @@ export function getLibraryPageElement() {
   const heading = getLibraryHeadingElement();
   const controls = getLibraryControlsElement();
   const cards = getLibraryCardsElement({ data: libraryCards.data });
+  const pagination = getPagination({ visiblePages: 4 });
 
   return createDivElement({
     classList: ['library-page-content'],
-    children: [heading, controls, cards],
+    children: [heading, controls, cards, pagination],
   });
 }
 

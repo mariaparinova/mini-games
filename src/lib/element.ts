@@ -20,7 +20,7 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick, icon } = params;
+  const { classList = [], textContent, onClick, icon, disabled } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
@@ -35,6 +35,10 @@ export function createButtonElement(params: CreateButtonElementParams): HTMLButt
 
   if (onClick) {
     buttonElement.addEventListener('click', onClick);
+  }
+
+  if (disabled) {
+    buttonElement.disabled = true;
   }
 
   return buttonElement;
@@ -172,6 +176,7 @@ interface CreateButtonElementParams {
   textContent?: string;
   onClick?: () => void;
   icon?: HTMLImageElement;
+  disabled?: boolean;
 }
 
 interface CreateImgElementParams {
