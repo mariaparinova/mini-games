@@ -67,6 +67,16 @@ h5 {
   text-transform: capitalize;
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex-grow: 1;
+}
+
 .heading.decorated {
   display: flex;
   align-items: center;

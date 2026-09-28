@@ -1,0 +1,304 @@
+@use '../../styles/variables.scss';
+@use '../../styles/breakpoints.scss';
+@import '../../styles/mixins.scss';
+
+@mixin library-card-heading {
+  font-size: variables.$headline-medium;
+  font-weight: variables.$font-weight-bold;
+
+  @media screen and (max-width: breakpoints.$tablet) {
+    font-size: variables.$headline-small;
+  }
+}
+
+.library-page-content {
+  @include page-section;
+}
+
+.library-page-content .chips-container {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.library-page-content .heading-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.library-page-content .subheading {
+  font-size: variables.$body-large;
+  font-weight: variables.$font-weight-medium;
+}
+
+.library-page-content .controls {
+  display: flex;
+  justify-content: space-between;
+  padding-top: variables.$size-7a;
+}
+
+.library-cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: variables.$size-3;
+  padding-top: variables.$size-2;
+
+  :nth-child(n + 7) {
+    display: none;
+  }
+}
+
+.library-card {
+  display: flex;
+  border: 2.5px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  box-shadow: variables.$shadow-level-1;
+  overflow: hidden;
+}
+
+.library-card-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-width: variables.$size-19;
+  height: variables.$size-18;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.library-card-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: variables.$size-2a;
+  padding: variables.$size-2;
+}
+
+.library-card-header {
+  display: flex;
+  gap: variables.$size-2;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.library-card-heading,
+.library-card-price {
+  @include library-card-heading;
+  color: variables.$on-primary;
+}
+
+.library-card-price {
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+}
+
+.library-card-price.free {
+  @include library-card-heading;
+  color: variables.$price-free;
+}
+
+.library-card-tag {
+  padding: variables.$size-05 variables.$size-1;
+  color: variables.$on-primary;
+  font-size: variables.$label-medium;
+  font-weight: variables.$font-weight-bold;
+  text-transform: capitalize;
+  line-height: 100%;
+  border: 1.5px solid variables.$on-primary;
+  border-radius: variables.$corner-extra-large;
+  background-color: variables.$secondary;
+}
+
+.library-card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: fit-content;
+  font-size: variables.$body-medium;
+  font-weight: variables.$font-weight-medium;
+  line-height: 140%;
+}
+
+.library-card-footer {
+  display: flex;
+  gap: variables.$size-2;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.library-card-rating-and-likes-container {
+  display: flex;
+  gap: variables.$size-3;
+}
+
+.library-card .game-rating,
+.library-card .game-likes,
+.extended-library-card .game-rating,
+.extended-library-card .game-likes {
+  color: variables.$on-primary;
+}
+
+.extended-library-card {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$size-3;
+  max-width: 600px;
+}
+
+.extended-library-card-header {
+  display: flex;
+  gap: variables.$size-2;
+  align-items: center;
+  color: variables.$on-primary;
+}
+
+.extended-library-card-header-title {
+  font-size: variables.$display-medium;
+  font-weight: variables.$font-weight-bold;
+}
+
+.extended-library-card-rating-and-likes-container {
+  display: flex;
+  gap: variables.$size-2;
+}
+
+.extended-library-card-specs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: variables.$size-2;
+}
+
+.game-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$size-1;
+  flex-grow: 1;
+  padding: variables.$size-1 variables.$size-2;
+  font-size: variables.$body-small;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+  border: 1px solid variables.$outline-variant;
+  border-radius: variables.$corner-small;
+  box-shadow: variables.$shadow-level-1;
+
+  .game-spec-label {
+    font-size: variables.$body-xsmall;
+    text-transform: capitalize;
+    color: variables.$on-bg;
+  }
+}
+
+.extended-library-card-buttons-container {
+  display: flex;
+  gap: variables.$size-2;
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .library-page-content .controls {
+    padding-top: variables.$size-5;
+    flex-wrap: wrap;
+    gap: variables.$size-2;
+
+    .chips-container {
+      width: 100%;
+    }
+  }
+
+  .library-cards-container {
+    grid-template-columns: 1fr;
+    padding-top: variables.$size-2;
+  }
+
+  .library-card-img-container {
+    height: variables.$size-16;
+  }
+
+  .library-card-details {
+    gap: variables.$size-1a;
+  }
+
+  .library-card-description {
+    -webkit-line-clamp: 2;
+    font-size: variables.$body-small;
+  }
+
+  .library-card-footer {
+    gap: variables.$size-1;
+  }
+
+  .library-card-rating-and-likes-container {
+    gap: variables.$size-2;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile) {
+  .library-page-content .subheading {
+    font-size: variables.$body-small;
+  }
+
+  .library-page-content select#sort-games {
+    width: 100%;
+  }
+
+  .library-cards-container {
+    gap: variables.$size-2;
+  }
+
+  .library-card {
+    position: relative;
+    flex-direction: column;
+    border-radius: variables.$corner-large;
+  }
+
+  .library-card-img-container {
+    width: 100%;
+    height: variables.$size-16a;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .library-card-details {
+    gap: variables.$size-2;
+  }
+
+  .library-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: variables.$size-1;
+  }
+
+  .library-card-price {
+    position: absolute;
+    right: variables.$size-2;
+    bottom: variables.$size-9;
+  }
+
+  .library-card-description {
+    -webkit-line-clamp: 2;
+  }
+
+  .library-card-footer {
+    flex-direction: column;
+    gap: variables.$size-2;
+    align-items: flex-start;
+
+    .button.primary.small {
+      width: 100%;
+    }
+  }
+}

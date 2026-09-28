@@ -1,0 +1,22 @@
+@use '../../../styles/variables';
+@use '../../../styles/breakpoints';
+
+.pagination {
+  margin: variables.$size-5 auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: variables.$size-2;
+}
+
+@media screen and (max-width: breakpoints.$tablet) {
+  .pagination {
+    gap: variables.$size-1;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile) {
+  .pagination .page-item:nth-child(n + 5) {
+    display: none;
+  }
+}

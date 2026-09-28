@@ -1,5 +1,5 @@
 export function createDivElement(params: CreateDivElementParams): HTMLDivElement {
-  const { classList = [], textContent, children } = params;
+  const { classList = [], textContent, children, onClick } = params;
 
   const divElement = document.createElement('div');
   divElement.classList.add(...classList);
@@ -12,11 +12,15 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
     divElement.append(...children);
   }
 
+  if (onClick) {
+    divElement.addEventListener('click', onClick);
+  }
+
   return divElement;
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick, icon } = params;
+  const { classList = [], textContent, onClick, icon, disabled } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
@@ -31,6 +35,10 @@ export function createButtonElement(params: CreateButtonElementParams): HTMLButt
 
   if (onClick) {
     buttonElement.addEventListener('click', onClick);
+  }
+
+  if (disabled) {
+    buttonElement.disabled = true;
   }
 
   return buttonElement;
@@ -58,7 +66,7 @@ export function createSpanElement(params: CreateSpanElementParams) {
 }
 
 export function createLinkElement(params: CreateLinkElementParams): HTMLAnchorElement {
-  const { classList = [], href, textContent, children } = params;
+  const { classList = [], href, textContent, children, onClick } = params;
 
   const linkElement = document.createElement('a');
   linkElement.classList.add(...classList);
@@ -70,6 +78,10 @@ export function createLinkElement(params: CreateLinkElementParams): HTMLAnchorEl
 
   if (children) {
     linkElement.append(...children);
+  }
+
+  if (onClick) {
+    linkElement.addEventListener('click', onClick);
   }
 
   return linkElement;
@@ -88,10 +100,14 @@ export function createListElement(
 }
 
 export function createLiElement(params: CreateLiElementParams) {
-  const { classList = [], child } = params;
+  const { classList = [], child, onClick } = params;
 
   const listItemElement = document.createElement('li');
   listItemElement.classList.add(...classList);
+  if (onClick) {
+    listItemElement.addEventListener('click', onClick);
+  }
+
   listItemElement.append(child);
 
   return listItemElement;
@@ -156,13 +172,15 @@ interface CreateDivElementParams {
   classList?: string[];
   textContent?: string;
   children?: HTMLElement[];
+  onClick?: (event: MouseEvent) => void;
 }
 
 interface CreateButtonElementParams {
   classList?: string[];
   textContent?: string;
   onClick?: () => void;
-  icon?: HTMLImageElement;
+  icon?: HTMLImageElement | HTMLElement;
+  disabled?: boolean;
 }
 
 interface CreateImgElementParams {
@@ -181,6 +199,7 @@ interface CreateLinkElementParams {
   classList?: string[];
   textContent?: string;
   children?: HTMLElement[];
+  onClick?: () => void;
 }
 
 interface CreateListElementParams {
@@ -192,6 +211,7 @@ interface CreateListElementParams {
 interface CreateLiElementParams {
   child: string | HTMLElement | HTMLAnchorElement;
   classList?: string[];
+  onClick?: () => void;
 }
 
 interface CreateHeadingElementParams {

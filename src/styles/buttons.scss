@@ -29,13 +29,25 @@
   border-radius: variables.$corner-extra-large;
   background-color: variables.$white;
 
+  &:disabled {
+    color: variables.$outline-variant;
+    background-color: variables.$bg;
+    border-color: variables.$outline-variant;
+    cursor: default;
+  }
+
+  &.active {
+    color: variables.$white;
+    background-color: variables.$bg-footer-low;
+  }
+
   @media screen and (max-width: breakpoints.$tablet) {
     width: 40px;
     height: 40px;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover:not(:disabled, .active) {
       background-color: variables.$surface;
     }
   }
@@ -52,7 +64,8 @@
   cursor: pointer;
   outline: none;
 
-  &:disabled {
+  &:disabled,
+  &.active {
     cursor: default;
   }
 
@@ -86,8 +99,9 @@
   }
 }
 
-.button.header-button {
+.button.small {
   padding: 10px 20px;
+  height: 37px;
   font-size: variables.$body-small;
 }
 
@@ -95,9 +109,18 @@
   @include icon-button;
 }
 
+.button-pagination {
+  @include icon-button;
+
+  width: variables.$size-5;
+  height: variables.$size-5;
+  font-weight: variables.$font-weight-bold;
+}
+
 @media screen and (max-width: breakpoints.$tablet) {
-  .button.header-button {
+  .button.small {
     padding: 8px 16px;
+    height: 33px;
   }
 
   .button img {

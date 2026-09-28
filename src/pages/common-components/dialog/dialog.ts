@@ -5,12 +5,12 @@ export function createDialogElement(params: createDialogElementParams) {
   const dialogElement = document.createElement('dialog');
   dialogElement.classList.add('dialog', ...classList);
   dialogElement.append(...children);
-  dialogElement.addEventListener('click', closeAuthDialog);
+  dialogElement.addEventListener('click', closeDialog);
 
   return dialogElement;
 }
 
-function closeAuthDialog(event: MouseEvent) {
+function closeDialog(event: MouseEvent) {
   const dialogElement: HTMLDialogElement | null = document.querySelector('dialog[open]');
 
   if (!dialogElement) {
