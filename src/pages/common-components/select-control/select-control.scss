@@ -1,13 +1,7 @@
 @use '../../../styles/variables';
 @use '../../../styles/breakpoints';
 
-.chips-container {
-  display: flex;
-  gap: variables.$size-2;
-  flex-wrap: wrap;
-}
-
-.chip {
+.select {
   display: flex;
   padding: variables.$size-05 variables.$size-2;
   font-size: variables.$label-large;
@@ -17,32 +11,18 @@
   color: variables.$on-primary;
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-extra-large;
+  outline: none;
   cursor: pointer;
 }
 
-.chip.selected {
-  background-color: variables.$primary;
-  cursor: default;
-}
-
-@media screen and (max-width: breakpoints.$tablet) {
-  .chips-container {
-    gap: variables.$size-1;
-  }
-}
-
 @media screen and (max-width: breakpoints.$mobile) {
-  .chip {
+  .select {
     font-size: variables.$label-medium;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .chip:hover {
+  .select:hover {
     background-color: variables.$surface;
-  }
-
-  .chip.selected:hover {
-    background-color: variables.$primary;
   }
 }

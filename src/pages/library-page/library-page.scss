@@ -15,6 +15,11 @@
   @include page-section;
 }
 
+.library-page-content .chips-container {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
 .library-page-content .heading-container {
   display: flex;
   flex-direction: column;
@@ -27,14 +32,21 @@
 }
 
 .library-page-content .controls {
+  display: flex;
+  justify-content: space-between;
   padding-top: variables.$size-7a;
 }
 
 .library-cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
   gap: variables.$size-3;
   padding-top: variables.$size-2;
+
+  :nth-child(n + 7) {
+    display: none;
+  }
 }
 
 .library-card {
@@ -135,6 +147,12 @@
 @media screen and (max-width: breakpoints.$tablet) {
   .library-page-content .controls {
     padding-top: variables.$size-5;
+    flex-wrap: wrap;
+    gap: variables.$size-2;
+
+    .chips-container {
+      width: 100%;
+    }
   }
 
   .library-cards-container {
@@ -152,7 +170,6 @@
 
   .library-card-description {
     -webkit-line-clamp: 2;
-    width: 386px;
     font-size: variables.$body-small;
   }
 
@@ -168,6 +185,10 @@
 @media screen and (max-width: breakpoints.$mobile) {
   .library-page-content .subheading {
     font-size: variables.$body-small;
+  }
+
+  .library-page-content select#sort-games {
+    width: 100%;
   }
 
   .library-cards-container {
@@ -208,7 +229,6 @@
 
   .library-card-description {
     -webkit-line-clamp: 2;
-    width: 311px;
   }
 
   .library-card-footer {
