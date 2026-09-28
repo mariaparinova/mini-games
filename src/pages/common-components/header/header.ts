@@ -28,7 +28,9 @@ export function getHeaderElement(
   const headerElement = document.createElement('header');
   headerElement.className = 'header';
 
-  const burgerMenuClickHandler = () => headerElement.classList.toggle('burger-menu-opened');
+  const burgerMenuClickHandler = () => {
+    headerElement.classList.toggle('burger-menu-opened');
+  };
   const { activeItem } = params;
   const logoElement = getLogoElement();
   const desktopNavigationElement = getNavigationElement({ activeItem, classList: ['desktop-nav'] });
@@ -45,7 +47,7 @@ export function getHeaderElement(
 }
 
 function getNavigationElement(params: GetNavigationElementParams) {
-  const { activeItem, classList = [] } = params;
+  const { activeItem, classList = [], onClick } = params;
   const navigationItems: NavItem[] = [
     NavItem.Home,
     NavItem.Library,
@@ -83,6 +85,7 @@ function getNavigationElement(params: GetNavigationElementParams) {
 
     return createLiElement({
       child: link,
+      onClick,
     });
   });
 
@@ -144,8 +147,18 @@ function getBurgerIconElement(params: GetBurgerIconElementParams) {
 }
 
 function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) {
+  const burgerMenuClickHandler = () => {
+    const headerElement = document.querySelector('header');
+    if (!headerElement) {
+      console.error('Header element not found');
+      return;
+    }
+    headerElement.classList.remove('burger-menu-opened');
+  };
+
   const navigationElement = getNavigationElement({
     activeItem: NavItem,
+    onClick: burgerMenuClickHandler,
   });
 
   return createDivElement({
@@ -177,6 +190,7 @@ export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
 interface GetNavigationElementParams {
   activeItem: NavItem;
   classList?: string[];
+  onClick?: () => void;
 }
 
 interface GetHeaderButtonsParams {
