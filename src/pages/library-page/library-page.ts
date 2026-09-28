@@ -9,6 +9,7 @@ import {
 import { type Chip, getChips } from '../common-components/chip/chip.ts';
 import { getGameRating } from '../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../common-components/game-likes/game-likes.ts';
+import { getSelectControl } from '../common-components/select-control/select-control.ts';
 
 const libraryCards = {
   data: [
@@ -334,7 +335,7 @@ function getLibraryHeadingElement() {
 }
 
 function getLibraryControlsElement() {
-  const chips = ['all games', 'puzzle', 'card', 'match', 'farm', 'strategy'];
+  const chips = ['all games', 'puzzle', 'card', 'match', 'farm', 'strategy', 'arcade'];
   let selectedChip = chips[0];
 
   const chipClickHandler = (event: MouseEvent) => {
@@ -359,9 +360,21 @@ function getLibraryControlsElement() {
 
   const chipsElement = getChips({ chips: chipsData });
 
+  const selectElement = getSelectControl({
+    name: 'sort-games',
+    id: 'sort-games',
+    options: [
+      { name: 'Rating ↑', type: 'rating_asc' },
+      { name: 'Rating ↓', type: 'rating_desc' },
+      { name: 'Name A→Z', type: 'name_asc' },
+      { name: 'Name Z→A', type: 'name_desc' },
+    ],
+    onChange: () => {},
+  });
+
   return createDivElement({
     classList: ['controls'],
-    children: [chipsElement],
+    children: [chipsElement, selectElement],
   });
 }
 
