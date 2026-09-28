@@ -171,6 +171,10 @@
   .header.burger-menu-opened .burger-menu {
     right: 0;
   }
+
+  .burger-menu .button {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: breakpoints.$mobile) {

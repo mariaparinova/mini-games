@@ -100,10 +100,14 @@ export function createListElement(
 }
 
 export function createLiElement(params: CreateLiElementParams) {
-  const { classList = [], child } = params;
+  const { classList = [], child, onClick } = params;
 
   const listItemElement = document.createElement('li');
   listItemElement.classList.add(...classList);
+  if (onClick) {
+    listItemElement.addEventListener('click', onClick);
+  }
+
   listItemElement.append(child);
 
   return listItemElement;
@@ -207,6 +211,7 @@ interface CreateListElementParams {
 interface CreateLiElementParams {
   child: string | HTMLElement | HTMLAnchorElement;
   classList?: string[];
+  onClick?: () => void;
 }
 
 interface CreateHeadingElementParams {
