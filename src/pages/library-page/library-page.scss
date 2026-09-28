@@ -139,9 +139,70 @@
   gap: variables.$size-3;
 }
 
-.library-card-rating-and-likes-container .game-rating,
-.library-card-rating-and-likes-container .game-likes {
+.library-card .game-rating,
+.library-card .game-likes,
+.extended-library-card .game-rating,
+.extended-library-card .game-likes {
   color: variables.$on-primary;
+}
+
+.extended-library-card {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$size-3;
+  max-width: 600px;
+}
+
+.extended-library-card-header {
+  display: flex;
+  gap: variables.$size-2;
+  align-items: center;
+  color: variables.$on-primary;
+}
+
+.extended-library-card-header-title {
+  font-size: variables.$display-medium;
+  font-weight: variables.$font-weight-bold;
+}
+
+.extended-library-card-rating-and-likes-container {
+  display: flex;
+  gap: variables.$size-2;
+}
+
+.extended-library-card-specs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: variables.$size-2;
+}
+
+.game-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$size-1;
+  flex-grow: 1;
+  padding: variables.$size-1 variables.$size-2;
+  font-size: variables.$body-small;
+  font-weight: variables.$font-weight-bold;
+  color: variables.$on-primary;
+  border: 1px solid variables.$outline-variant;
+  border-radius: variables.$corner-small;
+  box-shadow: variables.$shadow-level-1;
+
+  .game-spec-label {
+    font-size: variables.$body-xsmall;
+    text-transform: capitalize;
+    color: variables.$on-bg;
+  }
+}
+
+.extended-library-card-buttons-container {
+  display: flex;
+  gap: variables.$size-2;
+
+  .button {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: breakpoints.$tablet) {

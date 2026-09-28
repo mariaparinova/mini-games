@@ -179,7 +179,7 @@ interface CreateButtonElementParams {
   classList?: string[];
   textContent?: string;
   onClick?: () => void;
-  icon?: HTMLImageElement;
+  icon?: HTMLImageElement | HTMLElement;
   disabled?: boolean;
 }
 
