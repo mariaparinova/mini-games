@@ -2,7 +2,7 @@
 @use 'breakpoints';
 
 @mixin primary-secondary-button {
-  padding: 16px 24px;
+  padding: variables.$size-2 variables.$size-3;
   width: fit-content;
   font-size: variables.$body-large;
   font-weight: variables.$font-weight-bold;
@@ -16,15 +16,15 @@
   }
 
   @media screen and (max-width: breakpoints.$mobile) {
-    padding: 8px 16px;
+    padding: variables.$size-1 variables.$size-2;
     font-size: variables.$body-xsmall;
   }
 }
 
 @mixin icon-button {
-  width: 48px;
-  height: 48px;
-  line-height: 40px;
+  width: variables.$size-6;
+  height: variables.$size-6;
+  line-height: variables.$size-5;
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-extra-large;
   background-color: variables.$white;
@@ -42,8 +42,8 @@
   }
 
   @media screen and (max-width: breakpoints.$tablet) {
-    width: 40px;
-    height: 40px;
+    width: variables.$size-5;
+    height: variables.$size-5;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: variables.$size-1;
   font-family: variables.$font-family-inter;
   color: variables.$on-primary;
   transition: color, background-color, border-color, 0.3s;
@@ -70,8 +70,8 @@
   }
 
   img {
-    width: 24px;
-    height: 24px;
+    width: variables.$size-3;
+    height: variables.$size-3;
   }
 }
 
@@ -119,12 +119,12 @@
 
 @media screen and (max-width: breakpoints.$tablet) {
   .button.small {
-    padding: 8px 16px;
+    padding: variables.$size-1 variables.$size-2;
     height: 33px;
   }
 
   .button img {
-    width: 16px;
-    height: 16px;
+    width: variables.$size-2;
+    height: variables.$size-2;
   }
 }

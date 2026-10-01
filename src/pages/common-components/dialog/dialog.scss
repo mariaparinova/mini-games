@@ -6,7 +6,7 @@ dialog {
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
-  padding: 32px;
+  padding: variables.$size-4;
   color: variables.$on-bg;
   background-color: variables.$bg;
   border: 3px solid variables.$on-primary;
