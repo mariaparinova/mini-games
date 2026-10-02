@@ -4,8 +4,8 @@
 .footer {
   display: flex;
   flex-direction: column;
-  gap: 88px;
-  padding: 40px 120px;
+  gap: variables.$size-11;
+  padding: variables.$size-5 variables.$size-15;
   color: variables.$on-bg-footer;
   font-size: variables.$body-small;
   line-height: 150%;
@@ -14,7 +14,7 @@
 
 .footer-content {
   display: flex;
-  gap: 80px;
+  gap: variables.$size-10;
 }
 
 .section {
@@ -24,7 +24,7 @@
 
 .logo-section {
   flex-grow: 2;
-  gap: 24px;
+  gap: variables.$size-3;
 }
 
 .logo-section-text {
@@ -34,18 +34,18 @@
 .explore-section,
 .company-section,
 .community-section {
-  gap: 16px;
+  gap: variables.$size-2;
   line-height: 17px;
 }
 
 .icons-container {
   display: flex;
-  gap: 16px;
+  gap: variables.$size-2;
 }
 
 .icons-container img {
-  width: 40px;
-  height: 40px;
+  width: variables.$size-5;
+  height: variables.$size-5;
 }
 
 .sub-footer {
@@ -58,22 +58,22 @@
 .student-data {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: variables.$size-1;
 }
 
 @media screen and (max-width: breakpoints.$tablet) {
   .footer {
-    gap: 56px;
-    padding: 40px;
+    gap: variables.$size-7;
+    padding: variables.$size-5;
 
     .icons-container img {
-      width: 32px;
-      height: 32px;
+      width: variables.$size-4;
+      height: variables.$size-4;
     }
   }
 
   .footer-content {
-    gap: 24px;
+    gap: variables.$size-3;
     flex-wrap: wrap;
   }
 
@@ -88,14 +88,14 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .footer {
-    padding: 32px 16px;
-    gap: 24px;
+    padding: variables.$size-4 variables.$size-2;
+    gap: variables.$size-3;
   }
 
   .sub-footer {
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: variables.$size-1a;
   }
 
   .all-rights {

@@ -3,13 +3,13 @@
 .auth-dialog-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: variables.$size-3;
   min-width: 356px;
 
   .auth-dialog-header {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: variables.$size-1;
   }
 
   .title {
@@ -22,8 +22,8 @@
 .auth-dialog-buttons {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 8px;
+  gap: variables.$size-2;
+  padding-top: variables.$size-1;
 
   .button {
     width: 100%;
@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: variables.$size-2;
     font-size: variables.$body-xsmall;
     font-weight: variables.$font-weight-bold;
     text-transform: uppercase;

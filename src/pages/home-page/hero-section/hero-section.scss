@@ -2,7 +2,7 @@
 @use '../../../styles/breakpoints';
 
 .hero-section {
-  padding: 112px 120px;
+  padding: variables.$size-14 variables.$size-15;
   height: 627px;
   background-image: url('/images/hero-bg-l.jpg');
   background-size: cover;
@@ -11,8 +11,8 @@
 .hero-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 48px;
+  gap: variables.$size-3;
+  padding: variables.$size-6;
   max-width: 640px;
   background-color: variables.$bg;
   border: 3px solid variables.$on-primary;
@@ -26,14 +26,14 @@
 
 @media screen and (max-width: breakpoints.$tablet) {
   .hero-section {
-    padding: 72px 40px;
+    padding: variables.$size-9 variables.$size-5;
     height: 384px;
     background-image: url('/images/hero-bg-m.jpg');
   }
 
   .hero-content {
-    gap: 16px;
-    padding: 24px;
+    gap: variables.$size-2;
+    padding: variables.$size-3;
     max-width: 480px;
     border: 2.5px solid variables.$on-primary;
     box-shadow: variables.$shadow-level-2;
@@ -46,7 +46,7 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .hero-section {
-    padding: 64px 16px;
+    padding: variables.$size-8 variables.$size-2;
     height: fit-content;
   }
 

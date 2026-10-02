@@ -5,6 +5,7 @@
   display: flex;
   gap: variables.$size-2;
   flex-wrap: wrap;
+  scrollbar-width: none;
 }
 
 .chip {

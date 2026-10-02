@@ -23,7 +23,7 @@
 .library-page-content .heading-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: variables.$size-1;
 }
 
 .library-page-content .subheading {
