@@ -5,8 +5,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 0 80px;
+  gap: variables.$size-4;
+  padding: 0 variables.$size-10;
   height: 85px;
   border-bottom: 2px solid variables.$on-primary;
 }
@@ -23,7 +23,7 @@
 
   .navigation-list {
     display: flex;
-    gap: 40px;
+    gap: variables.$size-5;
     font-size: variables.$body-medium;
     font-weight: variables.$font-weight-medium;
   }
@@ -41,8 +41,8 @@
   right: -100%;
   flex-direction: column;
   justify-content: space-between;
-  gap: 24px;
-  padding: 88px 24px 24px;
+  gap: variables.$size-3;
+  padding: variables.$size-11 variables.$size-3 variables.$size-3;
   min-height: 100vh;
   min-width: 100vw;
   background-color: variables.$bg-footer;
@@ -51,7 +51,7 @@
   .navigation-list {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: variables.$size-3;
     color: variables.$on-bg-footer;
     font-size: variables.$body-large;
   }
@@ -63,7 +63,7 @@
 
 .desktop-header-buttons {
   display: flex;
-  gap: 16px;
+  gap: variables.$size-2;
 }
 
 .burger-icon {
@@ -72,8 +72,8 @@
   z-index: 2;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: variables.$size-4;
+  height: variables.$size-4;
   color: variables.$on-primary;
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-small;
@@ -84,7 +84,7 @@
   cursor: pointer;
 
   .burger-line {
-    width: 16px;
+    width: variables.$size-2;
     height: 2px;
     background-color: variables.$on-primary;
     transition: background-color 0.3s;
@@ -94,7 +94,7 @@
       position: relative;
       content: '';
       display: block;
-      width: 16px;
+      width: variables.$size-2;
       height: 2px;
       background-color: variables.$on-primary;
       transition:
@@ -137,8 +137,8 @@
 
 @media screen and (max-width: breakpoints.$tablet) {
   .header {
-    padding: 0 40px;
-    height: 72px;
+    padding: 0 variables.$size-5;
+    height: variables.$size-9;
   }
 
   .desktop-nav {
@@ -164,7 +164,7 @@
     .buttons-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: variables.$size-2;
     }
   }
 
@@ -179,8 +179,8 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .header {
-    padding: 0 16px;
-    height: 64px;
+    padding: 0 variables.$size-2;
+    height: variables.$size-8;
   }
 
   .desktop-header-buttons {
