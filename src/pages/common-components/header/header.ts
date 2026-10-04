@@ -28,18 +28,20 @@ export function getHeaderElement(
   const headerElement = document.createElement('header');
   headerElement.className = 'header';
 
+  const { activeItem } = params;
+  const desktopNavigationElement = getNavigationElement({
+    activeItem,
+    classList: ['desktop-nav'],
+  });
   const burgerMenuClickHandler = () => {
     headerElement.classList.toggle('burger-menu-opened');
   };
-  const { activeItem } = params;
   const logoElement = getLogoElement();
-  const desktopNavigationElement = getNavigationElement({ activeItem, classList: ['desktop-nav'] });
   const buttonsElement = getHeaderButtons({
     withBurgerMenuButton: withBurgerMenuButton,
     classList: ['desktop-header-buttons'],
     burgerMenuClickHandler,
   });
-
   const burgerMenuElement = getBurgerMenuElement({ activeItem });
 
   headerElement.append(logoElement, desktopNavigationElement, buttonsElement, burgerMenuElement);
@@ -68,10 +70,19 @@ function getNavigationElement(params: GetNavigationElementParams) {
     });
 
     if (item === NavItem.Library) {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', async () => {
+        let libraryPage: HTMLDivElement | undefined;
+
+        try {
+          libraryPage = await getLibraryPageElement();
+        } catch (err) {
+          console.error(err);
+          return;
+        }
+
         updatePage({
           activeNavItem: item,
-          pageContent: getLibraryPageElement(),
+          pageContent: libraryPage,
         });
       });
     } else {

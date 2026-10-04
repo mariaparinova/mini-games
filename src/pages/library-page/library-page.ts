@@ -13,6 +13,8 @@ import { getSelectControl } from '../common-components/select-control/select-con
 import { getPagination } from '../common-components/pagination/pagination.ts';
 import { createDialogElement } from '../common-components/dialog/dialog.ts';
 import { getIconFavoriteElement } from '../common-components/icon-favorite/icon-favorite.ts';
+import type { createSpecsElementParams, LibraryCard } from './library-page.types.ts';
+import { getCategories } from '../../data-access/minigames-api/minigames.api.ts';
 
 const libraryCards = {
   data: [
@@ -349,16 +351,22 @@ const extendedLibraryCard = {
   },
 };
 
-export function getLibraryPageElement() {
+export async function getLibraryPageElement() {
   const heading = getLibraryHeadingElement();
-  const controls = getLibraryControlsElement();
-  const cards = getLibraryCardsElement({ data: libraryCards.data });
   const pagination = getPagination({ visiblePages: 4 });
 
-  return createDivElement({
-    classList: ['library-page-content'],
-    children: [heading, controls, cards, pagination],
-  });
+  try {
+    const controls = await getLibraryControlsElement();
+    const cards = getLibraryCardsElement({ data: libraryCards.data });
+
+    return createDivElement({
+      classList: ['library-page-content'],
+      children: [heading, controls, cards, pagination],
+    });
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
 function getLibraryHeadingElement() {
@@ -377,9 +385,9 @@ function getLibraryHeadingElement() {
   });
 }
 
-function getLibraryControlsElement() {
-  const chips = ['all games', 'puzzle', 'card', 'match', 'farm', 'strategy', 'arcade'];
-  let selectedChip = chips[0];
+async function getLibraryControlsElement() {
+  let chips: Chip[];
+  let selectedChip = '';
 
   const chipClickHandler = (event: MouseEvent) => {
     const chip = event.target as HTMLElement;
@@ -393,15 +401,27 @@ function getLibraryControlsElement() {
     selectedChip = chip.innerHTML;
   };
 
-  const chipsData: Chip[] = chips.map((chip, i) => {
-    return {
-      textContent: chip,
-      onClick: chipClickHandler,
-      isSelected: i === 0,
-    };
-  });
+  try {
+    const categories = await getCategories();
+    chips = categories.data.map((category) => {
+      if (category.isDefault) {
+        selectedChip = category.slug;
+      }
 
-  const chipsElement = getChips({ chips: chipsData });
+      return {
+        slug: category.slug,
+        label: category.label,
+        isDefault: category.isDefault,
+        isSelected: category.slug === selectedChip,
+        onClick: chipClickHandler,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+  const chipsElement = getChips({ chips });
 
   const selectElement = getSelectControl({
     name: 'sort-games',
@@ -643,23 +663,4 @@ function createSpecsElement(params: createSpecsElementParams) {
     classList: ['extended-library-card-specs'],
     children: [genreElement, playersElement, durationElement, priceElement],
   });
-}
-
-interface createSpecsElementParams {
-  genre: string;
-  players: string;
-  duration: string;
-  price: string;
-}
-
-interface LibraryCard {
-  slug: string;
-  name: string;
-  category: string;
-  price: string;
-  shortDescription: string;
-  rating: number;
-  likesCount: number;
-  cardImage: string;
-  featured: boolean;
 }

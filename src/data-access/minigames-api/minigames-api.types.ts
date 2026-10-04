@@ -1,11 +1,11 @@
 import type { Category, Sort } from '../../types.ts';
 
 export interface CategoryDto {
-  data: {
+  data: Array<{
     slug: string;
     label: string;
     isDefault: boolean;
-  };
+  }>;
   meta: {
     totalItems: number;
     description: string;

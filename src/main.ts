@@ -8,7 +8,7 @@ import { getFooterElement } from './pages/common-components/footer/footer.ts';
 import { getHomePageElement } from './pages/home-page/home-page.ts';
 import { createDivElement } from './lib/element.ts';
 
-init();
+await init();
 
 function addLayout({ app }: { app: HTMLDivElement }) {
   const header = getHeaderElement({
@@ -27,7 +27,7 @@ function addLayout({ app }: { app: HTMLDivElement }) {
   app.append(pageElement);
 }
 
-function init() {
+async function init() {
   const app = document.querySelector<HTMLDivElement>('#app');
 
   if (!app) {
@@ -36,6 +36,7 @@ function init() {
   }
 
   addLayout({ app });
+
   updatePage({
     activeNavItem: 'Home',
     pageContent: getHomePageElement(),
