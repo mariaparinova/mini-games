@@ -1,4 +1,5 @@
-import type { Category, Sort } from '../../types.ts';
+import type { Category } from '../../types.ts';
+import type { Sort } from '../../pages/common-components/select-control/select-control.ts';
 
 export interface CategoryDto {
   data: Array<{

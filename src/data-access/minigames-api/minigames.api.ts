@@ -56,11 +56,21 @@ export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDt
         accept: 'application/json',
       },
     });
-    return await response.json();
+    const cardsData = await response.json();
+
+    if (cardsData.data) {
+      return cardsData;
+    }
+
+    if (cardsData.error) {
+      throw new Error(cardsData.error);
+    }
   } catch (err) {
     console.error(err);
     throw err;
   }
+
+  throw new Error('Failed to fetch games');
 }
 
 export async function getGameById(params: GetDameByIdParams): Promise<GameDetailsDto> {

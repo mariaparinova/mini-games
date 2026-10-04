@@ -9,7 +9,7 @@ import {
 import { type Chip, getChips } from '../common-components/chip/chip.ts';
 import { getGameRating } from '../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../common-components/game-likes/game-likes.ts';
-import { getSelectControl } from '../common-components/select-control/select-control.ts';
+import { getSelectControl, type Sort } from '../common-components/select-control/select-control.ts';
 import { getPagination } from '../common-components/pagination/pagination.ts';
 import { createDialogElement } from '../common-components/dialog/dialog.ts';
 import { getIconFavoriteElement } from '../common-components/icon-favorite/icon-favorite.ts';
@@ -25,12 +25,15 @@ import type {
 } from '../../data-access/minigames-api/minigames-api.types.ts';
 import type { Category } from '../../types.ts';
 import { getErrorElement } from '../common-components/error-element/error-element.ts';
+import { getLoaderElement } from '../common-components/loader/loader.ts';
 
 const CARDS_PER_PAGE = 6;
 const INIT_CATEGORY: Category = 'all';
+const INIT_SORT_ORDER: Sort = 'rating-desc';
 const libraryCardsContainerElement = getLibraryCardsContainerElement();
 const currentPage = 1;
 let currentCategory: Category = INIT_CATEGORY;
+let currentSortOrder: Sort = INIT_SORT_ORDER;
 const extendedLibraryCard = {
   data: {
     slug: 'tukoni-forest-keepers',
@@ -81,7 +84,7 @@ export async function initLibraryPage() {
 
   try {
     controls = await getLibraryControlsElement();
-    await updateCards();
+    await updateLibraryCards();
     pagination = getPagination({ visiblePages: 4 });
   } catch (err) {
     console.error(err);
@@ -119,16 +122,19 @@ async function getLibraryControlsElement() {
   let chips: Chip[];
   let selectedChip = '';
 
-  const chipClickHandler = (event: MouseEvent) => {
-    const chip = event.target as HTMLElement;
+  const categoryClickHandler = async (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
 
-    if (chip.classList.contains(selectedChip)) {
+    if (target.id === selectedChip) {
       return;
     }
 
     document.body.querySelector('.chip.selected')?.classList.remove('selected');
-    chip.classList.add('selected');
-    selectedChip = chip.innerHTML;
+    target.classList.add('selected');
+    selectedChip = target.id;
+
+    currentCategory = target.id as Category;
+    await updateLibraryCards();
   };
 
   try {
@@ -143,7 +149,7 @@ async function getLibraryControlsElement() {
         label: category.label,
         isDefault: category.isDefault,
         isSelected: category.slug === currentCategory,
-        onClick: chipClickHandler,
+        onClick: categoryClickHandler,
       };
     });
   } catch (error) {
@@ -157,19 +163,19 @@ async function getLibraryControlsElement() {
     name: 'sort-games',
     id: 'sort-games',
     options: [
-      { name: 'Rating ↑', type: 'rating_asc' },
-      { name: 'Rating ↓', type: 'rating_desc' },
-      { name: 'Name A→Z', type: 'name_asc' },
-      { name: 'Name Z→A', type: 'name_desc' },
+      { name: 'Rating ↓', value: 'rating-desc' },
+      { name: 'Rating ↑', value: 'rating-asc' },
+      { name: 'Name Z→A', value: 'name-desc' },
+      { name: 'Name A→Z', value: 'name-asc' },
     ],
-    onChange: (event: Event) => {
-      const target = event.target as HTMLElement;
-
-      if (!target.closest('.chips-container')) {
+    onChange: async (event: Event) => {
+      const target = event.target as HTMLOptionElement;
+      if (!target.closest('#sort-games')) {
         return;
       }
 
-      currentCategory = target.id as Category;
+      currentSortOrder = target.value as Sort;
+      await updateLibraryCards();
     },
   });
 
@@ -321,109 +327,113 @@ function createSpecsElement(params: createSpecsElementParams) {
   });
 }
 
-async function updateCards() {
+async function updateLibraryCards() {
+  const loader = getLoaderElement();
   let cardsData: AllGamesDto | undefined;
 
-  const cardsContainer = libraryCardsContainerElement;
-  cardsContainer.innerHTML = '';
+  libraryCardsContainerElement.innerHTML = '';
+  libraryCardsContainerElement.append(loader);
 
   try {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     cardsData = await getAllGames({
       page: currentPage,
       limit: CARDS_PER_PAGE,
       category: currentCategory,
+      sort: currentSortOrder,
     });
-  } catch (err: unknown) {
-    cardsContainer.append(getErrorElement(err));
-    return;
+
+    const cards = cardsData.data.map((card) => {
+      const libraryCardElement = createDivElement({
+        classList: ['library-card'],
+      });
+
+      const cardImg = createImgElement({
+        classList: ['library-card-img'],
+        src: card.cardImage,
+        alt: card.name,
+      });
+
+      const imgContainer = createDivElement({
+        classList: ['library-card-img-container'],
+        children: [cardImg],
+      });
+
+      const heading = createSpanElement({
+        classList: ['library-card-heading'],
+        textContent: card.name,
+      });
+
+      const tag = createDivElement({
+        classList: ['library-card-tag'],
+        textContent: card.category,
+      });
+
+      const priceElementClassList = ['library-card-price'];
+
+      if (card.price.toLowerCase() === 'free') {
+        priceElementClassList.push('free');
+      }
+
+      const price = createSpanElement({
+        classList: priceElementClassList,
+        textContent: card.price,
+      });
+
+      const header = createDivElement({
+        classList: ['library-card-header'],
+        children: [heading, tag, price],
+      });
+
+      const description = createDivElement({
+        classList: ['library-card-description'],
+        textContent: card.shortDescription + card.shortDescription,
+      });
+
+      const ratingAndLikes = createDivElement({
+        classList: ['library-card-rating-and-likes-container'],
+        children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
+      });
+
+      const detailsButton = createButtonElement({
+        classList: ['button', 'primary', 'small'],
+        textContent: 'Details',
+        onClick: async () => {
+          let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
+            `.extended-library-card-dialog`,
+          );
+
+          if (!extendedLibraryCardDialogElement) {
+            extendedLibraryCardDialogElement = createDialogElement({
+              classList: ['extended-library-card-dialog'],
+              children: [await getDetailedLibraryCardElement({ slug: card.slug })],
+            });
+            document.body.append(extendedLibraryCardDialogElement);
+          }
+
+          extendedLibraryCardDialogElement.showModal();
+        },
+      });
+
+      const footer = createDivElement({
+        classList: ['library-card-footer'],
+        children: [ratingAndLikes, detailsButton],
+      });
+
+      const cardDetails = createDivElement({
+        classList: ['library-card-details'],
+        children: [header, description, footer],
+      });
+
+      libraryCardElement.append(imgContainer, cardDetails);
+
+      return libraryCardElement;
+    });
+
+    libraryCardsContainerElement.append(...cards);
+  } catch (error) {
+    libraryCardsContainerElement.append(getErrorElement(error));
+  } finally {
+    libraryCardsContainerElement.removeChild(loader);
   }
-
-  const cards = cardsData.data.map((card) => {
-    const libraryCardElement = createDivElement({
-      classList: ['library-card'],
-    });
-
-    const cardImg = createImgElement({
-      classList: ['library-card-img'],
-      src: card.cardImage,
-      alt: card.name,
-    });
-
-    const imgContainer = createDivElement({
-      classList: ['library-card-img-container'],
-      children: [cardImg],
-    });
-
-    const heading = createSpanElement({
-      classList: ['library-card-heading'],
-      textContent: card.name,
-    });
-
-    const tag = createDivElement({
-      classList: ['library-card-tag'],
-      textContent: card.category,
-    });
-
-    const priceElementClassList = ['library-card-price'];
-
-    if (card.price.toLowerCase() === 'free') {
-      priceElementClassList.push('free');
-    }
-
-    const price = createSpanElement({
-      classList: priceElementClassList,
-      textContent: card.price,
-    });
-
-    const header = createDivElement({
-      classList: ['library-card-header'],
-      children: [heading, tag, price],
-    });
-
-    const description = createDivElement({
-      classList: ['library-card-description'],
-      textContent: card.shortDescription + card.shortDescription,
-    });
-
-    const ratingAndLikes = createDivElement({
-      classList: ['library-card-rating-and-likes-container'],
-      children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
-    });
-
-    const detailsButton = createButtonElement({
-      classList: ['button', 'primary', 'small'],
-      textContent: 'Details',
-      onClick: async () => {
-        let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
-          `.extended-library-card-dialog`,
-        );
-
-        if (!extendedLibraryCardDialogElement) {
-          extendedLibraryCardDialogElement = createDialogElement({
-            classList: ['extended-library-card-dialog'],
-            children: [await getDetailedLibraryCardElement({ slug: card.slug })],
-          });
-          document.body.append(extendedLibraryCardDialogElement);
-        }
-
-        extendedLibraryCardDialogElement.showModal();
-      },
-    });
-
-    const footer = createDivElement({
-      classList: ['library-card-footer'],
-      children: [ratingAndLikes, detailsButton],
-    });
-
-    const cardDetails = createDivElement({
-      classList: ['library-card-details'],
-      children: [header, description, footer],
-    });
-
-    libraryCardElement.append(imgContainer, cardDetails);
-
-    return libraryCardElement;
-  });
-
-  cardsContainer.append(...cards);
 }
