@@ -1,0 +1,11 @@
+@use '../../../styles/variables';
+
+.error-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: variables.$error;
+  background-color: variables.$surface;
+}

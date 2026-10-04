@@ -9,307 +9,31 @@ import {
 import { type Chip, getChips } from '../common-components/chip/chip.ts';
 import { getGameRating } from '../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../common-components/game-likes/game-likes.ts';
-import { getSelectControl } from '../common-components/select-control/select-control.ts';
+import { getSelectControl, type Sort } from '../common-components/select-control/select-control.ts';
 import { getPagination } from '../common-components/pagination/pagination.ts';
 import { createDialogElement } from '../common-components/dialog/dialog.ts';
 import { getIconFavoriteElement } from '../common-components/icon-favorite/icon-favorite.ts';
+import type { createSpecsElementParams } from './library-page.types.ts';
+import {
+  getAllGames,
+  getCategories,
+  getGameById,
+} from '../../data-access/minigames-api/minigames.api.ts';
+import type {
+  AllGamesDto,
+  GameDetailsDto,
+} from '../../data-access/minigames-api/minigames-api.types.ts';
+import type { Category } from '../../types.ts';
+import { getErrorElement } from '../common-components/error-element/error-element.ts';
+import { getLoaderElement } from '../common-components/loader/loader.ts';
 
-const libraryCards = {
-  data: [
-    {
-      slug: 'vacation-cafe-simulator',
-      name: 'Vacation Cafe Simulator',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'Cozy Italian Vacation Cafe 🏖️ No timers, No stress 😌 cook traditional dishes 🍝 upgrade and customize 🏠 just drink Prosecco 🥂 relax and grow your dream cafe ✨',
-      rating: 4.8,
-      likesCount: 28750,
-      cardImage: '/assets/images/games/vacation-cafe-simulator-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'winter-burrow',
-      name: 'Winter Burrow',
-      category: 'farm',
-      price: 'Free',
-      shortDescription:
-        'A cozy woodland survival game about a mouse restoring their childhood burrow. Explore, gather resources, craft, knit warm sweaters, bake pies and meet the locals.',
-      rating: 4.9,
-      likesCount: 32400,
-      cardImage: '/assets/images/games/winter-burrow-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'shelve-the-potions',
-      name: 'Shelve the Potions!',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        "Organize 2000+ potions on shelves after the witch's cats have knocked them over, using clues around an enchanted cellar. Learn strange symbols and decipher cryptic notes.",
-      rating: 4.7,
-      likesCount: 21300,
-      cardImage: '/assets/images/games/shelve-the-potions-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'heartopia',
-      name: 'Heartopia',
-      category: 'strategy',
-      price: '$1.99',
-      shortDescription:
-        'A multiplayer life simulation game crafted for creativity, freedom, and peace. Build your dream home, explore hobbies, and forge warm connections with friends in a cozy town.',
-      rating: 4.6,
-      likesCount: 46800,
-      cardImage: '/assets/images/games/heartopia-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'palia',
-      name: 'Palia',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'A free-to-play fantasy life sim adventure where you can craft, explore, and create the life and home of your dreams in a vibrant, heartwarming world.',
-      rating: 4.8,
-      likesCount: 89500,
-      cardImage: '/assets/images/games/palia-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'cat-mail-co',
-      name: 'Cat Mail Co.',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'Run a cozy cat post office. Sort and deliver parcels from the daily boat. At night, the moon reveals hidden truths about packages. Clear a strange backlog and unlock new destinations.',
-      rating: 4.9,
-      likesCount: 38200,
-      cardImage: '/assets/images/games/cat-mail-co-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'leaf-it-alone',
-      name: 'Leaf it Alone',
-      category: 'arcade',
-      price: 'Free',
-      shortDescription:
-        "Finally, it's that time of the year to clean up this leafy mess. Derust your raking skills and don't waste a second — there's a whole lawn waiting!",
-      rating: 4.4,
-      likesCount: 12600,
-      cardImage: '/assets/images/games/leaf-it-alone-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'leafy-corner',
-      name: 'Leafy Corner',
-      category: 'farm',
-      price: '$1.99',
-      shortDescription:
-        'Run a cute little plant shop. Grow, sell, and care for real-life plants, help customers find their dream plants, complete orders, and customize your cozy shop.',
-      rating: 4.7,
-      likesCount: 19800,
-      cardImage: '/assets/images/games/leafy-corner-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'grimshire',
-      name: 'Grimshire',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'A deadly plague threatens the village of Grimshire. Manage farmland, forage wilds, stop harvest rot and keep the cellar full. Can you help the community survive?',
-      rating: 4.6,
-      likesCount: 15700,
-      cardImage: '/assets/images/games/grimshire-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'tiny-glade',
-      name: 'Tiny Glade',
-      category: 'arcade',
-      price: '$3.99',
-      shortDescription:
-        'A small diorama builder where you doodle whimsical castles, cozy cottages & romantic ruins. No management, combat or goals — just lovable dioramas.',
-      rating: 4.9,
-      likesCount: 67300,
-      cardImage: '/assets/images/games/tiny-glade-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'whisper-of-the-house',
-      name: 'Whisper of the House',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'A cozy organizing & decorating game. Help townspeople move, organize, and clean their spaces. Your gentle touch may change their lives and uncover hidden stories.',
-      rating: 4.8,
-      likesCount: 24900,
-      cardImage: '/assets/images/games/whisper-of-the-house-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'tukoni-forest-keepers',
-      name: 'Tukoni: Forest Keepers',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'A cute cozy puzzle adventure. Play as a forest spirit exploring hand-drawn magical locations, meet charming characters, solve puzzles, collect herbs and tea recipes.',
-      rating: 4.9,
-      likesCount: 31200,
-      cardImage: '/assets/images/games/tukoni-forest-keepers-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'cat-chess',
-      name: 'Cat Chess',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'Play the ancient and thrilling game of Chess but with... cats! Lead your furry friends to the Purrfect battle of brains and whiskers!',
-      rating: 4.6,
-      likesCount: 17400,
-      cardImage: '/assets/images/games/cat-chess-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'cast-n-chill',
-      name: 'Cast n Chill',
-      category: 'arcade',
-      price: 'Free',
-      shortDescription:
-        'A relaxing fishing game where you explore serene lakes, rivers, and oceans. Catch rare fish, upgrade your gear and reel in legendary catches - all with your loyal companion.',
-      rating: 4.7,
-      likesCount: 26800,
-      cardImage: '/assets/images/games/cast-n-chill-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'little-corners',
-      name: 'Little Corners',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'Peel, place, and arrange stickers across tiny windows into different worlds. Relax and unwind to lofi beats, collect unique stickers and share cozy creations.',
-      rating: 4.8,
-      likesCount: 41500,
-      cardImage: '/assets/images/games/little-corners-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'tailside-cozy-cafe-sim',
-      name: 'Tailside: Cozy Cafe Sim',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'Run your own cozy café in Tailside! Brew coffee, decorate your café, follow small stories in the daily newspaper. Unlock new items, skills, villagers, and creature visitors.',
-      rating: 4.8,
-      likesCount: 35600,
-      cardImage: '/assets/images/games/tailside-cozy-cafe-sim-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'islanders-new-shores',
-      name: 'ISLANDERS: New Shores',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'Build your island retreat in a calm, minimalist world with exciting new features that keep the classic charm while inspiring fresh creativity.',
-      rating: 4.9,
-      likesCount: 54200,
-      cardImage: '/assets/images/games/islanders-new-shores-card.jpg',
-      featured: true,
-    },
-    {
-      slug: 'camper-van-make-it-home',
-      name: 'Camper Van: Make it Home',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'Decorate and organize the camper van of your dreams! Build your own home-on-wheels using creative block organization puzzles and relaxing interior design.',
-      rating: 4.7,
-      likesCount: 29300,
-      cardImage: '/assets/images/games/camper-van-make-it-home-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'organized-inside',
-      name: 'Organized Inside',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'A slow-paced life sim and tidying up game about a cat, passion, transformation and growth. Categorize household items while uncovering the meaning of life through organization.',
-      rating: 4.8,
-      likesCount: 22700,
-      cardImage: '/assets/images/games/organized-inside-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'cozy-solitaire',
-      name: 'Cozy Solitaire',
-      category: 'card',
-      price: 'Free',
-      shortDescription: 'Classic Solitaire game, accompanied by music and kitties.',
-      rating: 4.5,
-      likesCount: 38900,
-      cardImage: '/assets/images/games/cozy-solitaire-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'cozy-sudoku',
-      name: 'Cozy Sudoku',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription: 'Sudoku, tunes, and some furry friends.',
-      rating: 4.6,
-      likesCount: 21500,
-      cardImage: '/assets/images/games/cozy-sudoku-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'koroneko',
-      name: 'KoroNeko',
-      category: 'puzzle',
-      price: 'Free',
-      shortDescription:
-        'Roll your way through a cozy, kawaii world full of charming characters and challenging puzzles to save your siblings from Strawberry the Witch!',
-      rating: 4.9,
-      likesCount: 47300,
-      cardImage: '/assets/images/games/koroneko-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'wytchwood',
-      name: 'Wytchwood',
-      category: 'strategy',
-      price: '$4.99',
-      shortDescription:
-        'A crafting adventure game set in a land of gothic fables. As the old witch, explore, collect ingredients, brew spells, and pass judgement upon a capricious cast of characters.',
-      rating: 4.7,
-      likesCount: 33100,
-      cardImage: '/assets/images/games/wytchwood-card.jpg',
-      featured: false,
-    },
-    {
-      slug: 'the-wild-at-heart',
-      name: 'The Wild at Heart',
-      category: 'strategy',
-      price: 'Free',
-      shortDescription:
-        'Wield a herd of quirky creatures to rebuild paths, battle beasts, and solve puzzles in a rich, interconnected nostalgic storybook fantasy world.',
-      rating: 4.8,
-      likesCount: 30400,
-      cardImage: '/assets/images/games/the-wild-at-heart-card.jpg',
-      featured: false,
-    },
-  ],
-  meta: {
-    totalItems: 24,
-    description: 'Full MiniGames library — seed snapshot (24 cozy titles), resets daily 03:00 UTC',
-    featuredCount: 9,
-  },
-};
-
+const CARDS_PER_PAGE = 6;
+const INIT_CATEGORY: Category = 'all';
+const INIT_SORT_ORDER: Sort = 'rating-desc';
+const libraryCardsContainerElement = getLibraryCardsContainerElement();
+const currentPage = 1;
+let currentCategory: Category = INIT_CATEGORY;
+let currentSortOrder: Sort = INIT_SORT_ORDER;
 const extendedLibraryCard = {
   data: {
     slug: 'tukoni-forest-keepers',
@@ -349,16 +73,33 @@ const extendedLibraryCard = {
   },
 };
 
-export function getLibraryPageElement() {
+export async function initLibraryPage() {
   const heading = getLibraryHeadingElement();
-  const controls = getLibraryControlsElement();
-  const cards = getLibraryCardsElement({ data: libraryCards.data });
-  const pagination = getPagination({ visiblePages: 4 });
-
-  return createDivElement({
+  const pageElement = createDivElement({
     classList: ['library-page-content'],
-    children: [heading, controls, cards, pagination],
+    children: [],
   });
+  let controls: HTMLElement | undefined;
+  let pagination: HTMLElement | undefined;
+
+  try {
+    controls = await getLibraryControlsElement();
+    await updateLibraryCards();
+    pagination = getPagination({ visiblePages: 4 });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    if (!controls) {
+      controls = getErrorElement();
+    }
+
+    if (!pagination) {
+      pagination = getErrorElement();
+    }
+
+    pageElement.append(heading, controls, libraryCardsContainerElement, pagination);
+  }
+  return pageElement;
 }
 
 function getLibraryHeadingElement() {
@@ -377,42 +118,65 @@ function getLibraryHeadingElement() {
   });
 }
 
-function getLibraryControlsElement() {
-  const chips = ['all games', 'puzzle', 'card', 'match', 'farm', 'strategy', 'arcade'];
-  let selectedChip = chips[0];
+async function getLibraryControlsElement() {
+  let chips: Chip[];
+  let selectedChip = '';
 
-  const chipClickHandler = (event: MouseEvent) => {
-    const chip = event.target as HTMLElement;
+  const categoryClickHandler = async (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
 
-    if (chip.classList.contains(selectedChip)) {
+    if (target.id === selectedChip) {
       return;
     }
 
     document.body.querySelector('.chip.selected')?.classList.remove('selected');
-    chip.classList.add('selected');
-    selectedChip = chip.innerHTML;
+    target.classList.add('selected');
+    selectedChip = target.id;
+
+    currentCategory = target.id as Category;
+    await updateLibraryCards();
   };
 
-  const chipsData: Chip[] = chips.map((chip, i) => {
-    return {
-      textContent: chip,
-      onClick: chipClickHandler,
-      isSelected: i === 0,
-    };
-  });
+  try {
+    const categories = await getCategories();
+    chips = categories.data.map((category) => {
+      if (category.isDefault) {
+        selectedChip = category.slug;
+      }
 
-  const chipsElement = getChips({ chips: chipsData });
+      return {
+        slug: category.slug,
+        label: category.label,
+        isDefault: category.isDefault,
+        isSelected: category.slug === currentCategory,
+        onClick: categoryClickHandler,
+      };
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+  const chipsElement = getChips({ chips });
 
   const selectElement = getSelectControl({
     name: 'sort-games',
     id: 'sort-games',
     options: [
-      { name: 'Rating ↑', type: 'rating_asc' },
-      { name: 'Rating ↓', type: 'rating_desc' },
-      { name: 'Name A→Z', type: 'name_asc' },
-      { name: 'Name Z→A', type: 'name_desc' },
+      { name: 'Rating ↓', value: 'rating-desc' },
+      { name: 'Rating ↑', value: 'rating-asc' },
+      { name: 'Name Z→A', value: 'name-desc' },
+      { name: 'Name A→Z', value: 'name-asc' },
     ],
-    onChange: () => {},
+    onChange: async (event: Event) => {
+      const target = event.target as HTMLOptionElement;
+      if (!target.closest('#sort-games')) {
+        return;
+      }
+
+      currentSortOrder = target.value as Sort;
+      await updateLibraryCards();
+    },
   });
 
   return createDivElement({
@@ -421,102 +185,20 @@ function getLibraryControlsElement() {
   });
 }
 
-function getLibraryCardsElement({ data }: { data: LibraryCard[] }) {
-  const cards = data.map((card) => {
-    const libraryCardElement = createDivElement({
-      classList: ['library-card'],
-    });
-
-    const cardImg = createImgElement({
-      classList: ['library-card-img'],
-      src: card.cardImage,
-      alt: card.name,
-    });
-
-    const imgContainer = createDivElement({
-      classList: ['library-card-img-container'],
-      children: [cardImg],
-    });
-
-    const heading = createSpanElement({
-      classList: ['library-card-heading'],
-      textContent: card.name,
-    });
-
-    const tag = createDivElement({
-      classList: ['library-card-tag'],
-      textContent: card.category,
-    });
-
-    const priceElementClassList = ['library-card-price'];
-
-    if (card.price.toLowerCase() === 'free') {
-      priceElementClassList.push('free');
-    }
-
-    const price = createSpanElement({
-      classList: priceElementClassList,
-      textContent: card.price,
-    });
-
-    const header = createDivElement({
-      classList: ['library-card-header'],
-      children: [heading, tag, price],
-    });
-
-    const description = createDivElement({
-      classList: ['library-card-description'],
-      textContent: card.shortDescription + card.shortDescription,
-    });
-
-    const ratingAndLikes = createDivElement({
-      classList: ['library-card-rating-and-likes-container'],
-      children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
-    });
-
-    const detailsButton = createButtonElement({
-      classList: ['button', 'primary', 'small'],
-      textContent: 'Details',
-      onClick: () => {
-        let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
-          `.extended-library-card-dialog`,
-        );
-
-        if (!extendedLibraryCardDialogElement) {
-          extendedLibraryCardDialogElement = createDialogElement({
-            classList: ['extended-library-card-dialog'],
-            children: [getDetailedLibraryCardElement({ slug: card.slug })],
-          });
-          document.body.append(extendedLibraryCardDialogElement);
-        }
-
-        extendedLibraryCardDialogElement.showModal();
-      },
-    });
-
-    const footer = createDivElement({
-      classList: ['library-card-footer'],
-      children: [ratingAndLikes, detailsButton],
-    });
-
-    const cardDetails = createDivElement({
-      classList: ['library-card-details'],
-      children: [header, description, footer],
-    });
-
-    libraryCardElement.append(imgContainer, cardDetails);
-
-    return libraryCardElement;
-  });
-
+function getLibraryCardsContainerElement() {
   return createDivElement({
     classList: ['library-cards-container'],
-    children: [...cards],
   });
 }
 
-function getDetailedLibraryCardElement({ slug }: { slug: string }) {
-  const game = libraryCards.data.find((game) => game.slug === slug);
+async function getDetailedLibraryCardElement({ slug }: { slug: string }) {
+  let game: GameDetailsDto | undefined = undefined;
+
+  try {
+    game = await getGameById({ id: slug });
+  } catch (err) {
+    console.error(err);
+  }
 
   if (!game) {
     return createDivElement({
@@ -529,7 +211,7 @@ function getDetailedLibraryCardElement({ slug }: { slug: string }) {
     children: [
       createImgElement({
         src: extendedLibraryCard.data.heroImage,
-        alt: game.name,
+        alt: game.data.name,
       }),
     ],
   });
@@ -539,11 +221,11 @@ function getDetailedLibraryCardElement({ slug }: { slug: string }) {
     children: [
       createSpanElement({
         classList: ['extended-library-card-header-title'],
-        textContent: game.name,
+        textContent: game.data.name,
       }),
       createDivElement({
         classList: ['extended-library-card-rating-and-likes-container'],
-        children: [getGameRating(game.rating), getGameLikes(game.likesCount)],
+        children: [getGameRating(game.data.rating), getGameLikes(game.data.likesCount)],
       }),
     ],
   });
@@ -645,21 +327,113 @@ function createSpecsElement(params: createSpecsElementParams) {
   });
 }
 
-interface createSpecsElementParams {
-  genre: string;
-  players: string;
-  duration: string;
-  price: string;
-}
+async function updateLibraryCards() {
+  const loader = getLoaderElement();
+  let cardsData: AllGamesDto | undefined;
 
-interface LibraryCard {
-  slug: string;
-  name: string;
-  category: string;
-  price: string;
-  shortDescription: string;
-  rating: number;
-  likesCount: number;
-  cardImage: string;
-  featured: boolean;
+  libraryCardsContainerElement.innerHTML = '';
+  libraryCardsContainerElement.append(loader);
+
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    cardsData = await getAllGames({
+      page: currentPage,
+      limit: CARDS_PER_PAGE,
+      category: currentCategory,
+      sort: currentSortOrder,
+    });
+
+    const cards = cardsData.data.map((card) => {
+      const libraryCardElement = createDivElement({
+        classList: ['library-card'],
+      });
+
+      const cardImg = createImgElement({
+        classList: ['library-card-img'],
+        src: card.cardImage,
+        alt: card.name,
+      });
+
+      const imgContainer = createDivElement({
+        classList: ['library-card-img-container'],
+        children: [cardImg],
+      });
+
+      const heading = createSpanElement({
+        classList: ['library-card-heading'],
+        textContent: card.name,
+      });
+
+      const tag = createDivElement({
+        classList: ['library-card-tag'],
+        textContent: card.category,
+      });
+
+      const priceElementClassList = ['library-card-price'];
+
+      if (card.price.toLowerCase() === 'free') {
+        priceElementClassList.push('free');
+      }
+
+      const price = createSpanElement({
+        classList: priceElementClassList,
+        textContent: card.price,
+      });
+
+      const header = createDivElement({
+        classList: ['library-card-header'],
+        children: [heading, tag, price],
+      });
+
+      const description = createDivElement({
+        classList: ['library-card-description'],
+        textContent: card.shortDescription + card.shortDescription,
+      });
+
+      const ratingAndLikes = createDivElement({
+        classList: ['library-card-rating-and-likes-container'],
+        children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
+      });
+
+      const detailsButton = createButtonElement({
+        classList: ['button', 'primary', 'small'],
+        textContent: 'Details',
+        onClick: async () => {
+          let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
+            `.extended-library-card-dialog`,
+          );
+
+          if (!extendedLibraryCardDialogElement) {
+            extendedLibraryCardDialogElement = createDialogElement({
+              classList: ['extended-library-card-dialog'],
+              children: [await getDetailedLibraryCardElement({ slug: card.slug })],
+            });
+            document.body.append(extendedLibraryCardDialogElement);
+          }
+
+          extendedLibraryCardDialogElement.showModal();
+        },
+      });
+
+      const footer = createDivElement({
+        classList: ['library-card-footer'],
+        children: [ratingAndLikes, detailsButton],
+      });
+
+      const cardDetails = createDivElement({
+        classList: ['library-card-details'],
+        children: [header, description, footer],
+      });
+
+      libraryCardElement.append(imgContainer, cardDetails);
+
+      return libraryCardElement;
+    });
+
+    libraryCardsContainerElement.append(...cards);
+  } catch (error) {
+    libraryCardsContainerElement.append(getErrorElement(error));
+  } finally {
+    libraryCardsContainerElement.removeChild(loader);
+  }
 }

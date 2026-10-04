@@ -1,14 +1,14 @@
 import './select-control.scss';
 
 export function getSelectControl(params: SelectControlParams) {
-  const { name, id, options } = params;
+  const { name, id, options, onChange } = params;
 
   const optionElements = options.map((option) => {
-    const { name, type } = option;
+    const { name, value } = option;
 
     const optionElement = document.createElement('option');
     optionElement.classList.add('option');
-    optionElement.value = type;
+    optionElement.value = value;
     optionElement.textContent = name;
     return optionElement;
   });
@@ -17,16 +17,17 @@ export function getSelectControl(params: SelectControlParams) {
   selectElement.classList.add('select');
   selectElement.name = name;
   selectElement.id = id;
+  selectElement.addEventListener('change', onChange);
   selectElement.append(...optionElements);
 
   return selectElement;
 }
 
-type SortType = 'rating_asc' | 'rating_desc' | 'name_asc' | 'name_desc';
+export type Sort = 'rating-asc' | 'rating-desc' | 'name-asc' | 'name-desc';
 
 interface SelectControlParams {
   name: string;
   id: string;
-  options: { name: string; type: SortType }[];
+  options: { name: string; value: Sort }[];
   onChange: (event: Event) => void;
 }

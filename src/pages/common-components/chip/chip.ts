@@ -1,5 +1,5 @@
 import './chip.scss';
-import { createDivElement } from '../../../lib/element.ts';
+import { createDivElement, createButtonElement } from '../../../lib/element.ts';
 
 export function getChips(params: getChipsParams) {
   const { chips } = params;
@@ -11,17 +11,18 @@ export function getChips(params: getChipsParams) {
 }
 
 function getChip(chipProps: Chip) {
-  const { textContent, onClick, isSelected } = chipProps;
+  const { slug, label, onClick, isDefault } = chipProps;
 
-  const classList = ['chip', textContent.replace(/\s+/g, '-')];
-  if (isSelected) {
+  const classList = ['chip', slug];
+  if (isDefault) {
     classList.push('selected');
   }
 
-  return createDivElement({
+  return createButtonElement({
     classList,
-    textContent,
+    textContent: label,
     onClick,
+    id: slug,
   });
 }
 
@@ -30,7 +31,8 @@ export interface getChipsParams {
 }
 
 export interface Chip {
-  textContent: string;
+  slug: string;
+  label: string;
   onClick?: (event: MouseEvent) => void;
-  isSelected: boolean;
+  isDefault: boolean;
 }

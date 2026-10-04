@@ -37,12 +37,13 @@ export async function getLeaderboard(): Promise<LeaderboardDto> {
 }
 
 export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDto> {
-  const { featured, category = 'all', sort = 'rating-desc', page = 1, limit = 10 } = params;
+  const { featured = false, category = 'all', sort = 'rating-desc', page = 1, limit = 10 } = params;
   const queryParams = new URLSearchParams();
 
   if (featured) {
     queryParams.append('featured', 'true');
   } else {
+    queryParams.append('featured', 'false');
     queryParams.append('category', category);
     queryParams.append('sort', sort);
     queryParams.append('page', `${page}`);
@@ -50,12 +51,26 @@ export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDt
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/games/?${queryParams}`);
-    return await response.json();
+    const response = await fetch(`${BASE_URL}/games?${queryParams}`, {
+      headers: {
+        accept: 'application/json',
+      },
+    });
+    const cardsData = await response.json();
+
+    if (cardsData.data) {
+      return cardsData;
+    }
+
+    if (cardsData.error) {
+      throw new Error(cardsData.error);
+    }
   } catch (err) {
     console.error(err);
     throw err;
   }
+
+  throw new Error('Failed to fetch games');
 }
 
 export async function getGameById(params: GetDameByIdParams): Promise<GameDetailsDto> {

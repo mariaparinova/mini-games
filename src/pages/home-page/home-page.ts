@@ -4,13 +4,15 @@ import { createNewGamesSection } from './new-game-section/new-game-section.ts';
 import { createCtaSection } from './cta-section/cta-section.ts';
 import { leaderboardSection } from './leaderboard-section/leaderboard-section.ts';
 
-export function getHomePageElement(): HTMLElement {
-  return createDivElement({
-    children: [
-      createHeroSection(),
-      createNewGamesSection(),
-      leaderboardSection(),
-      createCtaSection(),
-    ],
-  });
+export async function initHomePage(): Promise<HTMLElement> {
+  return Promise.resolve(
+    createDivElement({
+      children: [
+        createHeroSection(),
+        createNewGamesSection(),
+        leaderboardSection(),
+        createCtaSection(),
+      ],
+    }),
+  );
 }

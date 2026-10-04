@@ -67,10 +67,9 @@
   }
 
   .cards-container {
-    grid-template-columns: 0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(
-        variables.$size-7,
-        288px
-      ) 0;
+    grid-template-columns:
+      0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(variables.$size-7, 288px)
+      0;
   }
 
   .carousel-card {
@@ -93,10 +92,9 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .cards-container {
-    grid-template-columns: 0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(
-        variables.$size-7,
-        288px
-      ) 0;
+    grid-template-columns:
+      0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(variables.$size-7, 288px)
+      0;
     grid-template-rows: repeat(1, 1fr);
     overflow: hidden;
   }

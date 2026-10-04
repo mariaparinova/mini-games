@@ -1,5 +1,5 @@
 export function createDivElement(params: CreateDivElementParams): HTMLDivElement {
-  const { classList = [], textContent, children, onClick } = params;
+  const { classList = [], textContent, children, onClick, id } = params;
 
   const divElement = document.createElement('div');
   divElement.classList.add(...classList);
@@ -16,11 +16,15 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
     divElement.addEventListener('click', onClick);
   }
 
+  if (id) {
+    divElement.id = id;
+  }
+
   return divElement;
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick, icon, disabled } = params;
+  const { classList = [], textContent, onClick, icon, disabled, id } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
@@ -39,6 +43,10 @@ export function createButtonElement(params: CreateButtonElementParams): HTMLButt
 
   if (disabled) {
     buttonElement.disabled = true;
+  }
+
+  if (id) {
+    buttonElement.id = id;
   }
 
   return buttonElement;
@@ -173,14 +181,16 @@ interface CreateDivElementParams {
   textContent?: string;
   children?: HTMLElement[];
   onClick?: (event: MouseEvent) => void;
+  id?: string;
 }
 
 interface CreateButtonElementParams {
   classList?: string[];
   textContent?: string;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent) => void;
   icon?: HTMLImageElement | HTMLElement;
   disabled?: boolean;
+  id?: string;
 }
 
 interface CreateImgElementParams {
