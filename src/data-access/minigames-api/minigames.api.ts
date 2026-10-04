@@ -43,6 +43,7 @@ export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDt
   if (featured) {
     queryParams.append('featured', 'true');
   } else {
+    queryParams.append('featured', 'false');
     queryParams.append('category', category);
     queryParams.append('sort', sort);
     queryParams.append('page', `${page}`);
@@ -50,7 +51,11 @@ export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDt
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/games/?${queryParams}`);
+    const response = await fetch(`${BASE_URL}/games?${queryParams}`, {
+      headers: {
+        accept: 'application/json',
+      },
+    });
     return await response.json();
   } catch (err) {
     console.error(err);

@@ -1,4 +1,4 @@
-const Sort = {
+export const Sort = {
   RatingDesc: 'rating-desc',
   RatingAsc: 'rating-asc',
   NameDesc: 'name-desc',

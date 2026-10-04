@@ -14,5 +14,4 @@ export interface LibraryCard {
   rating: number;
   likesCount: number;
   cardImage: string;
-  featured: boolean;
 }
