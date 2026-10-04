@@ -8,9 +8,7 @@ import {
 } from '../../../lib/element.ts';
 import { getLogoElement } from '../logo/logo.ts';
 import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
-import { getLibraryPageElement } from '../../library-page/library-page.ts';
-import { updatePage } from '../../../main.ts';
-import { getHomePageElement } from '../../home-page/home-page.ts';
+import { type PAGE_NAME, updatePage } from '../../../router.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -67,32 +65,11 @@ function getNavigationElement(params: GetNavigationElementParams) {
       classList: linkClasses,
       href: `${item.toLowerCase()}`,
       textContent: item,
+      onClick: async () =>
+        await updatePage({
+          pageName: item.toLowerCase() as PAGE_NAME,
+        }),
     });
-
-    if (item === NavItem.Library) {
-      link.addEventListener('click', async () => {
-        let libraryPage: HTMLDivElement | undefined;
-
-        try {
-          libraryPage = await getLibraryPageElement();
-        } catch (err) {
-          console.error(err);
-          return;
-        }
-
-        updatePage({
-          activeNavItem: item,
-          pageContent: libraryPage,
-        });
-      });
-    } else {
-      link.addEventListener('click', () => {
-        updatePage({
-          activeNavItem: NavItem.Home,
-          pageContent: getHomePageElement(),
-        });
-      });
-    }
 
     return createLiElement({
       child: link,
@@ -182,6 +159,10 @@ export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
   const currentActiveItems = document.body.querySelectorAll('header .active');
   if (!currentActiveItems.length) {
     console.warn('No active items found');
+    return;
+  }
+
+  if (currentActiveItems[0].textContent === activeNavItem) {
     return;
   }
 

@@ -13,17 +13,24 @@ import { getSelectControl } from '../common-components/select-control/select-con
 import { getPagination } from '../common-components/pagination/pagination.ts';
 import { createDialogElement } from '../common-components/dialog/dialog.ts';
 import { getIconFavoriteElement } from '../common-components/icon-favorite/icon-favorite.ts';
-import type { createSpecsElementParams, LibraryCard } from './library-page.types.ts';
+import type { createSpecsElementParams } from './library-page.types.ts';
 import {
   getAllGames,
   getCategories,
   getGameById,
 } from '../../data-access/minigames-api/minigames.api.ts';
-import type { GameDetailsDto } from '../../data-access/minigames-api/minigames-api.types.ts';
+import type {
+  AllGamesDto,
+  GameDetailsDto,
+} from '../../data-access/minigames-api/minigames-api.types.ts';
+import type { Category } from '../../types.ts';
+import { getErrorElement } from '../common-components/error-element/error-element.ts';
 
 const CARDS_PER_PAGE = 6;
+const INIT_CATEGORY: Category = 'all';
+const libraryCardsContainerElement = getLibraryCardsContainerElement();
 const currentPage = 1;
-
+let currentCategory: Category = INIT_CATEGORY;
 const extendedLibraryCard = {
   data: {
     slug: 'tukoni-forest-keepers',
@@ -63,28 +70,33 @@ const extendedLibraryCard = {
   },
 };
 
-export async function getLibraryPageElement() {
+export async function initLibraryPage() {
   const heading = getLibraryHeadingElement();
-  const pagination = getPagination({ visiblePages: 4 });
+  const pageElement = createDivElement({
+    classList: ['library-page-content'],
+    children: [],
+  });
+  let controls: HTMLElement | undefined;
+  let pagination: HTMLElement | undefined;
 
   try {
-    const controls = await getLibraryControlsElement();
-    const cardsData = await getAllGames({
-      featured: false,
-      page: currentPage,
-      limit: CARDS_PER_PAGE,
-      category: 'all',
-    });
-    const cards = getLibraryCardsElement({ data: cardsData.data });
-
-    return createDivElement({
-      classList: ['library-page-content'],
-      children: [heading, controls, cards, pagination],
-    });
+    controls = await getLibraryControlsElement();
+    await updateCards();
+    pagination = getPagination({ visiblePages: 4 });
   } catch (err) {
     console.error(err);
-    throw err;
+  } finally {
+    if (!controls) {
+      controls = getErrorElement();
+    }
+
+    if (!pagination) {
+      pagination = getErrorElement();
+    }
+
+    pageElement.append(heading, controls, libraryCardsContainerElement, pagination);
   }
+  return pageElement;
 }
 
 function getLibraryHeadingElement() {
@@ -130,7 +142,7 @@ async function getLibraryControlsElement() {
         slug: category.slug,
         label: category.label,
         isDefault: category.isDefault,
-        isSelected: category.slug === selectedChip,
+        isSelected: category.slug === currentCategory,
         onClick: chipClickHandler,
       };
     });
@@ -150,7 +162,15 @@ async function getLibraryControlsElement() {
       { name: 'Name A→Z', type: 'name_asc' },
       { name: 'Name Z→A', type: 'name_desc' },
     ],
-    onChange: () => {},
+    onChange: (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (!target.closest('.chips-container')) {
+        return;
+      }
+
+      currentCategory = target.id as Category;
+    },
   });
 
   return createDivElement({
@@ -159,97 +179,9 @@ async function getLibraryControlsElement() {
   });
 }
 
-function getLibraryCardsElement({ data }: { data: LibraryCard[] }) {
-  const cards = data.map((card) => {
-    const libraryCardElement = createDivElement({
-      classList: ['library-card'],
-    });
-
-    const cardImg = createImgElement({
-      classList: ['library-card-img'],
-      src: card.cardImage,
-      alt: card.name,
-    });
-
-    const imgContainer = createDivElement({
-      classList: ['library-card-img-container'],
-      children: [cardImg],
-    });
-
-    const heading = createSpanElement({
-      classList: ['library-card-heading'],
-      textContent: card.name,
-    });
-
-    const tag = createDivElement({
-      classList: ['library-card-tag'],
-      textContent: card.category,
-    });
-
-    const priceElementClassList = ['library-card-price'];
-
-    if (card.price.toLowerCase() === 'free') {
-      priceElementClassList.push('free');
-    }
-
-    const price = createSpanElement({
-      classList: priceElementClassList,
-      textContent: card.price,
-    });
-
-    const header = createDivElement({
-      classList: ['library-card-header'],
-      children: [heading, tag, price],
-    });
-
-    const description = createDivElement({
-      classList: ['library-card-description'],
-      textContent: card.shortDescription + card.shortDescription,
-    });
-
-    const ratingAndLikes = createDivElement({
-      classList: ['library-card-rating-and-likes-container'],
-      children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
-    });
-
-    const detailsButton = createButtonElement({
-      classList: ['button', 'primary', 'small'],
-      textContent: 'Details',
-      onClick: async () => {
-        let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
-          `.extended-library-card-dialog`,
-        );
-
-        if (!extendedLibraryCardDialogElement) {
-          extendedLibraryCardDialogElement = createDialogElement({
-            classList: ['extended-library-card-dialog'],
-            children: [await getDetailedLibraryCardElement({ slug: card.slug })],
-          });
-          document.body.append(extendedLibraryCardDialogElement);
-        }
-
-        extendedLibraryCardDialogElement.showModal();
-      },
-    });
-
-    const footer = createDivElement({
-      classList: ['library-card-footer'],
-      children: [ratingAndLikes, detailsButton],
-    });
-
-    const cardDetails = createDivElement({
-      classList: ['library-card-details'],
-      children: [header, description, footer],
-    });
-
-    libraryCardElement.append(imgContainer, cardDetails);
-
-    return libraryCardElement;
-  });
-
+function getLibraryCardsContainerElement() {
   return createDivElement({
     classList: ['library-cards-container'],
-    children: [...cards],
   });
 }
 
@@ -387,4 +319,111 @@ function createSpecsElement(params: createSpecsElementParams) {
     classList: ['extended-library-card-specs'],
     children: [genreElement, playersElement, durationElement, priceElement],
   });
+}
+
+async function updateCards() {
+  let cardsData: AllGamesDto | undefined;
+
+  const cardsContainer = libraryCardsContainerElement;
+  cardsContainer.innerHTML = '';
+
+  try {
+    cardsData = await getAllGames({
+      page: currentPage,
+      limit: CARDS_PER_PAGE,
+      category: currentCategory,
+    });
+  } catch (err: unknown) {
+    cardsContainer.append(getErrorElement(err));
+    return;
+  }
+
+  const cards = cardsData.data.map((card) => {
+    const libraryCardElement = createDivElement({
+      classList: ['library-card'],
+    });
+
+    const cardImg = createImgElement({
+      classList: ['library-card-img'],
+      src: card.cardImage,
+      alt: card.name,
+    });
+
+    const imgContainer = createDivElement({
+      classList: ['library-card-img-container'],
+      children: [cardImg],
+    });
+
+    const heading = createSpanElement({
+      classList: ['library-card-heading'],
+      textContent: card.name,
+    });
+
+    const tag = createDivElement({
+      classList: ['library-card-tag'],
+      textContent: card.category,
+    });
+
+    const priceElementClassList = ['library-card-price'];
+
+    if (card.price.toLowerCase() === 'free') {
+      priceElementClassList.push('free');
+    }
+
+    const price = createSpanElement({
+      classList: priceElementClassList,
+      textContent: card.price,
+    });
+
+    const header = createDivElement({
+      classList: ['library-card-header'],
+      children: [heading, tag, price],
+    });
+
+    const description = createDivElement({
+      classList: ['library-card-description'],
+      textContent: card.shortDescription + card.shortDescription,
+    });
+
+    const ratingAndLikes = createDivElement({
+      classList: ['library-card-rating-and-likes-container'],
+      children: [getGameRating(card.rating), getGameLikes(card.likesCount)],
+    });
+
+    const detailsButton = createButtonElement({
+      classList: ['button', 'primary', 'small'],
+      textContent: 'Details',
+      onClick: async () => {
+        let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
+          `.extended-library-card-dialog`,
+        );
+
+        if (!extendedLibraryCardDialogElement) {
+          extendedLibraryCardDialogElement = createDialogElement({
+            classList: ['extended-library-card-dialog'],
+            children: [await getDetailedLibraryCardElement({ slug: card.slug })],
+          });
+          document.body.append(extendedLibraryCardDialogElement);
+        }
+
+        extendedLibraryCardDialogElement.showModal();
+      },
+    });
+
+    const footer = createDivElement({
+      classList: ['library-card-footer'],
+      children: [ratingAndLikes, detailsButton],
+    });
+
+    const cardDetails = createDivElement({
+      classList: ['library-card-details'],
+      children: [header, description, footer],
+    });
+
+    libraryCardElement.append(imgContainer, cardDetails);
+
+    return libraryCardElement;
+  });
+
+  cardsContainer.append(...cards);
 }

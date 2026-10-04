@@ -108,7 +108,7 @@ export interface GetAllCommentsDto {
 }
 
 export interface GetAllGamesParams {
-  featured: boolean;
+  featured?: boolean;
   page?: number;
   limit?: number;
   category?: Category;

@@ -37,7 +37,7 @@ export async function getLeaderboard(): Promise<LeaderboardDto> {
 }
 
 export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDto> {
-  const { featured, category = 'all', sort = 'rating-desc', page = 1, limit = 10 } = params;
+  const { featured = false, category = 'all', sort = 'rating-desc', page = 1, limit = 10 } = params;
   const queryParams = new URLSearchParams();
 
   if (featured) {
