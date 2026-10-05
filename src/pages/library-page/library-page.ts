@@ -389,6 +389,8 @@ async function updateLibraryCards() {
             document.body.append(extendedLibraryCardDialogElement);
           }
 
+          extendedLibraryCardDialogElement.showModal();
+
           let extendedCard: HTMLElement | undefined;
 
           try {
@@ -398,8 +400,6 @@ async function updateLibraryCards() {
           } finally {
             extendedLibraryCardDialogElement.replaceChildren(extendedCard || 'Unknown error');
           }
-
-          extendedLibraryCardDialogElement.showModal();
         },
       });
 
