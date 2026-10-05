@@ -5,11 +5,20 @@ import {
   createHeadingElement,
 } from '../../../lib/element.ts';
 import { getCarousel } from './carousel/carousel.ts';
+import { getErrorElement } from '../../common-components/error-element/error-element.ts';
 
-export function createNewGamesSection() {
+export async function createNewGamesSection() {
+  let carousel: HTMLElement | undefined;
+
+  try {
+    carousel = await getCarousel();
+  } catch (error) {
+    carousel = getErrorElement(error);
+  }
+
   return createDivElement({
     classList: ['new-games-section'],
-    children: [getCarouselHeaderElement(), getCarousel()],
+    children: [getCarouselHeaderElement(), carousel],
   });
 }
 
