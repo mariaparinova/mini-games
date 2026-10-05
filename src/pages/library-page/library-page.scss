@@ -153,6 +153,15 @@
   max-width: 600px;
 }
 
+.extended-library-card-img-container {
+  overflow: hidden;
+  max-height: 220px;
+
+  & img {
+    width: 100%;
+  }
+}
+
 .extended-library-card-header {
   display: flex;
   gap: variables.$size-2;
