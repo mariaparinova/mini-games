@@ -40,7 +40,7 @@
 .library-cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(3, minmax(200px, 1fr));
   gap: variables.$size-3;
   padding-top: variables.$size-2;
 
@@ -218,6 +218,7 @@
 
   .library-cards-container {
     grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(195px, 1fr));
     padding-top: variables.$size-2;
   }
 
@@ -254,6 +255,7 @@
 
   .library-cards-container {
     gap: variables.$size-2;
+    grid-template-rows: auto;
   }
 
   .library-card {
