@@ -31,7 +31,6 @@ const CARDS_PER_PAGE = 6;
 const INIT_CATEGORY: Category = 'all';
 const INIT_SORT_ORDER: Sort = 'rating-desc';
 const libraryCardsContainerElement = getLibraryCardsContainerElement();
-const currentPage = 1;
 let currentCategory: Category = INIT_CATEGORY;
 let currentSortOrder: Sort = INIT_SORT_ORDER;
 const extendedLibraryCard = {
@@ -73,6 +72,26 @@ const extendedLibraryCard = {
   },
 };
 
+const paginationParams = {
+  currentPage: 1,
+  totalPages: 1,
+  maxVisiblePages: 4,
+};
+const paginationElement = getPagination({ ...paginationParams, onPageChange });
+
+async function onPageChange(newPage: number) {
+  if (
+    newPage === paginationParams.currentPage ||
+    newPage < 1 ||
+    newPage > paginationParams.totalPages
+  ) {
+    return;
+  }
+
+  paginationParams.currentPage = newPage;
+  await updateLibraryCards();
+}
+
 export async function initLibraryPage() {
   const heading = getLibraryHeadingElement();
   const pageElement = createDivElement({
@@ -80,12 +99,10 @@ export async function initLibraryPage() {
     children: [],
   });
   let controls: HTMLElement | undefined;
-  let pagination: HTMLElement | undefined;
 
   try {
     controls = await getLibraryControlsElement();
     await updateLibraryCards();
-    pagination = getPagination({ visiblePages: 4 });
   } catch (err) {
     console.error(err);
   } finally {
@@ -93,11 +110,7 @@ export async function initLibraryPage() {
       controls = getErrorElement();
     }
 
-    if (!pagination) {
-      pagination = getErrorElement();
-    }
-
-    pageElement.append(heading, controls, libraryCardsContainerElement, pagination);
+    pageElement.append(heading, controls, libraryCardsContainerElement, paginationElement);
   }
   return pageElement;
 }
@@ -337,11 +350,13 @@ async function updateLibraryCards() {
   try {
     await new Promise((resolve) => setTimeout(resolve, 500));
     cardsData = await getAllGames({
-      page: currentPage,
+      page: paginationParams.currentPage,
       limit: CARDS_PER_PAGE,
       category: currentCategory,
       sort: currentSortOrder,
     });
+
+    paginationParams.totalPages = Math.ceil(cardsData.meta.totalItems / CARDS_PER_PAGE);
 
     const cards = cardsData.data.map((card) => {
       const libraryCardElement = createDivElement({
@@ -430,10 +445,17 @@ async function updateLibraryCards() {
       return libraryCardElement;
     });
 
-    libraryCardsContainerElement.append(...cards);
+    if (cards.length > 0) {
+      libraryCardsContainerElement.append(...cards);
+    } else {
+      libraryCardsContainerElement.append('Cards not found. Try to change the filter');
+    }
   } catch (error) {
     libraryCardsContainerElement.append(getErrorElement(error));
   } finally {
+    const updatedPaginationElement = getPagination({ ...paginationParams, onPageChange });
+    paginationElement.innerHTML = '';
+    paginationElement.append(updatedPaginationElement);
     libraryCardsContainerElement.removeChild(loader);
   }
 }
