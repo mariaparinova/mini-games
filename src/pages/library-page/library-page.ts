@@ -33,44 +33,6 @@ const INIT_SORT_ORDER: Sort = 'rating-desc';
 const libraryCardsContainerElement = getLibraryCardsContainerElement();
 let currentCategory: Category = INIT_CATEGORY;
 let currentSortOrder: Sort = INIT_SORT_ORDER;
-const extendedLibraryCard = {
-  data: {
-    slug: 'tukoni-forest-keepers',
-    name: 'Tukoni: Forest Keepers',
-    heroImage: '/assets/images/games/tukoni-forest-keepers-hero.jpg',
-    rating: 4.9,
-    likesCount: 31200,
-    isLikedByCurrentUser: false,
-    fullDescription:
-      'Tukoni: Forest Keepers — a cozy hand-drawn puzzle-adventure. You are Traveller, a little forest spirit on an important mission. Wander storybook meadows, visit mushroom villages, meet adorable inhabitants, solve gentle hand-crafted puzzles, brew herbal teas and help the Tukoni forest prepare peacefully for the coming winter.',
-    specs: {
-      genre: 'Puzzle',
-      players: 'Solo',
-      duration: '40-90 min',
-      price: 'Free',
-    },
-    topRecords: [
-      {
-        position: 1,
-        playerName: 'ForestSpirit',
-        score: 356700,
-        achievedAt: '2026-08-28T14:30:00Z',
-      },
-      {
-        position: 2,
-        playerName: 'TeaBrewer',
-        score: 332400,
-        achievedAt: '2026-08-25T09:12:00Z',
-      },
-      {
-        position: 3,
-        playerName: 'HerbalistPath',
-        score: 308900,
-        achievedAt: '2026-08-23T18:45:00Z',
-      },
-    ],
-  },
-};
 
 const paginationParams = {
   currentPage: 1,
@@ -223,7 +185,7 @@ async function getDetailedLibraryCardElement({ slug }: { slug: string }) {
     classList: ['extended-library-card-img-container'],
     children: [
       createImgElement({
-        src: extendedLibraryCard.data.heroImage,
+        src: game.data.heroImage,
         alt: game.data.name,
       }),
     ],
@@ -245,10 +207,10 @@ async function getDetailedLibraryCardElement({ slug }: { slug: string }) {
 
   const extendedLibraryCardDescription = createDivElement({
     classList: ['extended-library-card-description'],
-    textContent: extendedLibraryCard.data.fullDescription,
+    textContent: game.data.fullDescription,
   });
 
-  const specsElement = createSpecsElement(extendedLibraryCard.data.specs);
+  const specsElement = createSpecsElement(game.data.specs);
 
   const extendedLibraryCardButtons = createDivElement({
     classList: ['extended-library-card-buttons-container'],
@@ -348,7 +310,6 @@ async function updateLibraryCards() {
   libraryCardsContainerElement.append(loader);
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 500));
     cardsData = await getAllGames({
       page: paginationParams.currentPage,
       limit: CARDS_PER_PAGE,
@@ -414,6 +375,7 @@ async function updateLibraryCards() {
         classList: ['button', 'primary', 'small'],
         textContent: 'Details',
         onClick: async () => {
+          const loader = getLoaderElement();
           let extendedLibraryCardDialogElement: HTMLDialogElement | null = document.querySelector(
             `.extended-library-card-dialog`,
           );
@@ -421,9 +383,20 @@ async function updateLibraryCards() {
           if (!extendedLibraryCardDialogElement) {
             extendedLibraryCardDialogElement = createDialogElement({
               classList: ['extended-library-card-dialog'],
-              children: [await getDetailedLibraryCardElement({ slug: card.slug })],
+              children: [loader],
             });
+
             document.body.append(extendedLibraryCardDialogElement);
+          }
+
+          let extendedCard: HTMLElement | undefined;
+
+          try {
+            extendedCard = await getDetailedLibraryCardElement({ slug: card.slug });
+          } catch (error) {
+            extendedCard = getErrorElement(error);
+          } finally {
+            extendedLibraryCardDialogElement.replaceChildren(extendedCard || 'Unknown error');
           }
 
           extendedLibraryCardDialogElement.showModal();

@@ -41,7 +41,6 @@ export async function updatePage(params: UpdatePage) {
   let pageElement: HTMLElement | undefined;
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 500));
     pageElement = await page.initPage();
   } catch (err) {
     pageElement = getErrorElement(err);
