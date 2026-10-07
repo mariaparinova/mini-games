@@ -72,9 +72,12 @@ export function getPageNameFromLocation(): PageName {
   if (base !== '/' && path.startsWith(base)) {
     path = path.slice(base.length - 1);
   }
-  if (path === '/' || path === '/home') {
+
+  const normalizedPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
+
+  if (normalizedPath === '/' || normalizedPath === '/home') {
     return 'home';
-  } else if (path === '/library') {
+  } else if (normalizedPath === '/library') {
     return 'library';
   } else {
     return 'not-found';
@@ -83,7 +86,11 @@ export function getPageNameFromLocation(): PageName {
 
 export async function navigate(path: string) {
   const base = import.meta.env.BASE_URL;
-  const normalizedPath = path === '/' ? base : `${base}${path}`;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const normalizedPath =
+    cleanPath === '' || cleanPath === '/'
+      ? base
+      : `${base.endsWith('/') ? base : `${base}/`}${cleanPath}`;
 
   history.pushState({}, '', normalizedPath);
   await updatePage({ pageName: getPageNameFromLocation() });

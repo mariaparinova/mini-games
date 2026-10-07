@@ -2,7 +2,7 @@ import './styles.scss';
 import { getHeaderElement } from './pages/common-components/header/header.ts';
 import { getFooterElement } from './pages/common-components/footer/footer.ts';
 import { createDivElement } from './lib/element.ts';
-import { ROUTER, updatePage } from './router.ts';
+import { getPageNameFromLocation, ROUTER, updatePage } from './router.ts';
 
 init();
 
@@ -21,7 +21,6 @@ function addLayout({ app }: { app: HTMLDivElement }) {
 
   app.append(pageElement);
 }
-
 function init() {
   const app = document.querySelector<HTMLDivElement>('#app');
   if (!app) {
@@ -29,6 +28,9 @@ function init() {
     return;
   }
 
+  window.addEventListener('popstate', () => {
+    updatePage({ pageName: getPageNameFromLocation() });
+  });
   addLayout({ app });
 
   const outlet = document.querySelector('main.main') as HTMLElement;
@@ -39,7 +41,7 @@ function init() {
   ROUTER.outlet = outlet;
 
   updatePage({
-    pageName: 'home',
+    pageName: getPageNameFromLocation(),
   });
 
   document.body.addEventListener('click', (event) => {
