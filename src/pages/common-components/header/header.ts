@@ -8,7 +8,7 @@ import {
 } from '../../../lib/element.ts';
 import { getLogoElement } from '../logo/logo.ts';
 import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
-import { type PAGE_NAME, updatePage } from '../../../router.ts';
+import { navigate } from '../../../router.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -17,7 +17,7 @@ export const NavItem = {
   Community: 'Community',
 } as const;
 
-export type NavItem = keyof typeof NavItem;
+export type NavItem = keyof typeof NavItem | '';
 
 export function getHeaderElement(
   params: { activeItem: NavItem },
@@ -65,10 +65,7 @@ function getNavigationElement(params: GetNavigationElementParams) {
       classList: linkClasses,
       href: `${item.toLowerCase()}`,
       textContent: item,
-      onClick: async () =>
-        await updatePage({
-          pageName: item.toLowerCase() as PAGE_NAME,
-        }),
+      onClick: async () => await navigate(item.toLowerCase()),
     });
 
     return createLiElement({
@@ -157,16 +154,12 @@ function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) 
 
 export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
   const currentActiveItems = document.body.querySelectorAll('header .active');
-  if (!currentActiveItems.length) {
-    console.warn('No active items found');
+
+  if (currentActiveItems[0]?.textContent === activeNavItem) {
     return;
   }
 
-  if (currentActiveItems[0].textContent === activeNavItem) {
-    return;
-  }
-
-  currentActiveItems.forEach((item) => item.classList.remove('active'));
+  currentActiveItems?.forEach((item) => item.classList.remove('active'));
 
   const desktopNavItems = document.body.querySelectorAll('header .desktop-nav a');
   Array.from(desktopNavItems)
