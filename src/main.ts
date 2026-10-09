@@ -21,16 +21,13 @@ function addLayout({ app }: { app: HTMLDivElement }) {
 
   app.append(pageElement);
 }
-function init() {
-  const app = document.querySelector<HTMLDivElement>('#app');
-  if (!app) {
-    console.error('App element not found');
-    return;
-  }
 
-  window.addEventListener('popstate', () => {
-    updatePage({ pageName: getPageNameFromLocation() });
-  });
+function init() {
+  let app = document.querySelector<HTMLDivElement>('#app');
+  if (!app) {
+    app = createDivElement({ id: 'app' });
+    document.body.append(app);
+  }
   addLayout({ app });
 
   const outlet = document.querySelector('main.main') as HTMLElement;
@@ -40,7 +37,11 @@ function init() {
   }
   ROUTER.outlet = outlet;
 
-  updatePage({
+  window.addEventListener('popstate', () => {
+    void updatePage({ pageName: getPageNameFromLocation() });
+  });
+
+  void updatePage({
     pageName: getPageNameFromLocation(),
   });
 

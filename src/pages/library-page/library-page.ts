@@ -13,7 +13,7 @@ import { getSelectControl, type Sort } from '../common-components/select-control
 import { getPagination } from '../common-components/pagination/pagination.ts';
 import { createDialogElement } from '../common-components/dialog/dialog.ts';
 import { getIconFavoriteElement } from '../common-components/icon-favorite/icon-favorite.ts';
-import type { createSpecsElementParams } from './library-page.types.ts';
+import type { createSpecsElementParams, LibraryUrlParams } from './library-page.types.ts';
 import {
   getAllGames,
   getCategories,
@@ -30,27 +30,63 @@ import { getLoaderElement } from '../common-components/loader/loader.ts';
 const CARDS_PER_PAGE = 6;
 const INIT_CATEGORY: Category = 'all';
 const INIT_SORT_ORDER: Sort = 'rating-desc';
+const INIT_PAGE = 1;
 const libraryCardsContainerElement = getLibraryCardsContainerElement();
-let currentCategory: Category = INIT_CATEGORY;
-let currentSortOrder: Sort = INIT_SORT_ORDER;
+const paginationElement = getPagination({
+  currentPage: INIT_PAGE,
+  totalPages: INIT_PAGE,
+  onPageChange,
+});
+function getLibraryUrlParams(): LibraryUrlParams {
+  const params = new URLSearchParams(location.search);
+  const category = (params.get('category') as Category) || INIT_CATEGORY;
+  const sort = (params.get('sort') as Sort) || INIT_SORT_ORDER;
 
-const paginationParams = {
-  currentPage: 1,
-  totalPages: 1,
-  maxVisiblePages: 4,
-};
-const paginationElement = getPagination({ ...paginationParams, onPageChange });
+  let page = Number(params.get('page'));
+  if (!Number.isSafeInteger(page) || page < 1) {
+    page = 1;
+  }
+
+  return {
+    category,
+    sort,
+    page,
+  };
+}
+
+function updateLibraryUrlParams(
+  params: [string, string] | [string, string][],
+  options?: { replace?: boolean },
+) {
+  const searchParams = new URLSearchParams(location.search);
+  const entries = Array.isArray(params[0])
+    ? (params as [string, string][])
+    : [params as [string, string]];
+
+  for (const [key, value] of entries) {
+    searchParams.set(key, value);
+  }
+
+  const newUrl = `${location.pathname}?${searchParams.toString()}`;
+  if (options?.replace) {
+    history.replaceState(null, '', newUrl);
+  } else {
+    history.pushState(null, '', newUrl);
+  }
+}
 
 async function onPageChange(newPage: number) {
-  if (
-    newPage === paginationParams.currentPage ||
-    newPage < 1 ||
-    newPage > paginationParams.totalPages
-  ) {
+  let currentPage: number | string | null = new URLSearchParams(location.search).get('page');
+
+  if (currentPage) {
+    currentPage = +currentPage;
+  }
+
+  if (newPage === currentPage) {
     return;
   }
 
-  paginationParams.currentPage = newPage;
+  updateLibraryUrlParams(['page', `${newPage}`]);
   await updateLibraryCards();
 }
 
@@ -62,9 +98,24 @@ export async function initLibraryPage() {
   });
   let controls: HTMLElement | undefined;
 
+  const currentParams = getLibraryUrlParams();
+  const searchParams = new URLSearchParams(location.search);
+  const isMissingParams =
+    !searchParams.has('category') || !searchParams.has('sort') || !searchParams.has('page');
+
+  if (isMissingParams) {
+    updateLibraryUrlParams(
+      [
+        ['category', currentParams.category],
+        ['sort', currentParams.sort],
+        ['page', currentParams.page.toString()],
+      ],
+      { replace: true },
+    );
+  }
+
   try {
     controls = await getLibraryControlsElement();
-    await updateLibraryCards();
   } catch (err) {
     console.error(err);
   } finally {
@@ -74,6 +125,9 @@ export async function initLibraryPage() {
 
     pageElement.append(heading, controls, libraryCardsContainerElement, paginationElement);
   }
+
+  await updateLibraryCards();
+
   return pageElement;
 }
 
@@ -95,35 +149,38 @@ function getLibraryHeadingElement() {
 
 async function getLibraryControlsElement() {
   let chips: Chip[];
-  let selectedChip = '';
 
   const categoryClickHandler = async (event: MouseEvent) => {
     const target = event.target as HTMLElement;
 
-    if (target.id === selectedChip) {
+    if (target.classList.contains('selected')) {
       return;
     }
 
     document.body.querySelector('.chip.selected')?.classList.remove('selected');
     target.classList.add('selected');
-    selectedChip = target.id;
 
-    currentCategory = target.id as Category;
+    updateLibraryUrlParams([
+      ['category', target.id],
+      ['page', '1'],
+    ]);
     await updateLibraryCards();
   };
 
   try {
+    const { category: currentCategory } = getLibraryUrlParams();
     const categories = await getCategories();
+    const hasMatchingCategory = categories.data.some((cat) => cat.slug === currentCategory);
+
     chips = categories.data.map((category) => {
-      if (category.isDefault) {
-        selectedChip = category.slug;
-      }
+      const isDefault = hasMatchingCategory
+        ? category.slug === currentCategory
+        : category.isDefault;
 
       return {
         slug: category.slug,
         label: category.label,
-        isDefault: category.isDefault,
-        isSelected: category.slug === currentCategory,
+        isDefault,
         onClick: categoryClickHandler,
       };
     });
@@ -134,6 +191,7 @@ async function getLibraryControlsElement() {
 
   const chipsElement = getChips({ chips });
 
+  const { sort: currentSort } = getLibraryUrlParams();
   const selectElement = getSelectControl({
     name: 'sort-games',
     id: 'sort-games',
@@ -144,15 +202,20 @@ async function getLibraryControlsElement() {
       { name: 'Name A→Z', value: 'name-asc' },
     ],
     onChange: async (event: Event) => {
-      const target = event.target as HTMLOptionElement;
+      const target = event.target as HTMLSelectElement;
       if (!target.closest('#sort-games')) {
         return;
       }
 
-      currentSortOrder = target.value as Sort;
+      updateLibraryUrlParams([
+        ['sort', target.value],
+        ['page', '1'],
+      ]);
       await updateLibraryCards();
     },
   });
+
+  selectElement.value = currentSort;
 
   return createDivElement({
     classList: ['controls'],
@@ -305,19 +368,22 @@ function createSpecsElement(params: createSpecsElementParams) {
 async function updateLibraryCards() {
   const loader = getLoaderElement();
   let cardsData: AllGamesDto | undefined;
+  let totalPages = 0;
 
   libraryCardsContainerElement.innerHTML = '';
   libraryCardsContainerElement.append(loader);
 
+  const { category, sort, page } = getLibraryUrlParams();
+
   try {
     cardsData = await getAllGames({
-      page: paginationParams.currentPage,
+      page,
       limit: CARDS_PER_PAGE,
-      category: currentCategory,
-      sort: currentSortOrder,
+      category,
+      sort,
     });
 
-    paginationParams.totalPages = Math.ceil(cardsData.meta.totalItems / CARDS_PER_PAGE);
+    totalPages = Math.ceil(cardsData.meta.totalItems / CARDS_PER_PAGE);
 
     const cards = cardsData.data.map((card) => {
       const libraryCardElement = createDivElement({
@@ -426,9 +492,9 @@ async function updateLibraryCards() {
   } catch (error) {
     libraryCardsContainerElement.append(getErrorElement(error));
   } finally {
-    const updatedPaginationElement = getPagination({ ...paginationParams, onPageChange });
+    loader.remove();
+    const updatedPaginationElement = getPagination({ currentPage: page, totalPages, onPageChange });
     paginationElement.innerHTML = '';
     paginationElement.append(updatedPaginationElement);
-    libraryCardsContainerElement.removeChild(loader);
   }
 }

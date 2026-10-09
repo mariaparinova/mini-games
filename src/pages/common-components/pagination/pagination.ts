@@ -59,6 +59,6 @@ export function getPagination(params: PaginationParams) {
 export interface PaginationParams {
   currentPage: number;
   totalPages: number;
-  maxVisiblePages: number;
+  maxVisiblePages?: number;
   onPageChange: (page: number) => void;
 }
