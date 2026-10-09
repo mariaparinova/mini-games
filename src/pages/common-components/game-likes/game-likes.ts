@@ -8,11 +8,19 @@ export function getGameLikes(likesAmount: number) {
   });
 
   const textElement = createSpanElement({
-    textContent: likesAmount.toString(),
+    textContent: formatLikes(likesAmount),
   });
 
   return createDivElement({
     classList: ['game-likes'],
     children: [iconElement, textElement],
   });
+}
+
+function formatLikes(amount: number): string {
+  if (amount < 1000) {
+    return `${amount}`;
+  }
+
+  return `${Math.floor(amount / 100) / 10}K`;
 }
