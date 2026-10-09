@@ -3,6 +3,7 @@ import { getLoaderElement } from './pages/common-components/loader/loader.ts';
 import { getErrorElement } from './pages/common-components/error-element/error-element.ts';
 import { initHomePage } from './pages/home-page/home-page.ts';
 import { initLibraryPage } from './pages/library-page/library-page.ts';
+import { initNotFoundPage } from './pages/not-found-page/not-found-page.ts';
 
 export const ROUTER: Router = {
   outlet: undefined,
@@ -17,16 +18,16 @@ export const ROUTER: Router = {
       activeNavItem: 'Library',
       initPage: () => initLibraryPage(),
     },
+    {
+      pageName: 'not-found',
+      activeNavItem: '',
+      initPage: () => initNotFoundPage(),
+    },
   ],
 };
 
-export async function updatePage(params: UpdatePage) {
-  const { pageName } = params;
-  const page = ROUTER.pages.find((page) => page.pageName === pageName);
-  if (!page) {
-    console.error(`This page: "${pageName}" does not exist in router`);
-    return;
-  }
+export async function updatePage({ pageName }: { pageName: PageName }): Promise<void> {
+  const page = ROUTER.pages.find((page) => page.pageName === pageName) || ROUTER.pages.at(-1)!;
 
   setHeader({ activeNavItem: page.activeNavItem });
 
@@ -51,19 +52,46 @@ export async function updatePage(params: UpdatePage) {
   }
 }
 
-interface UpdatePage {
-  pageName: PAGE_NAME;
-}
-
 interface Router {
   outlet: HTMLElement | undefined;
   pages: Page[];
 }
 
 interface Page {
-  pageName: PAGE_NAME;
+  pageName: PageName;
   activeNavItem: NavItem;
   initPage: () => Promise<HTMLElement>;
 }
 
-export type PAGE_NAME = 'home' | 'library';
+export type PageName = 'home' | 'library' | 'not-found';
+
+export function getPageNameFromLocation(): PageName {
+  const base = import.meta.env.BASE_URL;
+  let path = location.pathname;
+
+  if (base !== '/' && path.startsWith(base)) {
+    path = path.slice(base.length - 1);
+  }
+
+  const normalizedPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
+
+  if (normalizedPath === '/' || normalizedPath === '/home') {
+    return 'home';
+  } else if (normalizedPath === '/library') {
+    return 'library';
+  } else {
+    return 'not-found';
+  }
+}
+
+export async function navigate(path: string) {
+  const base = import.meta.env.BASE_URL;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const normalizedPath =
+    cleanPath === '' || cleanPath === '/'
+      ? base
+      : `${base.endsWith('/') ? base : `${base}/`}${cleanPath}`;
+
+  history.pushState({}, '', normalizedPath);
+  await updatePage({ pageName: getPageNameFromLocation() });
+}
