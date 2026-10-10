@@ -2,7 +2,7 @@
 @use '../../../../styles/breakpoints';
 
 .carousel {
-  padding: 0 8px;
+  padding: 0 variables.$size-1;
 }
 
 .new-games-section-header {
@@ -13,16 +13,19 @@
 
 .carousel-buttons {
   display: flex;
-  gap: 16px;
+  gap: variables.$size-2;
 }
 
 .cards-container {
   display: grid;
   grid-template-columns:
-    minmax(0px, 120px) minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px)
-    minmax(0px, 120px);
+    minmax(0px, variables.$size-15) minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(
+      variables.$size-7,
+      288px
+    )
+    minmax(0px, variables.$size-15);
   grid-template-rows: repeat(1, 1fr);
-  gap: 8px;
+  gap: variables.$size-1;
   overflow-x: hidden;
 }
 
@@ -41,8 +44,8 @@
 .carousel-card-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: variables.$size-1;
+  padding: variables.$size-2;
   line-height: 20px;
   box-shadow: variables.$gradient-darkener-80;
 }
@@ -64,7 +67,9 @@
   }
 
   .cards-container {
-    grid-template-columns: 0 minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px) 0;
+    grid-template-columns:
+      0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(variables.$size-7, 288px)
+      0;
   }
 
   .carousel-card {
@@ -87,12 +92,14 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .cards-container {
-    grid-template-columns: 0 minmax(56px, 288px) minmax(218px, 816px) minmax(56px, 288px) 0;
+    grid-template-columns:
+      0 minmax(variables.$size-7, 288px) minmax(218px, 816px) minmax(variables.$size-7, 288px)
+      0;
     grid-template-rows: repeat(1, 1fr);
     overflow: hidden;
   }
 
   .carousel-card {
-    height: 200px;
+    height: variables.$size-18;
   }
 }

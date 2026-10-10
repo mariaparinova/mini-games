@@ -8,7 +8,7 @@ export function getGameRating(rating: number) {
   });
 
   const textElement = createSpanElement({
-    textContent: rating.toString(),
+    textContent: rating.toFixed(1),
   });
 
   return createDivElement({

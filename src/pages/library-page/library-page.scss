@@ -23,7 +23,7 @@
 .library-page-content .heading-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: variables.$size-1;
 }
 
 .library-page-content .subheading {
@@ -40,7 +40,7 @@
 .library-cards-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(3, minmax(200px, 1fr));
   gap: variables.$size-3;
   padding-top: variables.$size-2;
 
@@ -153,6 +153,15 @@
   max-width: 600px;
 }
 
+.extended-library-card-img-container {
+  overflow: hidden;
+  height: 220px;
+
+  & img {
+    width: 100%;
+  }
+}
+
 .extended-library-card-header {
   display: flex;
   gap: variables.$size-2;
@@ -218,6 +227,7 @@
 
   .library-cards-container {
     grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(195px, 1fr));
     padding-top: variables.$size-2;
   }
 
@@ -254,6 +264,7 @@
 
   .library-cards-container {
     gap: variables.$size-2;
+    grid-template-rows: auto;
   }
 
   .library-card {

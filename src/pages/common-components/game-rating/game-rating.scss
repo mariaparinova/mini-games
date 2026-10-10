@@ -3,7 +3,7 @@
 .game-rating {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: variables.$size-05;
   color: variables.$white;
   font-size: variables.$body-medium;
   font-weight: variables.$font-weight-bold;

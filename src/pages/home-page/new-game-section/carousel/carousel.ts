@@ -2,44 +2,26 @@ import './carousel.scss';
 import { createDivElement, createSpanElement } from '../../../../lib/element.ts';
 import { getGameRating } from '../../../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../../../common-components/game-likes/game-likes.ts';
+import { getAllGames } from '../../../../data-access/minigames-api/minigames.api.ts';
+import type { AllGamesDto } from '../../../../data-access/minigames-api/minigames-api.types.ts';
+import { getErrorElement } from '../../../common-components/error-element/error-element.ts';
 
-const cards: CardElementParams[] = [
-  {
-    name: 'Shelve the Potions!',
-    rating: 4.7,
-    likesCount: 21300,
-    cardImage: '/assets/images/games/shelve-the-potions-card.jpg',
-  },
-  {
-    name: 'ISLANDERS: New Shores',
-    rating: 4.9,
-    likesCount: 54200,
-    cardImage: '/assets/images/games/islanders-new-shores-card.jpg',
-  },
-  {
-    name: 'Vacation Cafe Simulator',
-    rating: 4.8,
-    likesCount: 28750,
-    cardImage: 'assets/images/games/vacation-cafe-simulator-card.jpg',
-  },
-  {
-    name: 'Winter Burrow',
-    rating: 4.9,
-    likesCount: 32400,
-    cardImage: '/assets/images/games/winter-burrow-card.jpg',
-  },
-  {
-    name: 'Heartopia',
-    rating: 4.6,
-    likesCount: 46800,
-    cardImage: '/assets/images/games/heartopia-card.jpg',
-  },
-];
+export async function getCarousel() {
+  let cardsData: AllGamesDto['data'] | undefined;
 
-export function getCarousel() {
+  try {
+    const response = await getAllGames({ featured: true });
+    cardsData = response.data;
+  } catch (error) {
+    return getErrorElement(error);
+  }
+
+  const cards =
+    cardsData?.slice(0, 5).map((card, i) => createCardElement({ ...card, id: i + 1 })) || [];
+
   const cardsContainer = createDivElement({
     classList: ['cards-container'],
-    children: [...cards.map((card, i) => createCardElement({ ...card, id: i + 1 }))],
+    children: [...cards],
   });
 
   return createDivElement({

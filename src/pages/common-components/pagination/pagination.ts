@@ -1,32 +1,54 @@
 import './pagination.scss';
 import { createButtonElement, createDivElement } from '../../../lib/element.ts';
 
-export function getPagination(params: getPaginationParams) {
-  const { visiblePages } = params;
+const DEFAULT_MAX_VISIBLE_PAGES = 4;
+
+export function getPagination(params: PaginationParams) {
+  const {
+    currentPage,
+    totalPages,
+    maxVisiblePages = DEFAULT_MAX_VISIBLE_PAGES,
+    onPageChange,
+  } = params;
 
   const buttonToPrevious = createButtonElement({
-    classList: ['button', 'button-pagination'],
+    classList: ['button', 'button-pagination', 'to-previous'],
     textContent: '<',
-    disabled: true,
+    disabled: currentPage <= 1,
   });
+  buttonToPrevious.addEventListener('click', () => onPageChange(currentPage - 1));
 
-  const pageButtons = new Array(visiblePages).fill(null).map((_, i) => {
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = startPage + maxVisiblePages - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+
+  const pageButtons: HTMLButtonElement[] = [];
+
+  for (let page = startPage; page <= endPage; page++) {
     const classList = ['button', 'button-pagination', 'page-item'];
-
-    if (i === 0) {
+    if (page === currentPage) {
       classList.push('active');
     }
 
-    return createButtonElement({
+    const button = createButtonElement({
       classList,
-      textContent: `${i + 1}`,
+      textContent: `${page}`,
     });
-  });
+
+    button.addEventListener('click', () => onPageChange(page));
+    pageButtons.push(button);
+  }
 
   const buttonToNext = createButtonElement({
-    classList: ['button', 'button-pagination'],
+    classList: ['button', 'button-pagination', 'to-next'],
     textContent: '>',
+    disabled: currentPage >= totalPages,
   });
+  buttonToNext.addEventListener('click', () => onPageChange(currentPage + 1));
 
   return createDivElement({
     classList: ['pagination'],
@@ -34,6 +56,9 @@ export function getPagination(params: getPaginationParams) {
   });
 }
 
-interface getPaginationParams {
-  visiblePages?: number;
+export interface PaginationParams {
+  currentPage: number;
+  totalPages: number;
+  maxVisiblePages?: number;
+  onPageChange: (page: number) => void;
 }

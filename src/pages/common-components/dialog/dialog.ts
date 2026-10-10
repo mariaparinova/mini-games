@@ -25,7 +25,7 @@ function closeDialog(event: MouseEvent) {
     event.clientY < dialogBounds.top ||
     event.clientY > dialogBounds.bottom
   ) {
-    dialogElement.close();
+    dialogElement.remove();
   }
 }
 

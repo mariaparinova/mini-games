@@ -7,7 +7,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: variables.$size-5;
 }
 
 .leaderboard-table-container {
@@ -31,7 +31,7 @@
 }
 
 .leaderboard-table-head th {
-  padding: 24px 0;
+  padding: variables.$size-3 0;
   text-align: center;
 }
 
@@ -43,7 +43,7 @@
   }
 
   td {
-    padding: 0 8px;
+    padding: 0 variables.$size-1;
     color: variables.$on-primary;
     font-family: variables.$font-family-roboto;
     font-size: variables.$body-medium;
@@ -66,8 +66,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: variables.$size-5;
+    height: variables.$size-5;
     border: 1.5px solid variables.$on-primary;
     border-radius: variables.$corner-extra-large;
   }
@@ -95,11 +95,11 @@
   .player-name {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: variables.$size-1a;
   }
 
   .favorite-game .text {
-    padding: 4px 12px;
+    padding: variables.$size-05 variables.$size-1a;
     font-size: variables.$body-xsmall;
     border: 1.5px solid variables.$on-primary;
     border-radius: variables.$corner-large;
@@ -108,7 +108,7 @@
 
 @media screen and (max-width: breakpoints.$tablet) {
   .leaderboard-section {
-    gap: 24px;
+    gap: variables.$size-3;
   }
 
   .leaderboard-table-container {
@@ -138,7 +138,7 @@
   }
 
   .leaderboard-table-head th {
-    padding: 16px 0;
+    padding: variables.$size-2 0;
 
     h4 {
       font-size: variables.$body-medium;
@@ -156,7 +156,7 @@
 
 @media screen and (max-width: breakpoints.$mobile) {
   .leaderboard-section {
-    gap: 16px;
+    gap: variables.$size-2;
 
     h2 {
       font-size: variables.$headline-medium;
@@ -172,8 +172,8 @@
   }
 
   .leaderboard-table tbody .initials {
-    width: 24px;
-    height: 24px;
+    width: variables.$size-3;
+    height: variables.$size-3;
   }
 
   .games-played {
@@ -181,7 +181,7 @@
   }
 
   .leaderboard-table-head th {
-    padding: 8px;
+    padding: variables.$size-1;
 
     h4 {
       font-size: variables.$body-small;

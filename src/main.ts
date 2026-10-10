@@ -1,12 +1,8 @@
 import './styles.scss';
-import {
-  getHeaderElement,
-  type NavItem,
-  setHeader,
-} from './pages/common-components/header/header.ts';
+import { getHeaderElement } from './pages/common-components/header/header.ts';
 import { getFooterElement } from './pages/common-components/footer/footer.ts';
-import { getHomePageElement } from './pages/home-page/home-page.ts';
 import { createDivElement } from './lib/element.ts';
+import { getPageNameFromLocation, ROUTER, updatePage } from './router.ts';
 
 init();
 
@@ -17,7 +13,6 @@ function addLayout({ app }: { app: HTMLDivElement }) {
   const footer = getFooterElement();
   const main = document.createElement('main');
   main.classList.add('main');
-  main.append(getHomePageElement());
 
   const pageElement = createDivElement({
     classList: ['page'],
@@ -28,17 +23,26 @@ function addLayout({ app }: { app: HTMLDivElement }) {
 }
 
 function init() {
-  const app = document.querySelector<HTMLDivElement>('#app');
-
+  let app = document.querySelector<HTMLDivElement>('#app');
   if (!app) {
-    console.error('App element not found');
+    app = createDivElement({ id: 'app' });
+    document.body.append(app);
+  }
+  addLayout({ app });
+
+  const outlet = document.querySelector('main.main') as HTMLElement;
+  if (!outlet) {
+    console.error('Outlet element not found');
     return;
   }
+  ROUTER.outlet = outlet;
 
-  addLayout({ app });
-  updatePage({
-    activeNavItem: 'Home',
-    pageContent: getHomePageElement(),
+  window.addEventListener('popstate', () => {
+    void updatePage({ pageName: getPageNameFromLocation() });
+  });
+
+  void updatePage({
+    pageName: getPageNameFromLocation(),
   });
 
   document.body.addEventListener('click', (event) => {
@@ -54,36 +58,4 @@ function init() {
       return;
     }
   });
-}
-
-export function updatePage(params: UpdatePage) {
-  const { activeNavItem, pageContent } = params;
-  const currentActiveItems = document.body.querySelectorAll('header .active');
-
-  if (!currentActiveItems.length) {
-    console.warn('No active items found');
-    return;
-  }
-
-  if (currentActiveItems[0].textContent === activeNavItem) {
-    return;
-  }
-
-  setHeader({ activeNavItem });
-
-  const mainElement = document.body.querySelector('main');
-  if (!mainElement) {
-    console.warn('No page content found');
-    return;
-  }
-
-  mainElement.innerHTML = '';
-  mainElement.append(pageContent);
-
-  window.scrollTo({ top: 0 });
-}
-
-interface UpdatePage {
-  activeNavItem: NavItem;
-  pageContent: HTMLElement;
 }

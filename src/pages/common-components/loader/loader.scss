@@ -1,0 +1,22 @@
+@use '../../../styles/variables';
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  width: variables.$size-5;
+  height: variables.$size-5;
+  border: variables.$size-05 solid variables.$on-primary;
+  border-top: 4px solid variables.$primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

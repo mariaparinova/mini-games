@@ -6,17 +6,17 @@
   width: 100vw;
   height: 100vh;
   background: variables.$darkener-65;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(variables.$size-05);
 }
 
 @mixin page-section {
-  padding: 40px 120px;
+  padding: variables.$size-5 variables.$size-15;
 
   @media screen and (max-width: breakpoints.$tablet) {
-    padding: 24px 40px;
+    padding: variables.$size-3 variables.$size-5;
   }
 
   @media screen and (max-width: breakpoints.$mobile) {
-    padding: 16px;
+    padding: variables.$size-2;
   }
 }
