@@ -24,10 +24,11 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick, icon, disabled, id } = params;
+  const { classList = [], textContent, onClick, icon, disabled, id, type = 'button' } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
+  buttonElement.type = type;
 
   if (icon) {
     buttonElement.append(icon);
@@ -192,6 +193,7 @@ interface CreateButtonElementParams {
   icon?: HTMLImageElement | HTMLElement;
   disabled?: boolean;
   id?: string;
+  type?: 'submit' | 'button' | 'reset';
 }
 
 interface CreateImgElementParams {
