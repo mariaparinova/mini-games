@@ -113,6 +113,12 @@ h5 {
   border-radius: variables.$corner-small;
 }
 
+.helper {
+  height: variables.$size-2;
+  color: variables.$error;
+  font-size: variables.$body-small;
+}
+
 input {
   width: 100%;
   color: variables.$on-primary;
