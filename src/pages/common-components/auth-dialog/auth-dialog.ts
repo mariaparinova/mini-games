@@ -15,6 +15,11 @@ import {
   validateRegisterPassword,
   validateConfirmPassword,
 } from './auth-validation.ts';
+import {
+  firebaseCreateUser,
+  firebaseLoginUser,
+  firebaseLoginWithGoogle,
+} from '../../../firebase.ts';
 
 function resetAuthForm(formElement: HTMLFormElement) {
   formElement.reset();
@@ -33,6 +38,8 @@ function resetAuthForm(formElement: HTMLFormElement) {
   if (submitButton) {
     submitButton.disabled = true;
   }
+
+  clearFormError(formElement);
 }
 
 function setupAuthFormValidation(formElement: HTMLFormElement, mode: AuthDialogMode) {
@@ -133,6 +140,8 @@ function setupAuthFormValidation(formElement: HTMLFormElement, mode: AuthDialogM
       return;
     }
 
+    clearFormError(formElement);
+
     const fieldName = target.name || target.id;
     validateField(fieldName, true);
 
@@ -156,10 +165,13 @@ function setupAuthFormValidation(formElement: HTMLFormElement, mode: AuthDialogM
   formElement.addEventListener('change', handleFieldEvent);
   formElement.addEventListener('blur', handleFieldEvent, true);
 
-  formElement.addEventListener('submit', (event) => {
+  formElement.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    clearFormError(formElement);
+
     const isValid = checkFormValidity();
+
     if (!isValid) {
-      event.preventDefault();
       if (mode === 'login') {
         validateField('email', true);
         validateField('password', true);
@@ -169,6 +181,28 @@ function setupAuthFormValidation(formElement: HTMLFormElement, mode: AuthDialogM
         validateField('password', true);
         validateField('confirmPassword', true);
       }
+
+      updateSubmitButtonState();
+      return;
+    }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    try {
+      const { email, password, userName } = getAuthFormData(formElement);
+
+      if (mode === 'login') {
+        await firebaseLoginUser({ email, password });
+      } else {
+        await firebaseCreateUser({ email, password, userName });
+      }
+
+      closeAuthDialog(formElement);
+    } catch (error) {
+      setFormError(formElement, getAuthErrorMessage(error));
+    } finally {
       updateSubmitButtonState();
     }
   });
@@ -328,6 +362,7 @@ function createAuthDialogLoginButtons() {
     textContent: 'Continue with Google',
     classList: ['button', 'secondary'],
     icon: googleIcon,
+    onClick: () => continueWithGoogleClickHandler({ button: continueWithGoogleButton }),
   });
 
   return createAuthDialogButtonsContainer({
@@ -352,6 +387,7 @@ function createAuthDialogRegisterButtons() {
     textContent: 'Sign up with Google',
     classList: ['button', 'secondary'],
     icon: googleIcon,
+    onClick: () => continueWithGoogleClickHandler({ button: signupWithGoogleButton }),
   });
 
   return createAuthDialogButtonsContainer({
@@ -379,4 +415,88 @@ function createAuthDialogButtonsContainer({ buttons }: { buttons: HTMLButtonElem
     classList: ['auth-dialog-buttons'],
     children: buttonsWithDividers,
   });
+}
+
+function getAuthErrorMessage(error: unknown): string {
+  if (!(error instanceof Error)) {
+    return 'Something went wrong. Please try again.';
+  }
+
+  if (error.message.includes('auth/email-already-in-use')) {
+    return 'This email is already in use.';
+  }
+
+  if (error.message.includes('auth/invalid-credential')) {
+    return 'Invalid email or password.';
+  }
+
+  if (error.message.includes('auth/popup-closed-by-user')) {
+    return 'Google sign-in was cancelled.';
+  }
+
+  if (error.message.includes('auth/network-request-failed')) {
+    return 'Network error. Please check your connection.';
+  }
+
+  return 'Authentication failed. Please try again.';
+}
+
+function setFormError(formElement: HTMLFormElement, message: string) {
+  let formErrorElement = formElement.querySelector<HTMLElement>('.form-error');
+
+  if (!formErrorElement) {
+    formErrorElement = createDivElement({
+      classList: ['form-error'],
+    });
+    formElement.prepend(formErrorElement);
+  }
+
+  formErrorElement.textContent = message;
+}
+
+function clearFormError(formElement: HTMLFormElement) {
+  const formErrorElement = formElement.querySelector<HTMLElement>('.form-error');
+
+  if (formErrorElement) {
+    formErrorElement.textContent = '';
+  }
+}
+
+function closeAuthDialog(formElement: HTMLFormElement) {
+  const dialogElement = formElement.closest<HTMLDialogElement>('dialog');
+
+  if (dialogElement) {
+    dialogElement.close();
+  }
+
+  resetAuthForm(formElement);
+}
+
+function getAuthFormData(formElement: HTMLFormElement) {
+  const formData = new FormData(formElement);
+
+  return {
+    userName: String(formData.get('username') || '').trim(),
+    email: String(formData.get('email') || '').trim(),
+    password: String(formData.get('password') || ''),
+  };
+}
+
+async function continueWithGoogleClickHandler({ button }: { button: HTMLButtonElement }) {
+  const formElement = button.closest<HTMLFormElement>('form');
+
+  if (!formElement) {
+    return;
+  }
+
+  try {
+    clearFormError(formElement);
+    button.disabled = true;
+    await firebaseLoginWithGoogle();
+    closeAuthDialog(formElement);
+  } catch (error) {
+    setFormError(formElement, getAuthErrorMessage(error));
+  } finally {
+    button.disabled = false;
+  }
 }
