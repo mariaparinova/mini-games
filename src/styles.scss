@@ -136,6 +136,11 @@ input {
   text-transform: capitalize;
 }
 
+.form-error {
+  color: variables.$error;
+  font-weight: variables.$font-weight-bold;
+}
+
 @media screen and (max-width: breakpoints.$tablet) {
   body {
     font-size: variables.$body-small;

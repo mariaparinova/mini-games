@@ -29,5 +29,12 @@
       "prettier --write --ignore-unknown",
       "eslint --fix"
     ]
+  },
+  "dependencies": {
+    "firebase": "^13.0.0",
+    "firebase-tools": "^15.33.0"
+  },
+  "allowScripts": {
+    "firebase-tools@15.33.0": true
   }
 }
