@@ -32,7 +32,6 @@ function init() {
 
   const outlet = document.querySelector('main.main') as HTMLElement;
   if (!outlet) {
-    console.error('Outlet element not found');
     return;
   }
   ROUTER.outlet = outlet;

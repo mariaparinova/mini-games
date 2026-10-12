@@ -17,23 +17,13 @@ import type {
 const BASE_URL = 'https://faxb76kxra.execute-api.eu-central-1.amazonaws.com/api';
 
 export async function getCategories(): Promise<CategoryDto> {
-  try {
-    const response = await fetch(`${BASE_URL}/categories`);
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/categories`);
+  return await response.json();
 }
 
 export async function getLeaderboard(): Promise<LeaderboardDto> {
-  try {
-    const response = await fetch(`${BASE_URL}/leaderboard`);
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/leaderboard`);
+  return await response.json();
 }
 
 export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDto> {
@@ -50,24 +40,19 @@ export async function getAllGames(params: GetAllGamesParams): Promise<AllGamesDt
     queryParams.append('limit', `${limit}`);
   }
 
-  try {
-    const response = await fetch(`${BASE_URL}/games?${queryParams}`, {
-      headers: {
-        accept: 'application/json',
-      },
-    });
-    const cardsData = await response.json();
+  const response = await fetch(`${BASE_URL}/games?${queryParams}`, {
+    headers: {
+      accept: 'application/json',
+    },
+  });
+  const cardsData = await response.json();
 
-    if (cardsData.data) {
-      return cardsData;
-    }
+  if (cardsData.data) {
+    return cardsData;
+  }
 
-    if (cardsData.error) {
-      throw new Error(cardsData.error);
-    }
-  } catch (err) {
-    console.error(err);
-    throw err;
+  if (cardsData.error) {
+    throw new Error(cardsData.error);
   }
 
   throw new Error('Failed to fetch games');
@@ -81,32 +66,21 @@ export async function getGameById(params: GetDameByIdParams): Promise<GameDetail
     queryParams.append('userEmail', userEmail);
   }
 
-  try {
-    const response = await fetch(`${BASE_URL}/games/${id}`);
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/games/${id}`);
+  return await response.json();
 }
 
 export async function toggleGameFavorite(params: ToggleGameFavoriteParams): Promise<FavoriteDto> {
   const { id, userEmail } = params;
+  const response = await fetch(`${BASE_URL}/games/${id}/favorite`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userEmail }),
+  });
 
-  try {
-    const response = await fetch(`${BASE_URL}/games/${id}/favorite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userEmail }),
-    });
-
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  return await response.json();
 }
 
 export async function getAllComments(params: GetAllCommentsParams): Promise<GetAllCommentsDto> {
@@ -123,13 +97,8 @@ export async function getAllComments(params: GetAllCommentsParams): Promise<GetA
     queryParams.append('userEmail', userEmail);
   }
 
-  try {
-    const response = await fetch(`${BASE_URL}/games/${id}/comments`);
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/games/${id}/comments`);
+  return await response.json();
 }
 
 export async function postComment(params: PostCommentParams): Promise<CommentDto> {
@@ -140,35 +109,25 @@ export async function postComment(params: PostCommentParams): Promise<CommentDto
     text,
   });
 
-  try {
-    const response = await fetch(`${BASE_URL}/games/${id}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body,
-    });
-    return response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/games/${id}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body,
+  });
+  return response.json();
 }
 
 export async function toggleCommentLike(params: ToggleCommentLikeParams) {
   const { commentId, userEmail } = params;
 
-  try {
-    const response = await fetch(`${BASE_URL}/comments/${commentId}/like`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userEmail }),
-    });
-    return await response.json();
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  const response = await fetch(`${BASE_URL}/comments/${commentId}/like`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userEmail }),
+  });
+  return await response.json();
 }
