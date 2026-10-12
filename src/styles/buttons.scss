@@ -10,6 +10,11 @@
   border: 2px solid variables.$on-primary;
   border-radius: variables.$corner-small;
 
+  &:disabled {
+    color: variables.$on-bg;
+    border-color: variables.$on-bg;
+  }
+
   @media screen and (max-width: breakpoints.$tablet) {
     padding: 10px 20px;
     font-size: variables.$body-small;
@@ -80,8 +85,12 @@
 
   background-color: variables.$primary;
 
+  &:disabled {
+    background-color: variables.$outline-variant;
+  }
+
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: variables.$primary-high;
     }
   }
@@ -92,8 +101,12 @@
 
   background-color: variables.$white;
 
+  &:disabled {
+    background-color: variables.$outline;
+  }
+
   @media (hover: hover) and (pointer: fine) {
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: variables.$surface;
     }
   }

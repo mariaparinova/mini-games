@@ -9,6 +9,9 @@ import {
 import { getLogoElement } from '../logo/logo.ts';
 import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
 import { navigate } from '../../../router.ts';
+import { userData } from '../../../user/user.ts';
+import { firebaseLogoutUser } from '../../../firebase.ts';
+import { getUserProfileElement } from './user-component.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -31,14 +34,10 @@ export function getHeaderElement(
     activeItem,
     classList: ['desktop-nav'],
   });
-  const burgerMenuClickHandler = () => {
-    headerElement.classList.toggle('burger-menu-opened');
-  };
   const logoElement = getLogoElement();
   const buttonsElement = getHeaderButtons({
     withBurgerMenuButton: withBurgerMenuButton,
     classList: ['desktop-header-buttons'],
-    burgerMenuClickHandler,
   });
   const burgerMenuElement = getBurgerMenuElement({ activeItem });
 
@@ -87,24 +86,38 @@ function getNavigationElement(params: GetNavigationElementParams) {
 }
 
 function getHeaderButtons(params: GetHeaderButtonsParams) {
-  const { withBurgerMenuButton, classList = [], burgerMenuClickHandler } = params;
+  const { withBurgerMenuButton, classList = [] } = params;
+  const buttons: HTMLElement[] = [];
 
-  const loginButton = createButtonElement({
-    classList: ['button', 'small', 'login', 'secondary'],
-    textContent: 'Log In',
-    onClick: () => openAuthDialog({ mode: 'login' }),
-  });
+  const isAuthenticated = userData.email || userData.uid;
 
-  const signupButton = createButtonElement({
-    classList: ['button', 'small', 'signup', 'primary'],
-    textContent: 'Sign Up',
-    onClick: () => openAuthDialog({ mode: 'register' }),
-  });
+  if (isAuthenticated) {
+    const profileElement = getUserProfileElement();
+    const logoutButton = createButtonElement({
+      classList: ['button', 'small', 'logout', 'secondary'],
+      textContent: 'Log Out',
+      onClick: async () => firebaseLogoutUser(),
+    });
 
-  const buttons: HTMLElement[] = [loginButton, signupButton];
+    buttons.push(profileElement, logoutButton);
+  } else {
+    const loginButton = createButtonElement({
+      classList: ['button', 'small', 'login', 'secondary'],
+      textContent: 'Log In',
+      onClick: () => openAuthDialog({ mode: 'login' }),
+    });
+
+    const signupButton = createButtonElement({
+      classList: ['button', 'small', 'signup', 'primary'],
+      textContent: 'Sign Up',
+      onClick: () => openAuthDialog({ mode: 'register' }),
+    });
+
+    buttons.push(loginButton, signupButton);
+  }
 
   if (withBurgerMenuButton) {
-    buttons.push(getBurgerIconElement({ onClick: burgerMenuClickHandler }));
+    buttons.push(getBurgerIconElement());
   }
 
   return createDivElement({
@@ -113,8 +126,7 @@ function getHeaderButtons(params: GetHeaderButtonsParams) {
   });
 }
 
-function getBurgerIconElement(params: GetBurgerIconElementParams) {
-  const { onClick } = params;
+function getBurgerIconElement() {
   const line = createDivElement({
     classList: ['burger-line'],
   });
@@ -124,9 +136,15 @@ function getBurgerIconElement(params: GetBurgerIconElementParams) {
     children: [line],
   });
 
-  if (onClick) {
-    icon.addEventListener('click', onClick);
-  }
+  const burgerMenuClickHandler = () => {
+    const headerElement = document.querySelector('header');
+    if (!headerElement) {
+      return;
+    }
+    headerElement.classList.toggle('burger-menu-opened');
+  };
+
+  icon.addEventListener('click', burgerMenuClickHandler);
 
   return icon;
 }
@@ -135,7 +153,6 @@ function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) 
   const burgerMenuClickHandler = () => {
     const headerElement = document.querySelector('header');
     if (!headerElement) {
-      console.error('Header element not found');
       return;
     }
     headerElement.classList.remove('burger-menu-opened');
@@ -152,7 +169,7 @@ function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) 
   });
 }
 
-export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
+export function setHeader({ activeNavItem }: { activeNavItem: NavItem | undefined }) {
   const currentActiveItems = document.body.querySelectorAll('header .active');
 
   if (currentActiveItems[0]?.textContent === activeNavItem) {
@@ -172,6 +189,39 @@ export function setHeader({ activeNavItem }: { activeNavItem: NavItem }) {
     ?.classList.add('active');
 }
 
+export function updateHeaderButtons() {
+  const headerElement = document.querySelector('header');
+
+  if (!headerElement) {
+    return;
+  }
+
+  const desktopButtonsContainer = headerElement.querySelector('.header > .buttons-container');
+  const burgerMenuButtonsContainer = headerElement.querySelector('.burger-menu .buttons-container');
+
+  const burgerMenuClickHandler = () => {
+    headerElement.classList.toggle('burger-menu-opened');
+  };
+
+  if (desktopButtonsContainer) {
+    desktopButtonsContainer.replaceWith(
+      getHeaderButtons({
+        withBurgerMenuButton: true,
+        classList: ['desktop-header-buttons'],
+        burgerMenuClickHandler,
+      }),
+    );
+  }
+
+  if (burgerMenuButtonsContainer) {
+    burgerMenuButtonsContainer.replaceWith(
+      getHeaderButtons({
+        withBurgerMenuButton: false,
+      }),
+    );
+  }
+}
+
 interface GetNavigationElementParams {
   activeItem: NavItem;
   classList?: string[];
@@ -182,8 +232,4 @@ interface GetHeaderButtonsParams {
   withBurgerMenuButton: boolean;
   classList?: string[];
   burgerMenuClickHandler?: () => void;
-}
-
-interface GetBurgerIconElementParams {
-  onClick?: () => void;
 }

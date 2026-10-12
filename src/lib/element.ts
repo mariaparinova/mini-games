@@ -24,10 +24,11 @@ export function createDivElement(params: CreateDivElementParams): HTMLDivElement
 }
 
 export function createButtonElement(params: CreateButtonElementParams): HTMLButtonElement {
-  const { classList = [], textContent, onClick, icon, disabled, id } = params;
+  const { classList = [], textContent, onClick, icon, disabled, id, type = 'button' } = params;
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('button', ...classList);
+  buttonElement.type = type;
 
   if (icon) {
     buttonElement.append(icon);
@@ -142,7 +143,7 @@ export function createMainElement(params: CreateMainElementParams) {
 }
 
 export function createFormFieldElement(params: CreateFormFieldElementParams) {
-  const { type, id, placeholder = '', classList = [], label = '' } = params;
+  const { type, id, name, placeholder = '', classList = [], label = '' } = params;
 
   const labelElement = document.createElement('label');
   labelElement.classList.add('label');
@@ -152,18 +153,19 @@ export function createFormFieldElement(params: CreateFormFieldElementParams) {
   const inputElement = document.createElement('input');
   inputElement.type = type;
   inputElement.id = id;
+  inputElement.name = name ?? id;
   inputElement.placeholder = placeholder;
   inputElement.classList.add('input');
-  if (type === 'email') {
-    inputElement.autocomplete = 'off';
-  }
-
   if (type === 'email') {
     inputElement.autocomplete = 'username';
   }
   if (type === 'password') {
     inputElement.autocomplete = 'current-password';
   }
+
+  const helperElement = createDivElement({
+    classList: ['helper'],
+  });
 
   const inputElementContainer = createDivElement({
     classList: ['input-container'],
@@ -172,7 +174,7 @@ export function createFormFieldElement(params: CreateFormFieldElementParams) {
 
   return createDivElement({
     classList: ['form-field', ...classList],
-    children: [labelElement, inputElementContainer],
+    children: [labelElement, inputElementContainer, helperElement],
   });
 }
 
@@ -191,6 +193,7 @@ interface CreateButtonElementParams {
   icon?: HTMLImageElement | HTMLElement;
   disabled?: boolean;
   id?: string;
+  type?: 'submit' | 'button' | 'reset';
 }
 
 interface CreateImgElementParams {

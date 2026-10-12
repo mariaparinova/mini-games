@@ -6,7 +6,7 @@ import {
   createImgElement,
   createSpanElement,
 } from '../../lib/element.ts';
-import { type Chip, getChips } from '../common-components/chip/chip.ts';
+import { getChips } from '../common-components/chip/chip.ts';
 import { getGameRating } from '../common-components/game-rating/game-rating.ts';
 import { getGameLikes } from '../common-components/game-likes/game-likes.ts';
 import { getSelectControl, type Sort } from '../common-components/select-control/select-control.ts';
@@ -116,8 +116,6 @@ export async function initLibraryPage() {
 
   try {
     controls = await getLibraryControlsElement();
-  } catch (err) {
-    console.error(err);
   } finally {
     if (!controls) {
       controls = getErrorElement();
@@ -148,8 +146,6 @@ function getLibraryHeadingElement() {
 }
 
 async function getLibraryControlsElement() {
-  let chips: Chip[];
-
   const categoryClickHandler = async (event: MouseEvent) => {
     const target = event.target as HTMLElement;
 
@@ -167,27 +163,20 @@ async function getLibraryControlsElement() {
     await updateLibraryCards();
   };
 
-  try {
-    const { category: currentCategory } = getLibraryUrlParams();
-    const categories = await getCategories();
-    const hasMatchingCategory = categories.data.some((cat) => cat.slug === currentCategory);
+  const { category: currentCategory } = getLibraryUrlParams();
+  const categories = await getCategories();
+  const hasMatchingCategory = categories.data.some((cat) => cat.slug === currentCategory);
 
-    chips = categories.data.map((category) => {
-      const isDefault = hasMatchingCategory
-        ? category.slug === currentCategory
-        : category.isDefault;
+  const chips = categories.data.map((category) => {
+    const isDefault = hasMatchingCategory ? category.slug === currentCategory : category.isDefault;
 
-      return {
-        slug: category.slug,
-        label: category.label,
-        isDefault,
-        onClick: categoryClickHandler,
-      };
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+    return {
+      slug: category.slug,
+      label: category.label,
+      isDefault,
+      onClick: categoryClickHandler,
+    };
+  });
 
   const chipsElement = getChips({ chips });
 
