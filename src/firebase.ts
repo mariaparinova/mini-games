@@ -57,10 +57,12 @@ onAuthStateChanged(auth, (user) => {
     userData.email = user.email;
     userData.uid = user.uid;
     userData.userName = user.displayName;
+    userData.avatarUrl = user.photoURL;
   } else {
     userData.email = null;
     userData.uid = null;
     userData.userName = null;
+    userData.avatarUrl = null;
   }
 
   updateHeaderButtons();

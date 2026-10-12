@@ -11,6 +11,7 @@ import { openAuthDialog } from '../auth-dialog/auth-dialog.ts';
 import { navigate } from '../../../router.ts';
 import { userData } from '../../../user/user.ts';
 import { firebaseLogoutUser } from '../../../firebase.ts';
+import { getUserProfileElement } from './user-component.ts';
 
 export const NavItem = {
   Home: 'Home',
@@ -88,14 +89,17 @@ function getHeaderButtons(params: GetHeaderButtonsParams) {
   const { withBurgerMenuButton, classList = [] } = params;
   const buttons: HTMLElement[] = [];
 
-  if (userData.email) {
+  const isAuthenticated = userData.email || userData.uid;
+
+  if (isAuthenticated) {
+    const profileElement = getUserProfileElement();
     const logoutButton = createButtonElement({
       classList: ['button', 'small', 'logout', 'secondary'],
       textContent: 'Log Out',
       onClick: async () => firebaseLogoutUser(),
     });
 
-    buttons.push(logoutButton);
+    buttons.push(profileElement, logoutButton);
   } else {
     const loginButton = createButtonElement({
       classList: ['button', 'small', 'login', 'secondary'],

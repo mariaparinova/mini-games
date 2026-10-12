@@ -56,6 +56,10 @@
     font-size: variables.$body-large;
   }
 
+  .user-profile {
+    color: variables.$white;
+  }
+
   .active {
     color: variables.$primary;
   }
@@ -63,6 +67,7 @@
 
 .desktop-header-buttons {
   display: flex;
+  align-items: center;
   gap: variables.$size-2;
 }
 
@@ -135,6 +140,25 @@
   }
 }
 
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: variables.$size-05;
+  color: variables.$black;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: variables.$size-7;
+  height: variables.$size-7;
+  color: variables.$surface;
+  border: variables.$size-05 solid variables.$primary;
+  border-radius: 50%;
+  background-color: variables.$bg-footer-low;
+}
+
 @media screen and (max-width: breakpoints.$tablet) {
   .header {
     padding: 0 variables.$size-5;
@@ -185,7 +209,12 @@
 
   .desktop-header-buttons {
     .signup,
-    .login {
+    .login,
+    .logout {
+      display: none;
+    }
+
+    .profile-name {
       display: none;
     }
   }
