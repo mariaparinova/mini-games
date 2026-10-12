@@ -13,13 +13,13 @@ import { userData } from './user/user.ts';
 import { updateHeaderButtons } from './pages/common-components/header/header.ts';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCiXkhsTDiogu83bzD7KrlTGuYdlUU7-lQ',
-  authDomain: 'minigames-e7a71.firebaseapp.com',
-  projectId: 'minigames-e7a71',
-  storageBucket: 'minigames-e7a71.firebasestorage.app',
-  messagingSenderId: '936792906131',
-  appId: '1:936792906131:web:75864867035d882186b066',
-  measurementId: 'G-CZ92FP5HVE',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const googleProvider = new GoogleAuthProvider();
