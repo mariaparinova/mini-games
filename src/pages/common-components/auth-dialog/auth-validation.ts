@@ -18,7 +18,7 @@ export function validateUsername(value: string): string | null {
     return 'Username must start with an uppercase English letter';
   }
 
-  if (!/^[A-Z][a-zA-Z0-9]*$/.test(value)) {
+  if (!/^[A-Z][a-zA-Z0-9 ]*$/.test(value)) {
     return 'Username may contain English letters and digits only';
   }
 
