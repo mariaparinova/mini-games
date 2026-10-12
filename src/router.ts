@@ -33,7 +33,6 @@ export async function updatePage({ pageName }: { pageName: PageName }): Promise<
 
   const outlet = ROUTER.outlet;
   if (!outlet) {
-    console.error('No outlet found');
     return;
   }
   outlet.innerHTML = '';

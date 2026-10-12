@@ -153,7 +153,6 @@ function getBurgerMenuElement({ activeItem: NavItem }: { activeItem: NavItem }) 
   const burgerMenuClickHandler = () => {
     const headerElement = document.querySelector('header');
     if (!headerElement) {
-      console.error('Header element not found');
       return;
     }
     headerElement.classList.remove('burger-menu-opened');
